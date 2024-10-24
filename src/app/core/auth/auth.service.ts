@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { environment } from 'environment/environment';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -9,6 +10,7 @@ export class AuthService {
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
+    private apiBaseUrl = environment.apiUrl;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -57,8 +59,9 @@ export class AuthService {
         if (this._authenticated) {
             return throwError('User is already logged in.');
         }
-
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        debugger
+        const loginUrl = `${this.apiBaseUrl}LogInSignUp/LogIn`;
+        return this._httpClient.post(loginUrl, credentials).pipe(
             switchMap((response: any) => {
                 // Store the access token in the local storage
                 this.accessToken = response.accessToken;
