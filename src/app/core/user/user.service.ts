@@ -35,10 +35,10 @@ export class UserService {
      * Get the current signed-in user data
      */
     get(): Observable<User> {
-        debugger
+      
         return this._httpClient.get<any>(`${this.apiBaseUrl}LogInSignUp/GetUserInformationByParsingJWT`).pipe(
             tap((user) => {
-                debugger
+            
                 this._user.next(user.value);
             })
         );

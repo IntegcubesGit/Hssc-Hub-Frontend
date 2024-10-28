@@ -38,7 +38,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-
+import { MatDrawer } from '@angular/material/sidenav';
 
 import {
     Observable,
@@ -49,12 +49,13 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { InventoryService } from '../inventory.service';
-import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, InventoryPagination, InventoryVendor } from '../inventory.types';
+import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, InventoryPagination, InventoryVendor } from '../incident_Reporting.types';
+import { Incident_ReportingService } from '../incident_Reporting.service';
+
 
 @Component({
-    selector: 'inventory-list',
-    templateUrl: './inventory.component.html',
+    selector: 'incident_Reporting-list',
+    templateUrl: './incident_Reporting.component.html',
     styles: [
         /* language=SCSS */
         `
@@ -62,15 +63,15 @@ import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, Inve
                 grid-template-columns: 48px auto 40px;
 
                 @screen sm {
-                    grid-template-columns: 48px auto 112px 72px;
+                    grid-template-columns: 48px auto 100px 72px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 112px auto 112px 72px;
+                    grid-template-columns: 48px 100px auto 100px 100px 100px 72px;;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+                    grid-template-columns: 48px 100px auto 100px 96px 96px 100px 100px 72px;;
                 }
             }
         `,
@@ -98,14 +99,17 @@ import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, Inve
         MatRippleModule,
         AsyncPipe,
         CurrencyPipe,
+        MatDrawer
     ],
 })
-export class InventoryListComponent
+export class Incident_ReportingListComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-
+    @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    drawerMode: 'side' | 'over';
+    
     products$: Observable<InventoryProduct[]>;
 
     brands: InventoryBrand[];
@@ -129,7 +133,7 @@ export class InventoryListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
-        private _inventoryService: InventoryService
+        private _inventoryService: Incident_ReportingService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------

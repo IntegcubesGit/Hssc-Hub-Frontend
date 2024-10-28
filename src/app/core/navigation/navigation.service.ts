@@ -40,11 +40,12 @@ export class NavigationService {
     get(): Observable<Navigation> {
         return this._httpClient.get<any>(this.getMenuUrl).pipe(
             tap(data=>{
-                this._compactNavigation = [...data.allMenu];
-                this._defaultNavigation = [...data.defaultList];
-                this._compactNavigation = [...data.allMenu];
-                this._futuristicNavigation = [...data.allMenu];
-                this._horizontalNavigation = [...data.allMenu];
+                debugger
+                this._compactNavigation = [...data];
+                this._defaultNavigation = [...data];
+                this._compactNavigation = [...data];
+                this._futuristicNavigation = [...data];
+                this._horizontalNavigation = [...data];
                 this._compactNavigation.forEach((compactNavItem) => {
                     this._defaultNavigation.forEach((defaultNavItem) => {
                         if ( defaultNavItem.id === compactNavItem.id )
@@ -78,6 +79,8 @@ export class NavigationService {
                         futuristic: cloneDeep(this._futuristicNavigation),
                         horizontal: cloneDeep(this._horizontalNavigation)
                 }
+
+                debugger
                 this._navigation.next(nav);
             })
         )

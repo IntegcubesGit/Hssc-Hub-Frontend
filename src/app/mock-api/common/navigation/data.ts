@@ -72,6 +72,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'heroicons_outline:currency-dollar',
                 link: '/dashboards/crypto',
+
             },
         ],
     },
@@ -81,6 +82,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/example'
+
     },
     {
         id   : 'inventory',
@@ -88,7 +90,6 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/inventory/inventory'
-    }
 
-
+    }                            
 ];

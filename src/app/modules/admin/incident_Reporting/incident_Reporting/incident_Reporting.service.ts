@@ -12,10 +12,11 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from './inventory.types';
+import { InventoryBrand, InventoryCategory, InventoryPagination, InventoryProduct, InventoryTag, InventoryVendor } from './incident_Reporting.types';
+
 
 @Injectable({ providedIn: 'root' })
-export class InventoryService {
+export class Incident_ReportingService {
     // Private
     private _brands: BehaviorSubject<InventoryBrand[] | null> =
         new BehaviorSubject(null);
@@ -99,7 +100,7 @@ export class InventoryService {
      * Get brands
      */
     getBrands(): Observable<InventoryBrand[]> {
-        debugger
+      
         return this._httpClient
             .get<InventoryBrand[]>('api/apps/ecommerce/inventory/brands')
             .pipe(

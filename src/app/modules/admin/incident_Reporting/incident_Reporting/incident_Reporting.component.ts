@@ -6,14 +6,14 @@ import {
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'inventory',
-    templateUrl: './inventory.component.html',
+    selector: 'incident_Reporting',
+    templateUrl: './incident_Reporting.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [RouterOutlet],
 })
-export class InventoryComponent {
+export class Incident_ReportingComponent {
     /**
      * Constructor
      */
