@@ -5,17 +5,11 @@
             <img class="h-7 w-7 rounded-full" [src]="user.avatar" />
         }
         @if (!showAvatar || !user.avatar) {
-            <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
         }
         <span
-            class="absolute bottom-0 right-0 h-2 w-2 rounded-full"
-            [ngClass]="{
-                'mb-px mr-px': !showAvatar || !user.avatar,
-                'bg-green-500': user.status === 'online',
-                'bg-amber-500': user.status === 'away',
-                'bg-red-500': user.status === 'busy',
-                'bg-gray-400': user.status === 'not-visible',
-            }"
+            class="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 online"
+        
         ></span>
     </span>
 </button>
@@ -24,7 +18,10 @@
     <button mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
-            <span class="mt-1.5 text-md font-medium">{{ user.email }}</span>
+            @if (!loading) {
+                <span class="mt-1.5 text-md font-medium">{{ user.email }}</span>
+                }
+            
         </span>
     </button>
     <mat-divider class="my-2"></mat-divider>

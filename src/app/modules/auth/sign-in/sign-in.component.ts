@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
     FormsModule,
     NgForm,
@@ -17,6 +17,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { UserService } from 'app/core/user/user.service';
+import { catchError, from, map, Observable } from 'rxjs';
 
 @Component({
     selector: 'auth-sign-in',
@@ -46,7 +48,7 @@ export class AuthSignInComponent implements OnInit {
     };
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+   
     /**
      * Constructor
      */
@@ -54,7 +56,8 @@ export class AuthSignInComponent implements OnInit {
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _userService :UserService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -68,13 +71,111 @@ export class AuthSignInComponent implements OnInit {
         // Create the form
         this.signInForm = this._formBuilder.group({
             email: [
-                'hughes.brian@company.com',
-                [Validators.required, Validators.email],
+                '',
+                [Validators.required],
             ],
-            password: ['admin', Validators.required],
-            rememberMe: [''],
+            password: ['', Validators.required],
+            rememberMe: [false],
+            timeZone: [this.getTimeZone()],
+            ipAddress: [''],
+            browser: [this.getBrowserInfo()],
+            language: [navigator.language],
+            location: [this.getLocation()],
+            deviceType: [this.getDeviceType()],
+            os: [this.getOperatingSystem()],
+            userAgent: [navigator.userAgent],  
         });
+
+          this.getLocation().subscribe({
+            next: (loc) => {
+              this.signInForm.patchValue({ location: loc }); 
+            },
+            error: (err) => {
+              console.error(err); 
+            },
+          });
     }
+
+
+    private getLocation(): Observable<string> {
+        return new Observable<string>((observer) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+                observer.next(location);
+                observer.complete();
+              },
+              (error) => {
+                observer.error('Location not available: ' + error.message);
+              },
+              {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+              }
+            );
+          } else {
+            observer.error('Geolocation is not supported by this browser.');
+          }
+        }).pipe(
+          catchError((err) => {
+            return from(['Error retrieving location: ' + err]);
+          })
+        );
+      }
+
+
+    private getTimeZone(): string {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+      }
+    private getOperatingSystem(): string {
+        const userAgent = navigator.userAgent;
+        if (/Win/i.test(userAgent)) {
+          return 'Windows';
+        } else if (/Mac/i.test(userAgent)) {
+          return 'MacOS';
+        } else if (/Linux/i.test(userAgent)) {
+          return 'Linux';
+        } else if (/Android/i.test(userAgent)) {
+          return 'Android';
+        } else if (/iOS/i.test(userAgent)) {
+          return 'iOS';
+        }
+        return 'Unknown OS';
+      }
+
+
+      private getDeviceType(): string {
+        const userAgent = navigator.userAgent;
+        if (/Mobi|Android/i.test(userAgent)) {
+          return 'Mobile';
+        } else if (/Tablet|iPad/i.test(userAgent)) {
+          return 'Tablet';
+        }
+        return 'Desktop';
+      }
+
+     
+
+
+      private getBrowserInfo(): string {
+        const userAgent = navigator.userAgent;
+        let browserName = 'Unknown';
+    
+        if (userAgent.indexOf('Firefox') > -1) {
+          browserName = 'Mozilla Firefox';
+        } else if (userAgent.indexOf('Chrome') > -1) {
+          browserName = 'Google Chrome';
+        } else if (userAgent.indexOf('Safari') > -1) {
+          browserName = 'Apple Safari';
+        } else if (userAgent.indexOf('MSIE') > -1 || userAgent.indexOf('Trident') > -1) {
+          browserName = 'Microsoft Internet Explorer';
+        }
+    
+        return browserName;
+      }
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -83,49 +184,59 @@ export class AuthSignInComponent implements OnInit {
     /**
      * Sign in
      */
+
     signIn(): void {
-        // Return if the form is invalid
         if (this.signInForm.invalid) {
             return;
         }
-
-        // Disable the form
         this.signInForm.disable();
-
-        // Hide the alert
         this.showAlert = false;
-
+    
         // Sign in
         this._authService.signIn(this.signInForm.value).subscribe(
-            () => {
-                // Set the redirect url.
-                // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                // to the correct page after a successful sign in. This way, that url can be set via
-                // routing file and we don't have to touch here.
-                const redirectURL =
-                    this._activatedRoute.snapshot.queryParamMap.get(
-                        'redirectURL'
-                    ) || '/signed-in-redirect';
-
-                // Navigate to the redirect url
-                this._router.navigateByUrl(redirectURL);
-            },
             (response) => {
-                // Re-enable the form
+                if(response.isSucceeded==1){
+                // Store the access token in local storage
+                const accessToken = response.accessToken;
+                localStorage.setItem('accessToken', accessToken); // Store in local storage
+              
+     
+                this._userService.user = response.user;
+                this._authService._authenticated = true;
+      
+                const redirectURL =
+                    this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                this._router.navigateByUrl(redirectURL);
+                }else{
+                    this.signInForm.enable();
+                 
+                    this.alert = {
+                        type: 'error',
+                        message: response.message || 'Something Went Wrong Please Try again',
+                    };
+        
+              
+                    this.showAlert = true;
+                }
+
+
+            },
+            (error) => {
+             
                 this.signInForm.enable();
-
-                // Reset the form
-                this.signInNgForm.resetForm();
-
-                // Set the alert
+           
                 this.alert = {
                     type: 'error',
-                    message: 'Wrong email or password',
+                    message: error.error?.message || 'Something Went Wrong Please Try again', 
                 };
-
+    
                 // Show the alert
                 this.showAlert = true;
             }
         );
     }
+    
+
+
+
 }

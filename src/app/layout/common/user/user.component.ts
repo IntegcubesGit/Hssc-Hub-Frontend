@@ -37,7 +37,7 @@ export class UserComponent implements OnInit, OnDestroy {
     /* eslint-disable @typescript-eslint/naming-convention */
     static ngAcceptInputType_showAvatar: BooleanInput;
     /* eslint-enable @typescript-eslint/naming-convention */
-
+    loading: boolean = true;
     @Input() showAvatar: boolean = true;
     user: User;
 
@@ -60,15 +60,29 @@ export class UserComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        // Subscribe to user changes
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this.user = user;
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this._userService.get().pipe(
+            takeUntil(this._unsubscribeAll)
+        ).subscribe((user: any) => {
+          
+            this.user = user.value;
+            this.loading = false; 
+            this._changeDetectorRef.markForCheck();
+        }, () => {
+            this.loading = false; 
+        });
+
+
+
+        // // Subscribe to user changes
+        // this._userService.user$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((user: User) => {
+        //         this.user = user;
+
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     /**

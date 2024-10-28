@@ -41,7 +41,7 @@
                     <mat-label>UserName or Email Address</mat-label>
                     <input id="email" matInput [formControlName]="'email'" />
                     @if (signInForm.get('email').hasError('required')) {
-                        <mat-error> Email address is required </mat-error>
+                        <mat-error>Username or Email address is required </mat-error>
                     }
                     @if (signInForm.get('email').hasError('email')) {
                         <mat-error>

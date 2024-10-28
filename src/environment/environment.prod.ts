@@ -1,7 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://api.yourproduction.com/api', 
-    socketUrl: 'wss://ws.yourproduction.com',
+    apiUrl: 'http://api.yourproduction.com/api', 
     version: '1.0.0',
-    defaultLanguage: 'en'
 };
