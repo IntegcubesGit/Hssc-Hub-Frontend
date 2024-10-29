@@ -23,105 +23,119 @@
         </button>
     </div>
 
-    <div class="flex-auto pl-4 sm:pl-4 pr-4 sm:pr-4">
-        <form>
+    <div class="flex-auto pl-4  pr-4">
+        <form [formGroup]="caseForm">
             <div class="bg-card mt-4 flex flex-col overflow-hidden rounded shadow">
-              <div class="bg-gray-50 p-4 dark:bg-gray-700">
-                <p class="text-secondary">
-                  You Can Put all General Information for Incident Report
-                </p>
-              </div>
-              <mat-divider></mat-divider>
               <div class="p-8 pb-4">
                 <div class="flex flex-col md:flex-row md:space-x-4">
                   <div class="flex flex-col w-full">
-                    <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Case Title</span>
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Case Title</span>
                     <mat-form-field class="fuse-mat-dense flex-auto">
-                      <input matInput placeholder="Enter your email" />
-                      <mat-error> Case Title is required </mat-error>
+                      <input matInput formControlName="title" />
+                      <mat-error>  </mat-error>
+    
                     </mat-form-field>
                   </div>
-                  
-                  
+          
                   <div class="flex flex-col w-full">
-                    <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Category</span>
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Risk Category</span>
                     <mat-form-field class="fuse-mat-dense flex-auto">
-                      <mat-select placeholder="Select Category">
-                        <mat-option value="language-1">Language 1</mat-option>
-                        <mat-option value="language-2">Language 2</mat-option>
-                        <mat-option value="language-3">Language 3</mat-option>
+                      <mat-select formControlName="riskCatId">
+                        <mat-option value="1">Risk 1</mat-option>
+                        <mat-option value="2">Risk 2</mat-option>
+                        <mat-option value="3">Risk 3</mat-option>
                       </mat-select>
+                      <mat-error></mat-error>
                     </mat-form-field>
-                  </div>
 
+                  </div>
+          
                   <div class="flex flex-col w-full">
-                    <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Reporting Department</span>
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Reporting Department</span>
                     <mat-form-field class="fuse-mat-dense flex-auto">
-                      <mat-select placeholder="Reporting Department...">
-                        <mat-option value="country-1">Country 1</mat-option>
-                        <mat-option value="country-2">Country 2</mat-option>
-                        <mat-option value="country-3">Country 3</mat-option>
+                      <mat-select formControlName="reportingDeptId">
+                        <mat-option value="1">Dept 1</mat-option>
+                        <mat-option value="2">Dept 2</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
           
-          
-                  
-                </div>
-
-                <div class="flex">
-                    <mat-form-field class="flex-auto">
-                        <textarea
-                            matInput
-                            [placeholder]="'Case Description'"
-                            [rows]="3"
-                        ></textarea>
-                        <mat-icon
-                            class="icon-size-5"
-                            matPrefix
-                            [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
-                        ></mat-icon>
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Technology Type</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <input matInput formControlName="technologyType" />
                     </mat-form-field>
+                  </div>
                 </div>
-
-
+          
                 <div class="flex flex-col md:flex-row md:space-x-4">
-                    <div class="flex flex-col w-full">
-                      <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Case Title</span>
-                      <mat-form-field class="fuse-mat-dense flex-auto">
-                        <input matInput placeholder="Enter your email" />
-                      </mat-form-field>
-                    </div>
-                    
-                    <div class="flex flex-col w-full">
-                      <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Country / Region</span>
-                      <mat-form-field class="fuse-mat-dense flex-auto">
-                        <mat-select placeholder="Select country">
-                          <mat-option value="country-1">Country 1</mat-option>
-                          <mat-option value="country-2">Country 2</mat-option>
-                          <mat-option value="country-3">Country 3</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-            
-                    <div class="flex flex-col w-full">
-                      <span class="text-left min-w-32 mr-4 mb-1 font-semibold">Language</span>
-                      <mat-form-field class="fuse-mat-dense flex-auto">
-                        <mat-select placeholder="Select language">
-                          <mat-option value="language-1">Language 1</mat-option>
-                          <mat-option value="language-2">Language 2</mat-option>
-                          <mat-option value="language-3">Language 3</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-                    
+                  <div class="flex flex-col w-full">
+                    <mat-form-field class="flex-auto">
+                      <mat-label class="font-medium hover:font-bold">Case Date</mat-label>
+                      <input matInput [matDatepicker]="picker1" formControlName="caseDate" />
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
                   </div>
+          
+                  <div class="flex flex-col w-full">
+                    <mat-form-field class="flex-auto">
+                      <mat-label class="font-medium hover:font-bold">Due Date</mat-label>
+                      <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+          
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Work Place</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <input matInput formControlName="workPlace" />
+                    </mat-form-field>
+                  </div>
+          
+                  <div class="flex flex-col w-full">
+                    <mat-checkbox formControlName="isAuthorityNotified" class="mb-2 mt-4" [color]="'primary'" >Authority Notified?</mat-checkbox>
+                  </div>
+                </div>
+          
+                <div class="flex flex-col md:flex-row md:space-x-4">
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Consequences Total Loss</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <input matInput formControlName="totalLoss" />
+                    </mat-form-field>
+                  </div>
+          
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Immediate Action Taken</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <input matInput formControlName="immedActionTaken" />
+                    </mat-form-field>
+                  </div>
+                </div>
+          
+                <div class="flex flex-col md:flex-row md:space-x-4">
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Case Description</span>
+                    <mat-form-field class="flex-auto">
+                      <textarea matInput formControlName="description" [rows]="3"></textarea>
+                    </mat-form-field>
+                  </div>
+          
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Consequences Comment</span>
+                    <mat-form-field class="flex-auto">
+                      <textarea matInput formControlName="comments" [rows]="3"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
           
-            <div class="mt-10 mb-10 flex items-center justify-end">
-              <button mat-button>Cancel</button>
-              <button class="ml-3 px-6" mat-flat-button [color]="'primary'">Save</button>
+            <div class="mt-4 mb-4 flex items-center justify-end">
+              <button type="button"  mat-button  (click)="onCancel()">Cancel</button>
+              <button class="ml-3 px-6" mat-flat-button [color]="'primary'" (click)="saveData()">Save</button>
             </div>
           </form>
           

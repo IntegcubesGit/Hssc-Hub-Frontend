@@ -1,0 +1,195 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-4"
+    >
+        <div class="min-w-0 flex-1">
+  
+            <!-- Title -->
+            <div class="mt-2">
+                <h2
+                    class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl"
+                >
+               Incident Injury Information
+                </h2>
+            </div>
+        </div>
+        <button
+            class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0"
+            mat-icon-button
+            (click)="toggleDrawer()"
+        >
+            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex-auto pl-4  pr-4">
+        <form>
+            <div class="bg-card mt-4 flex flex-col overflow-hidden rounded shadow">
+          
+              <div class="p-8 pb-4">
+                <div class="flex flex-col md:flex-row md:space-x-4">
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Case Title</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <input matInput  />
+                      <mat-error> Case Title is required </mat-error>
+                    </mat-form-field>
+                  </div>
+                 
+                  
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Category</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-select >
+                        <mat-option value="language-1">Language 1</mat-option>
+                        <mat-option value="language-2">Language 2</mat-option>
+                        <mat-option value="language-3">Language 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Risk Category</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-select >
+                        <mat-option value="language-1">Language 1</mat-option>
+                        <mat-option value="language-2">Language 2</mat-option>
+                        <mat-option value="language-3">Language 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Reporting Department</span>
+                    <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-select >
+                        <mat-option value="country-1">Country 1</mat-option>
+                        <mat-option value="country-2">Country 2</mat-option>
+                        <mat-option value="country-3">Country 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+          
+          
+                  
+                </div>
+
+                <div class="flex flex-col md:flex-row md:space-x-4">
+                    <div class="flex flex-col w-full">
+                        <mat-form-field
+                           
+                            class="flex-auto"
+                        >
+                            <mat-label class="font-medium hover:font-bold">Case Date</mat-label>
+                            <input matInput [matDatepicker]="picker1"  class="fuse-mat-dense flex-auto"/>
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="picker1"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex flex-col w-full">
+                        <mat-form-field
+                           
+                            class="flex-auto"
+                        >
+                            <mat-label class="font-medium hover:font-bold">Due Date</mat-label>
+                            <input matInput [matDatepicker]="picker2" class="fuse-mat-dense flex-auto" />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="picker2"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="flex flex-col w-full">
+                      <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Work Place</span>
+                      <mat-form-field class="fuse-mat-dense flex-auto">
+                        <input  matInput />
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="flex flex-col w-full">
+                      <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Technology Type</span>
+                      <mat-form-field class="fuse-mat-dense flex-auto">
+                        <input  matInput />
+                      </mat-form-field>
+                    </div>
+
+                  </div>
+                  <div class="flex flex-col md:flex-row md:space-x-4">
+                    <div class="flex flex-col w-full md:w-128">
+                      <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Immediate Action Taken</span>
+                      <mat-form-field class="fuse-mat-dense flex-auto">
+                        <input matInput />
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="flex flex-col w-full md:w-128">
+                        <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Consequences Total Loss</span>
+                        <mat-form-field class="fuse-mat-dense flex-auto">
+                          <input matInput />
+                        </mat-form-field>
+                      </div>
+                    <div class="flex flex-col w-full ">
+                        <mat-checkbox
+                            class="mb-2 mt-5"
+                            [checked]="true"
+                            [color]="'primary'"
+                        >
+                        Authority Notified ?
+                        </mat-checkbox>
+                    
+                    </div>
+
+                  </div>
+
+
+                  <div class="flex flex-col md:flex-row md:space-x-4">
+                  <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Case Description</span>
+                    <mat-form-field class="flex-auto">
+                        <textarea
+                            matInput
+                           
+                            [rows]="3"
+                        ></textarea>
+                        <mat-icon
+                            class="icon-size-5"
+                            matPrefix
+                            [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
+                        ></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col w-full">
+                    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Consequences Comment</span>
+                    <mat-form-field class="flex-auto">
+                        <textarea
+                            matInput
+                           
+                            [rows]="3"
+                        ></textarea>
+                        <mat-icon
+                            class="icon-size-5"
+                            matPrefix
+                            [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
+                        ></mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
+              </div>
+            </div>
+          
+            <div class="mt-4 mb-4 flex items-center justify-end">
+              <button mat-button>Cancel</button>
+              <button class="ml-3 px-6" mat-flat-button [color]="'primary'" (click)="saveData()">Save</button>
+            </div>
+          </form>
+          
+    </div>
+</div>

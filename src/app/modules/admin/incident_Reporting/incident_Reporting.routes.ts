@@ -11,6 +11,7 @@ import { HighlightComponent } from './incident_Reporting/add-form/components/hig
 import { LoadingBarComponent } from './incident_Reporting/add-form/components/loading-bar/loading-bar.component';
 import { MasonryComponent } from './incident_Reporting/add-form/components/masonry/masonry.component';
 import { GeneralInformationComponent } from './incident_Reporting/add-form/components/general_information/general_information.component';
+import { InjuryComponent } from './incident_Reporting/add-form/components/injury/injury.component';
 
 export default [
     {
@@ -26,11 +27,7 @@ export default [
           path: '',
           component: Incident_ReportingListComponent,
           resolve: {
-            brands: () => inject(Incident_ReportingService).getBrands(),
-            categories: () => inject(Incident_ReportingService).getCategories(),
             products: () => inject(Incident_ReportingService).getProducts(),
-            tags: () => inject(Incident_ReportingService).getTags(),
-            vendors: () => inject(Incident_ReportingService).getVendors(),
           },
         },
         {
@@ -51,7 +48,7 @@ export default [
                   pathMatch: 'full',
                 },
                 { path: 'general_information', component: GeneralInformationComponent },
-                { path: 'card', component: CardComponent },
+                { path: 'injury', component: InjuryComponent },
                 { path: 'drawer', component: DrawerComponent },
                 { path: 'fullscreen', component: FullscreenComponent },
                 { path: 'highlight', component: HighlightComponent },

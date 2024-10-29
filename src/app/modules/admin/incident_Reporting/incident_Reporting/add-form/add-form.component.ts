@@ -48,19 +48,14 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy  {
                       id: 'fuse-components.components.general_information',
                       title: 'General Information',
                       type: 'basic',
-                      link: '/case/incident_Reporting/Info/cm/general_information',
+                      link: '/case/incident_Reporting/Info/-1/sub/general_information',
                   },
-                  {
-                      id: 'fuse-components.components.card',
-                      title: 'Consequences',
-                      type: 'basic',
-                      link: '/case/incident_Reporting/Info/c/card',
-                  },
+            
                   {
                       id: 'fuse-components.components.drawer',
                       title: 'Injury',
                       type: 'basic',
-                      link: '/case/incident_Reporting/case_Info/components/drawer',
+                      link: '/case/incident_Reporting/Info/12/sub/injury',
                   },
                   {
                       id: 'fuse-components.components.fullscreen',
