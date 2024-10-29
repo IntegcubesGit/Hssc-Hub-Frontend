@@ -1,20 +1,6 @@
 <div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden">
     
-    <mat-drawer-container
-        class="bg-card h-full flex-auto dark:bg-transparent"
-        (backdropClick)="onBackdropClicked()">
-        <!-- Drawer -->
-        <mat-drawer
-            class="w-full dark:bg-gray-900 sm:w-128"
-            [mode]="drawerMode"
-            [opened]="false"
-            [position]="'end'"
-            [disableClose]="true"
-            #matDrawer
-        >
-            <router-outlet></router-outlet>
-        </mat-drawer>
-        <mat-drawer-content>
+
 <!-- Header -->
     <div class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <!-- Loader -->
@@ -254,7 +240,6 @@
                     </div>
                 }
             }
-
             <ng-template #rowDetailsTemplate let-product>
                 <div class="overflow-hidden shadow-lg">
                     <div class="flex border-b">
@@ -760,8 +745,4 @@
             </ng-template>
         </div>
     </div>
-</mat-drawer-content>
-</mat-drawer-container>
-
-
 </div>

@@ -51,6 +51,7 @@ import {
 } from 'rxjs';
 import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, InventoryPagination, InventoryVendor } from '../incident_Reporting.types';
 import { Incident_ReportingService } from '../incident_Reporting.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -107,9 +108,7 @@ export class Incident_ReportingListComponent
 {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-    @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
-    drawerMode: 'side' | 'over';
-    
+
     products$: Observable<InventoryProduct[]>;
 
     brands: InventoryBrand[];
@@ -133,7 +132,9 @@ export class Incident_ReportingListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
-        private _inventoryService: Incident_ReportingService
+        private _inventoryService: Incident_ReportingService,
+
+        private _router: Router,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -249,6 +250,12 @@ export class Incident_ReportingListComponent
             )
             .subscribe();
     }
+
+
+    
+
+
+
 
     /**
      * After view init
@@ -550,21 +557,8 @@ export class Incident_ReportingListComponent
         );
     }
 
-    /**
-     * Create product
-     */
-    createProduct(): void {
-        // Create the product
-        this._inventoryService.createProduct().subscribe((newProduct) => {
-            // Go to new product
-            this.selectedProduct = newProduct;
-
-            // Fill the form
-            this.selectedProductForm.patchValue(newProduct);
-
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
+    createProduct(id: number): void {
+        this._router.navigate(['/case/incident_Reporting/Info', id]);
     }
 
     /**
