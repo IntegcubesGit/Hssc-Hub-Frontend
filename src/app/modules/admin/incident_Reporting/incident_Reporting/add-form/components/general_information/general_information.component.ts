@@ -7,7 +7,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { AddFormComponent } from '../../add-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
@@ -17,6 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
+import { CommonService } from 'app/modules/common.service';
+import { Incident_ReportingService } from '../../../incident_Reporting.service';
 @Component({
     selector: 'general_information',
     templateUrl: './general_information.component.html',
@@ -48,21 +51,31 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ],
 })
 export class GeneralInformationComponent implements OnInit, OnDestroy {
-    @Input('const') const ='';
-    /**
-     * Constructor
-     */
+
     id: string | null = null;
     caseForm: FormGroup;
+    caseCategories: CaseCategory[] = [];
+    riskCategories: RiskCategory[] = [];
+    departments: Department[] = [];
+    businessUnits:BusinessUnit[] = [];
+    caseStatuses:CaseStatus[]=[];
     constructor(
         private _fuseAlertService: FuseAlertService,
         private _fuseComponentsComponent: AddFormComponent,
         private route: ActivatedRoute, private snackBar: MatSnackBar,
         private fb: FormBuilder,
-        private router: Router
+        private router: Router,
+        private _commonService:CommonService,
+        private _service:Incident_ReportingService
     ) {
     
-      
+              
+        this.route.params.subscribe(params => {
+            console.log('Current route params:', params);
+            this.id = params['id'];
+          });
+
+
         this.createForm();
 
     }
@@ -70,67 +83,96 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
  
     createForm() {
         this.caseForm = this.fb.group({
-          title: ['', Validators.required],
+          caseTitle: ['', Validators.required],
           description: ['', Validators.required],
           caseDate: ['', Validators.required],
+          departmentId: ['', Validators.required],
           dueDate: [''],
-          riskCatId: ['', Validators.required],
-          reportingDeptId: ['', Validators.required],
+          riskCategoryId: ['', Validators.required],
+          categoryId: ['', Validators.required],
+          statusId: ['', Validators.required],
           technologyType: [''],
           workPlace: [''],
           isAuthorityNotified: [false],
           totalLoss: ['', Validators.required],
-          immedActionTaken: [''],
+          immediateActionTaken: [''],
           comments: ['']
         });
     }
         
     ngOnInit(): void {
-let dd = this.const;
-// debugger;
-        this.route.params.subscribe(params => {
-            console.log('Current route params:', params); // Debugging line
-            this.id = params['id'];
-          });
-        // debugger
-          if (!this.id) {
-            this.route.parent?.params.subscribe(params => {
-              console.log('Parent route params:', params); // Debugging line
-              this.id = params['id'];
-            });
-
-        }
-        this.id = this.route.parent?.snapshot.paramMap.get('id'); 
-        console.log('ID from parent route in CardComponent (using snapshot):', this.id);
-        this.route.parent?.paramMap.subscribe((paramMap: ParamMap) => {
-            this.id = paramMap.get('id');  
-            console.log('11111ID from parent route:', this.id);  
-          });
-
-        // this.route.parent?.paramMap.pipe(map((p) => p['id'])).subscribe((id) => {
-        //     console.log('IaaaaD:', id);  
-        //   });
-        // this.route.parent?.paramMap.subscribe(paramMap => {
-        //     this.id = paramMap.get('id');
-        //     console.log('ID from parent route in CardComponent:', this.id); 
-        //   });
-        // this.route.paramMap.subscribe((paramMap: ParamMap) => {
-        //     this.id = paramMap.get('id');  
-        //     console.log(this.id);         
-        //     this.showAlert(this.id);       
-        // });
-     
- 
-
+        this.fetchRiskCategories();
+        this.fetchCaseCategories();
+        this.fetchDepartments();
+        this.fetchBusinessUnits();
+        this.getAllCaseStatuses();
       }
-
 
       saveData() {
         if (this.caseForm.valid) {
-            const caseData = this.caseForm.value; 
-          }
-        this.router.navigate(['/case/information/', 22, 'general-information']);
+          const caseData = this.caseForm.value;
+          this._service.saveCase(caseData).subscribe({
+            next: (response) => {
+              console.log('Case saved successfully', response);
+              this.router.navigate(['/case/information/', 22, 'general-information']);
+            }
+          });
+        }
       }
+      
+      fetchRiskCategories(): void {
+        this._commonService.getRiskCategories().pipe(
+        ).subscribe(
+          (data: RiskCategory[]) => {
+            this.riskCategories = data;
+          }
+        );
+      }
+
+      fetchCaseCategories(): void {
+        this._commonService.getCaseCategories().pipe(
+        ).subscribe(
+          (data: CaseCategory[]) => {
+            debugger
+            this.caseCategories = data;
+          }
+        );
+      }
+
+      fetchDepartments(): void {
+        this._commonService.getDepartments().pipe(
+        ).subscribe(
+          (data: Department[]) => {
+            this.departments = data;
+          }
+        );
+      }
+
+
+      fetchBusinessUnits(): void {
+        this._commonService.getBusinessUnits().pipe(
+      
+        ).subscribe(
+          (data: BusinessUnit[]) => {
+            this.businessUnits = data;
+          },
+    
+        );
+      }
+
+      getAllCaseStatuses(): void {
+        this._commonService.getAllCaseStatuses().pipe(
+      
+        ).subscribe(
+          (data: CaseStatus[]) => {
+            this.caseStatuses = data;
+          },
+    
+        );
+      }
+      
+
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

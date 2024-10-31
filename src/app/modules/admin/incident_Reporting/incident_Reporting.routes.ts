@@ -6,7 +6,7 @@ import { Incident_ReportingService } from './incident_Reporting/incident_Reporti
 import { AddFormComponent } from './incident_Reporting/add-form/add-form.component';
 import { GeneralInformationComponent } from './incident_Reporting/add-form/components/general_information/general_information.component';
 import { InjuryComponent } from './incident_Reporting/add-form/components/injury/injury.component';
-import { TestComComponent } from './incident_Reporting/test-com/test-com.component';
+
 
 export default [
     {
@@ -21,10 +21,6 @@ export default [
         products: () => inject(Incident_ReportingService).getProducts(),
       },
     },
-    {
-        path: 'test',
-        component: TestComComponent,
-      },
     {
       path: 'information/:id',
       component: AddFormComponent,

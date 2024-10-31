@@ -3,18 +3,23 @@ import { Injectable } from '@angular/core';
 
 import {
     BehaviorSubject,
+    catchError,
+    map,
     Observable,
+    of,
     tap,
 } from 'rxjs';
 import { Pagination, Case} from './incident_Reporting.types';
 import { environment } from 'environment/environment';
 
 
+
 @Injectable({ providedIn: 'root' })
 export class Incident_ReportingService {
  
   private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
-  
+private readonly saveCasesURL = `${environment.apiUrl}Cases/CreateAnIncidentReportCase`;
+
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject(null);
 
@@ -31,22 +36,6 @@ export class Incident_ReportingService {
     get cases$(): Observable<Case[]> {
         return this._cases.asObservable();
     }
-
-
-
-    // getBrands(): Observable<InventoryBrand[]> {
-    //     return this._httpClient
-    //         .get<InventoryBrand[]>('api/apps/ecommerce/inventory/brands')
-    //         .pipe(
-    //             tap((brands) => {
-    //                 this._brands.next(brands);
-    //             })
-    //         );
-    // }
-
-
-
-
 
 
     /**
@@ -78,5 +67,13 @@ export class Incident_ReportingService {
                 })
             );
     }
+
+   
+
+    saveCase(caseData: any): Observable<any> {
+        return this._httpClient.post(`${this.saveCasesURL}`, caseData);
+      }
+
+
 
 }
