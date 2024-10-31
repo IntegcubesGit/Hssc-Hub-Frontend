@@ -39,7 +39,7 @@ export class UserComponent implements OnInit, OnDestroy {
     /* eslint-enable @typescript-eslint/naming-convention */
     loading: boolean = true;
     @Input() showAvatar: boolean = true;
-    user: User;
+    user: User | null = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -50,7 +50,11 @@ export class UserComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _userService: UserService
-    ) {}
+    ) {
+
+
+       
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -60,12 +64,13 @@ export class UserComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-
+        this.loading=true;
         this._userService.get().pipe(
+           
             takeUntil(this._unsubscribeAll)
         ).subscribe((user: any) => {
-          
-            this.user = user.value;
+            this.loading=true;
+            this.user = user;
             this.loading = false; 
             this._changeDetectorRef.markForCheck();
         }, () => {

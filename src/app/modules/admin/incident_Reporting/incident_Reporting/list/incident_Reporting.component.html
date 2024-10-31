@@ -41,9 +41,10 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
         <!-- Products list -->
-        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"  >
-            @if (products$ | async; as products) {
-                @if (products.length > 0) {
+        <div
+ class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"  >
+            @if (cases$ | async; as cases) {
+                @if (cases.length > 0) {
                     <div class="grid">
                         <!-- Header -->
                         <div
@@ -54,44 +55,47 @@
                             <div>No</div>
                             <div
                                 class="hidden md:block"
-                                [mat-sort-header]="'sku'"
+                                [mat-sort-header]="'caseNumber'"
                             >
                             Case No
 
                             </div>
-                            <div [mat-sort-header]="'name'">Case</div>
+                            <div [mat-sort-header]="'case'">Case</div>
+
+                            <div [mat-sort-header]="'description'"  class="hidden lg:block">Description</div>
                             <div
-                                class="hidden sm:block"
-                                [mat-sort-header]="'price'"
+                               
+                                [mat-sort-header]="'category'"
                             >
                             Category
                             </div>
                             <div
-                                class="hidden lg:block"
-                                [mat-sort-header]="'stock'"
+                                class="hidden md:block"
+                                [mat-sort-header]="'department'"
                             >
                              Department
 
                             </div>
                             <div
                                 class="hidden lg:block"
-                                [mat-sort-header]="'active'"
+                                [mat-sort-header]="'WorkPlace'"
                             >
                             Work Place
                             </div>
                          
                            
-                     <!-- New Columns -->
-                        <div class="hidden lg:block" [mat-sort-header]="'status'">Status</div>
-                      <div class="hidden lg:block" [mat-sort-header]="'createdDate'">Created On</div>
+                            <div class="hidden md:block"
+                            [mat-sort-header]="'caseDate'" >Case Date
+                        </div>
+                     
 
-                            <div class="hidden sm:block">Details</div>
+                            <div >Action</div>
                         </div>
                         <!-- Rows -->
-                        @if (products$ | async; as products) {
+                        @if (cases$ | async; as cases) {
                             @for (
-                                product of products;
-                                track trackByFn($index, product)
+                                case of cases;
+                                track trackByFn($index, case)
                             ) {
                                 <div
                                     class="inventory-grid grid text-md items-center gap-2 border-b px-4 py-2 md:px-8"
@@ -102,120 +106,53 @@
                                          {{$index+1}}
                                         </div>
                                     </div>
-
+                          
+                                       
                                     <!-- SKU -->
                                     <div class="hidden truncate md:block">
-                                        {{ product.sku }}
+                                        {{ case.caseNumber }}
                                     </div>
 
                                     <!-- Name -->
                                     <div class="truncate">
-                                        {{ product.name }}
+                                        {{ case.case }}
                                     </div>
 
-                                    <!-- Price -->
-                                    <div class="hidden sm:block">
+                                    <div class="truncate hidden lg:block">
+                                        {{ case.description }}
+                                    </div>
+
+                                    <div >
                                         {{
-                                            product.price
-                                                | currency
-                                                    : 'USD'
-                                                    : 'symbol'
-                                                    : '1.2-2'
+                                            case.caseCategory                                           
                                         }}
                                     </div>
-
-                                    <!-- Stock -->
-                                    <div class="hidden items-center lg:flex">
-                                        <div class="min-w-4">
-                                            {{ product.stock }}
-                                        </div>
-                                        <!-- Low stock -->
-                                        @if (product.stock < 20) {
-                                            <div
-                                                class="ml-2 flex h-4 w-1 items-end overflow-hidden rounded bg-red-200"
-                                            >
-                                                <div
-                                                    class="flex h-1/3 w-full bg-red-600"
-                                                ></div>
-                                            </div>
-                                        }
-                                        <!-- Medium stock -->
-                                        @if (
-                                            product.stock >= 20 &&
-                                            product.stock < 30
-                                        ) {
-                                            <div
-                                                class="ml-2 flex h-4 w-1 items-end overflow-hidden rounded bg-orange-200"
-                                            >
-                                                <div
-                                                    class="flex h-2/4 w-full bg-orange-400"
-                                                ></div>
-                                            </div>
-                                        }
-                                        <!-- High stock -->
-                                        @if (product.stock >= 30) {
-                                            <div
-                                                class="ml-2 flex h-4 w-1 items-end overflow-hidden rounded bg-green-100"
-                                            >
-                                                <div
-                                                    class="flex h-full w-full bg-green-400"
-                                                ></div>
-                                            </div>
-                                        }
-                                    </div>
-
-                                    <!-- Active -->
-                                    <div class="hidden lg:block">
-                                        @if (product.active) {
-                                            <mat-icon
-                                                class="text-green-400 icon-size-5"
-                                                [svgIcon]="
-                                                    'heroicons_solid:check'
-                                                "
-                                            ></mat-icon>
-                                        }
-                                        @if (!product.active) {
-                                            <mat-icon
-                                                class="text-gray-400 icon-size-5"
-                                                [svgIcon]="
-                                                    'heroicons_solid:x-mark'
-                                                "
-                                            ></mat-icon>
-                                        }
-                                    </div>
-
-                                 <!-- New Columns -->
-                                 <div class="hidden lg:block">{{  product.price }}</div>
-                                  <div class="hidden lg:block">{{  product.price}}</div>
+         
+                                <div class="hidden md:block"> {{case.department}} </div>
+                                <div class="hidden lg:block"> {{case.workPlace}} </div>
+                                   
+                                    <div class="hidden  md:block">
                                     
-                                    <!-- Details button -->
+                                        {{    case.caseDate| date:'mediumDate'}}
+                                    </div>
+
                                     <div>
                                         <button
                                             class="h-7 min-h-7 min-w-10 px-2 leading-6"
                                             mat-stroked-button
-                                            (click)="toggleDetails(product.id)"
+                                            (click)="toggleDetails(case.caseId)"
                                         >
                                             <mat-icon
                                                 class="icon-size-5"
                                                 [svgIcon]="
-                                                    selectedProduct?.id ===
-                                                    product.id
+                                                    selectedProduct?.caseId ===
+                                                    case.caseId
                                                         ? 'heroicons_solid:chevron-up'
                                                         : 'heroicons_solid:chevron-down'
                                                 "
                                             ></mat-icon>
                                         </button>
                                     </div>
-                                </div>
-                                <div class="grid">
-                                    @if (selectedProduct?.id === product.id) {
-                                        <ng-container
-                                            *ngTemplateOutlet="
-                                                rowDetailsTemplate;
-                                                context: { $implicit: product }
-                                            "
-                                        ></ng-container>
-                                    }
                                 </div>
                             }
                         }

@@ -57,7 +57,6 @@ export class InjuryComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute, private snackBar: MatSnackBar,
         private router: Router
     ) {
-        debugger
       
 
 

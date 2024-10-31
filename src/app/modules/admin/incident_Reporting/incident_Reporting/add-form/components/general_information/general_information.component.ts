@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -48,6 +48,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ],
 })
 export class GeneralInformationComponent implements OnInit, OnDestroy {
+    @Input('const') const ='';
     /**
      * Constructor
      */
@@ -85,12 +86,13 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     }
         
     ngOnInit(): void {
-
+let dd = this.const;
+// debugger;
         this.route.params.subscribe(params => {
             console.log('Current route params:', params); // Debugging line
             this.id = params['id'];
           });
-        debugger
+        // debugger
           if (!this.id) {
             this.route.parent?.params.subscribe(params => {
               console.log('Parent route params:', params); // Debugging line
@@ -126,10 +128,8 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
       saveData() {
         if (this.caseForm.valid) {
             const caseData = this.caseForm.value; 
-            console.log(caseData);
-           
           }
-        this.router.navigate(['/case/incident_Reporting/Info', 222, 'sub', 'general_information']);
+        this.router.navigate(['/case/information/', 22, 'general-information']);
       }
 
     // -----------------------------------------------------------------------------------------------------

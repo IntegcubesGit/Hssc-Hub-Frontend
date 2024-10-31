@@ -127,7 +127,7 @@ export class AuthSignInComponent implements OnInit {
 
 
     private getTimeZone(): string {
-        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return Intl.DateTimeFormat().resolvedOptions().timeZone
       }
     private getOperatingSystem(): string {
         const userAgent = navigator.userAgent;

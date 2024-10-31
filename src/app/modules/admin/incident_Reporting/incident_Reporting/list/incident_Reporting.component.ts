@@ -1,6 +1,7 @@
 import {
     AsyncPipe,
     CurrencyPipe,
+    DatePipe,
     NgClass,
     NgTemplateOutlet,
 } from '@angular/common';
@@ -49,7 +50,7 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { InventoryProduct, InventoryBrand, InventoryCategory, InventoryTag, InventoryPagination, InventoryVendor } from '../incident_Reporting.types';
+import { Case, Pagination } from '../incident_Reporting.types';
 import { Incident_ReportingService } from '../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -61,18 +62,18 @@ import { ActivatedRoute, Router } from '@angular/router';
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 48px auto 40px;
+                grid-template-columns: 48px auto 100px 40px;
 
                 @screen sm {
                     grid-template-columns: 48px auto 100px 72px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto 100px 100px 100px 72px;;
+                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 100px 96px 96px 100px 100px 72px;;
+                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px  96px 72px;;
                 }
             }
         `,
@@ -100,7 +101,7 @@ import { ActivatedRoute, Router } from '@angular/router';
         MatRippleModule,
         AsyncPipe,
         CurrencyPipe,
-        MatDrawer
+        DatePipe
     ],
 })
 export class Incident_ReportingListComponent
@@ -110,9 +111,9 @@ export class Incident_ReportingListComponent
     @ViewChild(MatSort) private _sort: MatSort;
 
     isLoading: boolean = false;
-    pagination: InventoryPagination;
+    pagination: Pagination;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    products$: Observable<InventoryProduct[]>;
+    cases$: Observable<Case[]>;
     
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -121,7 +122,7 @@ export class Incident_ReportingListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         
-        private _inventoryService: Incident_ReportingService,
+        private _Service: Incident_ReportingService,
 
         private _router: Router,
     ) {}
@@ -133,9 +134,9 @@ export class Incident_ReportingListComponent
     ngOnInit(): void {
     
         // Get the pagination
-        this._inventoryService.pagination$
+        this._Service.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((pagination: InventoryPagination) => {
+            .subscribe((pagination: Pagination) => {
                 // Update the pagination
                 this.pagination = pagination;
 
@@ -145,7 +146,7 @@ export class Incident_ReportingListComponent
 
  
       // Get the products
-      this.products$ = this._inventoryService.products$;
+      this.cases$ = this._Service.cases$;
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -155,7 +156,7 @@ export class Incident_ReportingListComponent
                 switchMap((query) => {
                   
                     this.isLoading = true;
-                    return this._inventoryService.getProducts(
+                    return this._Service.getProducts(
                         0,
                         10,
                         'name',
@@ -207,7 +208,7 @@ export class Incident_ReportingListComponent
                     switchMap(() => {
                       
                         this.isLoading = true;
-                        return this._inventoryService.getProducts(
+                        return this._Service.getProducts(
                             this._paginator.pageIndex,
                             this._paginator.pageSize,
                             this._sort.active,
@@ -235,7 +236,7 @@ export class Incident_ReportingListComponent
 
 
     create(id: number): void {
-        this._router.navigate(['/case/incident_Reporting/Info', id]);
+        this._router.navigate(['/case/information', id]);
     }
 
 
@@ -261,11 +262,11 @@ export class Incident_ReportingListComponent
                 // const product = this.selectedProductForm.getRawValue();
 
                 // Delete the product on the server
-                this._inventoryService
-                    .deleteProduct('56756756567567')
-                    .subscribe(() => {
+                // this._inventoryService
+                //     .deleteProduct('56756756567567')
+                //     .subscribe(() => {
                        
-                    });
+                //     });
             }
         });
     }

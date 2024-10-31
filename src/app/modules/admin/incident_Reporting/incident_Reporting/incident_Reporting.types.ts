@@ -1,26 +1,19 @@
-export interface InventoryProduct {
-    id: string;
-    category?: string;
-    name: string;
-    description?: string;
-    tags?: string[];
-    sku?: string | null;
-    barcode?: string | null;
-    brand?: string | null;
-    vendor: string | null;
-    stock: number;
-    reserved: number;
-    cost: number;
-    basePrice: number;
-    taxPercent: number;
-    price: number;
-    weight: number;
-    thumbnail: string;
-    images: string[];
-    active: boolean;
-}
-
-export interface InventoryPagination {
+export interface Case {
+    caseId: number;        
+    caseIdLong: number;     
+    caseNumber: string;      
+    workPlace: string;       
+    caseDate: Date;         
+    dueDate: Date;           
+    department: string;      
+    case: string;  
+    caseCategory: string; 
+    timezone:String;
+    description:String;
+    CreatedOn:Date,
+    CreatedBy:String
+  }
+export interface Pagination {
     length: number;
     size: number;
     page: number;

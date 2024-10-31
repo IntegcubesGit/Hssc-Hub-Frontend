@@ -40,7 +40,6 @@ export class NavigationService {
     get(): Observable<Navigation> {
         return this._httpClient.get<any>(this.getMenuUrl).pipe(
             tap(data=>{
-                debugger
                 this._compactNavigation = [...data];
                 this._defaultNavigation = [...data];
                 this._compactNavigation = [...data];
@@ -80,7 +79,6 @@ export class NavigationService {
                         horizontal: cloneDeep(this._horizontalNavigation)
                 }
 
-                debugger
                 this._navigation.next(nav);
             })
         )
