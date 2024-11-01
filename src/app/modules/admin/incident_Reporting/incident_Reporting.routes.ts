@@ -6,6 +6,7 @@ import { Incident_ReportingService } from './incident_Reporting/incident_Reporti
 import { AddFormComponent } from './incident_Reporting/add-form/add-form.component';
 import { GeneralInformationComponent } from './incident_Reporting/add-form/components/general_information/general_information.component';
 import { InjuryComponent } from './incident_Reporting/add-form/components/injury/injury.component';
+import { CommonService } from 'app/modules/common.service';
 
 
 export default [
@@ -25,7 +26,10 @@ export default [
       path: 'information/:id',
       component: AddFormComponent,
       resolve: {
-        
+        Statuses: () => inject(CommonService).loadAllCaseStatuses(),
+        Categories: () => inject(CommonService).loadCaseCategories(),
+        RiskCategories: () => inject(CommonService).loadRiskCategories(),
+        Departments: () => inject(CommonService).loadDepartments(),
       },
       children: [
         {

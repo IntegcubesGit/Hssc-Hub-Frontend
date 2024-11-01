@@ -2,3 +2,21 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+// styles.scss
+
+.snackbar-success {
+    background: #4caf50!important; /* Green background */
+    color: white; /* White text */
+}
+
+/* Error Snackbar */
+.snackbar-error {
+    background-color: #f44336!important; /* Red background */
+    color: white; /* White text */
+}
+
+/* Info Snackbar */
+.snackbar-info {
+    background-color: #2196f3!important; /* Blue background */
+    color: white; /* White text */
+}

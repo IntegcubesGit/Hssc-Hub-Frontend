@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
 import { CommonService } from 'app/modules/common.service';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
+import { AlertService } from 'app/core/alert/alert.service';
 @Component({
     selector: 'general_information',
     templateUrl: './general_information.component.html',
@@ -59,6 +60,9 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     departments: Department[] = [];
     businessUnits:BusinessUnit[] = [];
     caseStatuses:CaseStatus[]=[];
+    action:string="Saved";
+    isEditMode = false; 
+    buttonText = 'Save'; 
     constructor(
         private _fuseAlertService: FuseAlertService,
         private _fuseComponentsComponent: AddFormComponent,
@@ -66,16 +70,10 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private router: Router,
         private _commonService:CommonService,
-        private _service:Incident_ReportingService
+        private _service:Incident_ReportingService,
+        private _alertService:AlertService
     ) {
     
-              
-        this.route.params.subscribe(params => {
-            console.log('Current route params:', params);
-            this.id = params['id'];
-          });
-
-
         this.createForm();
 
     }
@@ -83,6 +81,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
  
     createForm() {
         this.caseForm = this.fb.group({
+          caseId:[-1, Validators.required],
           caseTitle: ['', Validators.required],
           description: ['', Validators.required],
           caseDate: ['', Validators.required],
@@ -101,75 +100,72 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     }
         
     ngOnInit(): void {
-        this.fetchRiskCategories();
-        this.fetchCaseCategories();
-        this.fetchDepartments();
-        this.fetchBusinessUnits();
-        this.getAllCaseStatuses();
-      }
+    this._commonService.riskCategories$.subscribe(data => this.riskCategories = data);
+    this._commonService.caseCategories$.subscribe(data => this.caseCategories = data);
+    this._commonService.departments$.subscribe(data => this.departments = data);
+    this._commonService.businessUnits$.subscribe(data => this.businessUnits = data);
+    this._commonService.caseStatuses$.subscribe(data => this.caseStatuses = data);
 
+    this.route.parent?.params.subscribe(params => {
+        this.id = params['id'];
+        if (this.id !== null && this.id !== '-1') {
+          this.loadCaseData(this.id);
+          this.buttonText = 'Update';
+        } else {
+          this.buttonText = 'Save';
+        }
+      });
+
+    }
+    
+      loadCaseData(id: string) {
+        this._service.getCaseById(id).subscribe({
+          next: (caseData) => {
+            debugger
+            this.caseForm.patchValue(caseData);
+          }
+        });
+      }
+    
       saveData() {
+         
         if (this.caseForm.valid) {
           const caseData = this.caseForm.value;
           this._service.saveCase(caseData).subscribe({
             next: (response) => {
-              console.log('Case saved successfully', response);
-              this.router.navigate(['/case/information/', 22, 'general-information']);
+              debugger
+              const caseId = BigInt(response.caseId);
+              this.router.navigate(['/case/information/',caseId, 'general-information']);
+              this._fuseAlertService.show('alertBox3');
             }
           });
         }
       }
       
-      fetchRiskCategories(): void {
-        this._commonService.getRiskCategories().pipe(
-        ).subscribe(
-          (data: RiskCategory[]) => {
-            this.riskCategories = data;
-          }
-        );
-      }
-
-      fetchCaseCategories(): void {
-        this._commonService.getCaseCategories().pipe(
-        ).subscribe(
-          (data: CaseCategory[]) => {
-            debugger
-            this.caseCategories = data;
-          }
-        );
-      }
-
-      fetchDepartments(): void {
-        this._commonService.getDepartments().pipe(
-        ).subscribe(
-          (data: Department[]) => {
-            this.departments = data;
-          }
-        );
-      }
 
 
-      fetchBusinessUnits(): void {
-        this._commonService.getBusinessUnits().pipe(
-      
-        ).subscribe(
-          (data: BusinessUnit[]) => {
-            this.businessUnits = data;
-          },
-    
-        );
+  updateData(): void {
+    if (this.caseForm.valid) {
+      this._service.updateCase(this.caseForm.value).subscribe(response => {
+        console.log('Case updated:', response);
+      });
+    }
+  }
+   
+    onSubmit(): void {
+        
+        if (this.id === '-1') {
+          this.saveData();
+        } else {
+          this.updateData();
+        }
       }
 
-      getAllCaseStatuses(): void {
-        this._commonService.getAllCaseStatuses().pipe(
-      
-        ).subscribe(
-          (data: CaseStatus[]) => {
-            this.caseStatuses = data;
-          },
-    
-        );
-      }
+   
+
+
+ 
+
       
 
 
@@ -179,26 +175,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Dismiss the alert via the service
-     *
-     * @param name
-     */
-    dismiss(name: string): void {
-        // Dismiss
-        this._fuseAlertService.dismiss(name);
-    }
-
-    /**
-     * Show the alert via the service
-     *
-     * @param name
-     */
-    show(name: string): void {
-        // Show
-        this._fuseAlertService.show(name);
-    }
-
-    /**
      * Toggle the drawer
      */
     toggleDrawer(): void {
@@ -206,18 +182,17 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
         this._fuseComponentsComponent.matDrawer.toggle();
     }
 
-    showAlert(id: string | null): void {
-        this.snackBar.open(`Current ID: ${id}`, 'Close', {
-          duration: 3000, // Alert will close after 3 seconds
-        });
-      }
+    show(name: string): void
+    { 
+        this._fuseAlertService.show(name);
+    }
 
       onCancel() {
         this.router.navigate(['/case/incident_Reporting']);
       }
 
     ngOnDestroy(): void {
-        // Unsubscribe to avoid memory leaks
+     
        
       }
 }

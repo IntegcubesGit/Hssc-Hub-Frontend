@@ -1,5 +1,5 @@
 export interface Case {
-    caseId: number;        
+    caseId: BigInt;        
     caseIdLong: number;     
     caseNumber: string;      
     workPlace: string;       
@@ -22,26 +22,3 @@ export interface Pagination {
     endIndex: number;
 }
 
-export interface InventoryCategory {
-    id: string;
-    parentId: string;
-    name: string;
-    slug: string;
-}
-
-export interface InventoryBrand {
-    id: string;
-    name: string;
-    slug: string;
-}
-
-export interface InventoryTag {
-    id?: string;
-    title?: string;
-}
-
-export interface InventoryVendor {
-    id: string;
-    name: string;
-    slug: string;
-}

@@ -17,9 +17,10 @@ import { environment } from 'environment/environment';
 @Injectable({ providedIn: 'root' })
 export class Incident_ReportingService {
  
-  private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
+private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
 private readonly saveCasesURL = `${environment.apiUrl}Cases/CreateAnIncidentReportCase`;
-
+private readonly  getByIdCaseURL = `${environment.apiUrl}Cases/GetIncidentCaseById/`;
+private readonly  updateCasesURL = `${environment.apiUrl}Cases/UpdateIncidentReportCase`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject(null);
 
@@ -70,10 +71,18 @@ private readonly saveCasesURL = `${environment.apiUrl}Cases/CreateAnIncidentRepo
 
    
 
-    saveCase(caseData: any): Observable<any> {
+    saveCase(caseData: Case): Observable<any> {
         return this._httpClient.post(`${this.saveCasesURL}`, caseData);
       }
 
+      updateCase(caseData: any): Observable<any> {
+        return this._httpClient.put(`${this.updateCasesURL}`, caseData);
+      }
+      
 
+
+      getCaseById(id: string): Observable<any> {
+        return this._httpClient.get<any>(`${this.getByIdCaseURL}${id}`);
+      }
 
 }
