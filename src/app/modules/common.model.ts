@@ -39,3 +39,16 @@ export interface Department {
     title: string;
     isDeleted: number;
 }
+
+export interface InjuryCategory {
+    injuryCategoryId: number;
+    code: string;
+    title: string;
+}
+
+
+export interface InjuryType {
+    injuryTypeId: number;
+    code: string;
+    title: string;
+}

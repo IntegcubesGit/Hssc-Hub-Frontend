@@ -121,7 +121,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
       loadCaseData(id: string) {
         this._service.getCaseById(id).subscribe({
           next: (caseData) => {
-            debugger
             this.caseForm.patchValue(caseData);
           }
         });
@@ -133,21 +132,18 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
           const caseData = this.caseForm.value;
           this._service.saveCase(caseData).subscribe({
             next: (response) => {
-              debugger
               const caseId = BigInt(response.caseId);
               this.router.navigate(['/case/information/',caseId, 'general-information']);
-              this._fuseAlertService.show('alertBox3');
+              this._alertService.showSuccess("Case General Information Saved Successfully");
             }
           });
         }
       }
       
-
-
   updateData(): void {
     if (this.caseForm.valid) {
       this._service.updateCase(this.caseForm.value).subscribe(response => {
-        console.log('Case updated:', response);
+        this._alertService.showSuccess("Case General Information Saved Successfully");
       });
     }
   }

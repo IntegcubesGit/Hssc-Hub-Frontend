@@ -53,6 +53,7 @@ import {
 import { Case, Pagination } from '../incident_Reporting.types';
 import { Incident_ReportingService } from '../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
@@ -101,7 +102,8 @@ import { ActivatedRoute, Router } from '@angular/router';
         MatRippleModule,
         AsyncPipe,
         CurrencyPipe,
-        DatePipe
+        DatePipe,
+        MatMenuModule,
     ],
 })
 export class Incident_ReportingListComponent
@@ -171,12 +173,6 @@ export class Incident_ReportingListComponent
             .subscribe();
     }
 
-
-    
-
-
-
-
     /**
      * After view init
      */
@@ -235,7 +231,8 @@ export class Incident_ReportingListComponent
 
 
 
-    create(id: number): void {
+    create(id: string): void {
+
         this._router.navigate(['/case/information', id]);
     }
 

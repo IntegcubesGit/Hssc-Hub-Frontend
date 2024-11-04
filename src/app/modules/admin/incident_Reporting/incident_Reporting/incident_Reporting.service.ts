@@ -18,9 +18,17 @@ import { environment } from 'environment/environment';
 export class Incident_ReportingService {
  
 private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
-private readonly saveCasesURL = `${environment.apiUrl}Cases/CreateAnIncidentReportCase`;
-private readonly  getByIdCaseURL = `${environment.apiUrl}Cases/GetIncidentCaseById/`;
-private readonly  updateCasesURL = `${environment.apiUrl}Cases/UpdateIncidentReportCase`;
+private readonly saveCasesURL = `${environment.apiUrl}Cases/IncidentReporting_CreateAnIncidentReportCase`;
+private readonly  getByIdCaseURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentCaseById/`;
+private readonly  updateCasesURL = `${environment.apiUrl}Cases/IncidentReporting_UpdateIncidentReportCase`;
+
+//injurry
+private readonly saveCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_CreateIncidentReportCaseInjury`;
+private readonly CaseInjuryByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentReportCaseInjuryById`;
+private readonly ssaveCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_CreateIncidentReportCaseInjury`;
+private readonly getAllCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllIncidentReportCaseInjuries/`;
+
+
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject(null);
 
@@ -76,6 +84,7 @@ private readonly  updateCasesURL = `${environment.apiUrl}Cases/UpdateIncidentRep
       }
 
       updateCase(caseData: any): Observable<any> {
+
         return this._httpClient.put(`${this.updateCasesURL}`, caseData);
       }
       
@@ -84,5 +93,28 @@ private readonly  updateCasesURL = `${environment.apiUrl}Cases/UpdateIncidentRep
       getCaseById(id: string): Observable<any> {
         return this._httpClient.get<any>(`${this.getByIdCaseURL}${id}`);
       }
+
+
+      //injury calls
+
+      getAllinjury(id): Observable<any> {
+        return this._httpClient.get<any>(`${this.getAllCaseInjuryURL}${id}`);
+    }
+
+
+      getCaseInjuryById(id: string): Observable<any> {
+        return this._httpClient.get<any>(`${this.CaseInjuryByIdURL}${id}`);
+      }
+
+
+      saveinjury(caseData: Case): Observable<any> {
+        return this._httpClient.post(`${this.saveCaseInjuryURL}`, caseData);
+      }
+
+      updateinjury(caseData: any): Observable<any> {
+
+        return this._httpClient.put(`${this.updateCasesURL}`, caseData);
+      }
+
 
 }

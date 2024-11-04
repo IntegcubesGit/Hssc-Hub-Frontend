@@ -1,6 +1,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 import {
+    ChangeDetectorRef,
     Component,
     inject,
     Input,
@@ -25,7 +26,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy {
     private _fuseLoadingService = inject(FuseLoadingService);
-
+    private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
     @Input() autoMode: boolean = true;
     mode: 'determinate' | 'indeterminate';
     progress: number = 0;
@@ -44,6 +45,7 @@ export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         // Auto mode
         if ('autoMode' in changes) {
+            this.cdr.detectChanges();
             // Set the auto mode in the service
             this._fuseLoadingService.setAutoMode(
                 coerceBooleanProperty(changes.autoMode.currentValue)
@@ -55,23 +57,27 @@ export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        this.cdr.detectChanges();
         // Subscribe to the service
         this._fuseLoadingService.mode$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((value) => {
                 this.mode = value;
+                this.cdr.detectChanges(); 
             });
 
         this._fuseLoadingService.progress$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((value) => {
                 this.progress = value;
+                this.cdr.detectChanges(); 
             });
 
         this._fuseLoadingService.show$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((value) => {
                 this.show = value;
+                this.cdr.detectChanges(); 
             });
     }
 

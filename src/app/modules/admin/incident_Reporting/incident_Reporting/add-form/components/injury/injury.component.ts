@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -17,16 +17,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AddformComponent } from './dialog/add-form.component';
+import { cloneDeep } from 'lodash';
+import { Incident_ReportingService } from '../../../incident_Reporting.service';
+
+type NewType = MatTableDataSource<any>;
+
 @Component({
     selector: 'app-injury',
     templateUrl: './injury.component.html',
-    styles: [
-        `
-            fuse-alert {
-                margin: 16px 0;
-            }
-        `,
-    ],
+    styles: [''],
     standalone: true,
     imports: [
         MatIconModule,
@@ -44,56 +50,84 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatRadioModule,
         MatButtonModule,
         MatDatepickerModule,
+        MatTableModule,
+        DatePipe,
+        CurrencyPipe
     ],
 })
 export class InjuryComponent implements OnInit, OnDestroy {
-    /**
-     * Constructor
-     */
-    id: string | null = null;
+    @ViewChild('recentTransactionsTable', { read: MatSort })
+    recentTransactionsTableMatSort!: MatSort;
+
+    data: any;
+    injuries:any[]=[];
+
+    recentTransactionsTableColumns: string[] = [
+       
+        'injCatId',
+        'courseOfEvent',
+        'injTypeId',
+        'bodyPart',
+        'personName',
+        'personGender',
+        'personAge',
+        'personNationality',
+        'personDesignation',
+        'employmentCategory',
+        'personCompany'
+    ];
+    caseId: string | null = null;
     constructor(
         private _fuseAlertService: FuseAlertService,
         private _fuseComponentsComponent: AddFormComponent,
         private route: ActivatedRoute, private snackBar: MatSnackBar,
-        private router: Router
+        private router: Router,
+        private dialog: MatDialog,
+        private _service: Incident_ReportingService,
+
     ) {
-      
+
 
 
     }
 
     ngOnInit(): void {
- 
-        this.id = this.route.parent?.snapshot.paramMap.get('id'); 
-        console.log('ID from parent route in CardComponent (using snapshot):', this.id);
-        this.route.parent?.paramMap.subscribe((paramMap: ParamMap) => {
-            this.id = paramMap.get('id');  
-            console.log('11111ID from parent route:', this.id);  
-          });
 
-        // this.route.parent?.paramMap.pipe(map((p) => p['id'])).subscribe((id) => {
-        //     console.log('IaaaaD:', id);  
-        //   });
-        // this.route.parent?.paramMap.subscribe(paramMap => {
-        //     this.id = paramMap.get('id');
-        //     console.log('ID from parent route in CardComponent:', this.id); 
-        //   });
-        // this.route.paramMap.subscribe((paramMap: ParamMap) => {
-        //     this.id = paramMap.get('id');  
-        //     console.log(this.id);         
-        //     this.showAlert(this.id);       
+        this.caseId = this.route.parent?.snapshot.paramMap.get('id');
+        this.getAllInjuries(this.caseId);
+      }
+
+
+      getAllInjuries(id: string): void {
+        this._service.getAllinjury(id).subscribe({
+            next: (response) => {
+                this.injuries = response;
+           
+            },
+            error: (error) => {
+                console.error('Error fetching injury data:', error);
+            }
+        });
+    }
+
+
+      openComposeDialog(id): void {
+       
+            const dialogRef = this.dialog.open(AddformComponent, {
+
+           data : {
+                id: cloneDeep(id),
+                caseId: this.caseId
+            }
+
+        });
+
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log('Compose dialog was closed!');
         // });
-     
- 
-
-      }
+    }
 
 
-      saveData() {
-        // Perform the save operation here
-        // After saving, navigate to the desired route
-        this.router.navigate(['/case/incident_Reporting/Info', 222, 'sub', 'general_information']);
-      }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -118,7 +152,9 @@ export class InjuryComponent implements OnInit, OnDestroy {
         // Show
         this._fuseAlertService.show(name);
     }
-
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
+    }
     /**
      * Toggle the drawer
      */
@@ -134,6 +170,6 @@ export class InjuryComponent implements OnInit, OnDestroy {
       }
     ngOnDestroy(): void {
         // Unsubscribe to avoid memory leaks
-       
+
       }
 }

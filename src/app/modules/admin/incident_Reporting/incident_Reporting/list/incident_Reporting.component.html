@@ -31,7 +31,7 @@
                 class="ml-4 h-min-4"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="create(-1)">
+                (click)="create('-1')">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
@@ -137,21 +137,41 @@
                                     </div>
 
                                     <div>
+                                     
+
                                         <button
-                                            class="h-7 min-h-7 min-w-10 px-2 leading-6"
-                                            mat-stroked-button
-                                            (click)="toggleDetails(case.caseId)"
-                                        >
-                                            <mat-icon
-                                                class="icon-size-5"
-                                                [svgIcon]="
-                                                    selectedProduct?.caseId ===
-                                                    case.caseId
-                                                        ? 'heroicons_solid:chevron-up'
-                                                        : 'heroicons_solid:chevron-down'
-                                                "
-                                            ></mat-icon>
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="budgetMenu"
+                                    >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_mini:ellipsis-horizontal'"
+                                        ></mat-icon>
+                                    </button>
+                                    <mat-menu #budgetMenu="matMenu">
+                                        
+                                        <button mat-menu-item  (click)="create(case.caseId)">
+                                            <span class="flex items-center">
+                                                <mat-icon
+                                                    class="mr-3 icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:pencil'"
+                                                ></mat-icon>
+                                                <span>Edit</span>
+                                            </span>
                                         </button>
+                                        <button mat-menu-item>
+                                            <span class="flex items-center">
+                                                <mat-icon
+                                                    class="mr-3 icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:trash'"
+                                                ></mat-icon>
+                                                <span>Delete</span>
+                                            </span>
+                                        </button>
+                                    </mat-menu>
+
+
+
                                     </div>
                                 </div>
                             }
@@ -171,7 +191,7 @@
                     <div
                         class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16"
                     >
-                        There are no products!
+                        There are no cases!
                     </div>
                 }
             }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environment/environment';
-import { BusinessUnit, CaseCategory, CaseStatus, Department, InjuryType, RiskCategory } from './common.model';
+import { BusinessUnit, CaseCategory, CaseStatus, Department, InjuryCategory, InjuryType, RiskCategory } from './common.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +19,7 @@ export class CommonService {
   private _businessUnits$ = new BehaviorSubject<BusinessUnit[]>([]);
   private _caseStatuses$ = new BehaviorSubject<CaseStatus[]>([]);
   private _departments$ = new BehaviorSubject<Department[]>([]);
+
 
   private readonly apiUrl = environment.apiUrl;
 
@@ -55,9 +56,10 @@ export class CommonService {
     return this._departments$.asObservable();
   }
 
+ 
+
   // Method to fetch Case Categories and update the BehaviorSubject
   loadCaseCategories(): void {
-    debugger
     this._httpClient.get<CaseCategory[]>(`${this.apiUrl}GeneralFilters/getAllCaseCategories`)
       .subscribe(categories => this._caseCategories$.next(categories));
   }
@@ -92,6 +94,18 @@ export class CommonService {
       .subscribe(departments => this._departments$.next(departments));
   }
   
+
+     // Method to fetch and return injury categories as an Observable
+     loadInjuryCategory(): Observable<InjuryCategory[]> {
+      return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}GeneralFilters/getAllInjuryCategories`);
+  }
+
+  // Method to fetch and return injury types as an Observable
+  loadInjuryType(): Observable<InjuryType[]> {
+      return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
+  }
+
+
 
 }
 
