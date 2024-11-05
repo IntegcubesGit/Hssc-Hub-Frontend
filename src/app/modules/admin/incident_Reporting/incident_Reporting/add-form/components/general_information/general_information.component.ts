@@ -61,7 +61,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     businessUnits:BusinessUnit[] = [];
     caseStatuses:CaseStatus[]=[];
     action:string="Saved";
-    isEditMode = false; 
     buttonText = 'Save'; 
     constructor(
         private _fuseAlertService: FuseAlertService,
@@ -156,14 +155,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
           this.updateData();
         }
       }
-
-   
-
-
- 
-
-      
-
 
 
     // -----------------------------------------------------------------------------------------------------

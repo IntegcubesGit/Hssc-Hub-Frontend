@@ -20,3 +20,16 @@
     background-color: #2196f3!important; /* Blue background */
     color: white; /* White text */
 }
+
+
+.link {
+    color: #2563eb; // Tailwind's blue-600 color
+    text-decoration: underline;
+    font-weight: 500; // medium font weight
+    transition: color 0.2s ease-in-out;
+   cursor: pointer!important;
+    &:hover {
+      color: #1e40af; // Tailwind's blue-800 color
+    }
+  }
+  

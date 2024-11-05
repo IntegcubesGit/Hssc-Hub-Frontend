@@ -24,9 +24,33 @@ private readonly  updateCasesURL = `${environment.apiUrl}Cases/IncidentReporting
 
 //injurry
 private readonly saveCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_CreateIncidentReportCaseInjury`;
-private readonly CaseInjuryByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentReportCaseInjuryById`;
-private readonly ssaveCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_CreateIncidentReportCaseInjury`;
+private readonly CaseInjuryByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentReportCaseInjuryById/`;
 private readonly getAllCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllIncidentReportCaseInjuries/`;
+private readonly  updateCasesInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_UpdateIncidentReportCaseInjury`;
+
+
+//Involved Persons
+private readonly saveCaseInvolvedPersonsURL = `${environment.apiUrl}Cases/IncidentReporting_AddInvolvedPerson`;
+private readonly CaseInvolvedPersonsByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetInvolvedPersonById/`;
+private readonly getAllCaseInvolvedPersonsURL = `${environment.apiUrl}Cases/IncidentReporting_GetInvolvedPersons/`;
+private readonly updateCasesCaseInvolvedPersonURL = `${environment.apiUrl}Cases/IncidentReporting_UpdateInvolvedPerson`;
+
+//Involved Persons
+private readonly GetPotentialLoss=  `${environment.apiUrl}Cases/IncidentReporting_GetAllPotentialLosses/`;
+private readonly GetPotentialLossByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetPotentialLossById/`;
+private readonly getSavePotentialLoss = `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdatePotentialLoss/`;
+
+
+//Involved Persons
+private readonly GetAllRootCausesURL=  `${environment.apiUrl}Cases/IncidentReporting_GetAllRootCauses/`;
+private readonly SaveRootCausesURL = `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateRootCause/`;
+ private readonly getRootCausesById = `${environment.apiUrl}Cases/IncidentReporting_GetRootCauseById/`;
+
+
+
+
+
+
 
 
     private _pagination: BehaviorSubject<Pagination | null> =
@@ -113,8 +137,64 @@ private readonly getAllCaseInjuryURL = `${environment.apiUrl}Cases/IncidentRepor
 
       updateinjury(caseData: any): Observable<any> {
 
-        return this._httpClient.put(`${this.updateCasesURL}`, caseData);
+        return this._httpClient.put(`${this.updateCasesInjuryURL}`, caseData);
       }
 
 
+
+ //involved persns calls
+
+ getAllinvolvedpersns(id): Observable<any> {
+    return this._httpClient.get<any>(`${this.getAllCaseInvolvedPersonsURL}${id}`);
+}
+
+
+  getCaseinvolvedpersnsById(id: string): Observable<any> {
+    return this._httpClient.get<any>(`${this.CaseInvolvedPersonsByIdURL}${id}`);
+  }
+
+
+  saveinvolvedpersns(caseData: Case): Observable<any> {
+    return this._httpClient.post(`${this.saveCaseInvolvedPersonsURL}`, caseData);
+  }
+
+  updateinvolvedpersns(caseData: any): Observable<any> {
+    return this._httpClient.put(`${this.updateCasesCaseInvolvedPersonURL}`, caseData);
+  }
+
+
+
+ //involved persns calls
+
+ getAllPotentialLoss(id): Observable<any> {
+    return this._httpClient.get<any>(`${this.GetPotentialLoss}${id}`);
+}
+
+
+getPotentialLossById(id: string): Observable<any> {
+    return this._httpClient.get<any>(`${this.GetPotentialLossByIdURL}${id}`);
+  }
+
+
+  savePotentialLoss(caseData: Case): Observable<any> {
+    return this._httpClient.post(`${this.getSavePotentialLoss}`, caseData);
+  }
+  
+
+
+ //involved persns calls
+
+ getAllRootCausesURL(id): Observable<any> {
+    return this._httpClient.get<any>(`${this.GetAllRootCausesURL}${id}`);
+}
+
+
+saveRootCauses(caseData: Case): Observable<any> {
+    return this._httpClient.post(`${this.SaveRootCausesURL}`, caseData);
+  }
+  
+  getRootCausesDataById(id): Observable<any> {
+    return this._httpClient.get<any>(`${this.getRootCausesById}${id}`);
+}
+  
 }

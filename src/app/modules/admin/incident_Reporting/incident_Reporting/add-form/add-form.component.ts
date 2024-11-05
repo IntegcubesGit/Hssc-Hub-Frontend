@@ -73,51 +73,63 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Injury',
             type: 'basic',
             link: `/case/information/${id}/injury`,
+            disabled: id == -1 
           },
           {
             id: 'fuse-components.components.fullscreen',
             title: 'Involved Person',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/fullscreen',
+            link: `/case/information/${id}/involvedPerson`,
+            disabled: id == -1 
           },
           {
             id: 'fuse-components.components.highlight',
             title: 'Potential Loss',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/highlight',
-          },
+            link: `/case/information/${id}/potentialLoss`,
+            disabled: id == -1 
+          }
+          
+        ],
+      },
+      {
+        id: 'Immediate-Cause.components',
+        title: 'Immediate Cause',
+        type: 'group',
+        children: [
           {
-            id: 'fuse-components.components.loading-bar',
-            title: 'Immediate Cause',
+            id: 'Immediate-Cause.components.Root-Causes',
+            title: 'Root Causes',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/loading-bar',
+            link:  `/case/information/${id}/rootCauses`,
+            disabled: id == -1 
           },
           {
-            id: 'fuse-components.components.masonry',
+            id: 'Immediate-Cause.components.masonry',
             title: 'Actions',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/masonry',
           },
           {
-            id: 'fuse-components.components.attachments',
+            id: 'Immediate-Cause.components.attachments',
             title: 'Attachments',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/navigation',
           },
           {
-            id: 'fuse-components.components.comments',
+            id: 'Immediate-Cause.components.comments',
             title: 'Comments',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/comments',
           },
           {
-            id: 'fuse-components.components.signatures',
+            id: 'Immediate-Cause.components.signatures',
             title: 'Signatures',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/signatures',
           },
           {
-            id: 'fuse-components.components.connected_case',
+            id: 'Immediate-Cause.components.connected_case',
             title: 'Connected Case',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/connected_case',

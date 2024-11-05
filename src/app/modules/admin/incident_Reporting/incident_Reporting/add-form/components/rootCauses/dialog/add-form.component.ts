@@ -16,7 +16,7 @@ import { CommonService } from 'app/modules/common.service';
 import { Incident_ReportingService } from '../../../../incident_Reporting.service';
 
 @Component({
-    selector: 'injury-compose',
+    selector: 'involved-compose',
     templateUrl: './add-form.component.html',
     standalone: true,
     imports: [
@@ -31,8 +31,6 @@ import { Incident_ReportingService } from '../../../../incident_Reporting.servic
 })
 export class AddformComponent implements OnInit {
     composeForm: UntypedFormGroup;
-    injuryCategories: any[] = [];
-    injuryTypes: any[] = [];
     action:string="Saved";
     buttonText = 'Save'; 
 
@@ -46,23 +44,24 @@ export class AddformComponent implements OnInit {
     ) {
 
     }
-
+ 
+    AnalysisMethodology
+    InternalExternal
+    Details
+    MostProbableCause
+    CauseSescription
+    LessonLearnt
+    
     ngOnInit(): void {
-      
         this.composeForm = this._formBuilder.group({
-            caseInjuryId: [-1, Validators.required],
-            caseId: [this._data.caseId, Validators.required],
-            injCatId: ['', Validators.required],
-            courseOfEvent: ['', Validators.required],
-            injTypeId: ['', Validators.required],
-            bodyPart: ['', Validators.required],
-            personName: ['', Validators.required],
-            personGender: ['', Validators.required],
-            personAge: ['', Validators.required],
-            personNationality: ['', Validators.required],
-            personDesignation: ['', Validators.required],
-            employmentCategory: ['', Validators.required],
-            personCompany: ['', Validators.required],
+            caseRootCauseId: [-1, Validators.required],
+            caseId:[String(this._data.caseId), Validators.required],
+            internalExternal:["", Validators.required],
+            analysisMethodology: ['', Validators.required],
+            details: ['', Validators.required],
+            mostProbableCause: ['', Validators.required],
+            causeDescription: ['', Validators.required],
+            lessonLearnt: ['', Validators.required],
         });
       
         if (this._data.id !== -1) {
@@ -72,25 +71,11 @@ export class AddformComponent implements OnInit {
             
           this.buttonText = 'Save';
         }
-
-        this._commonService.loadInjuryCategory().subscribe(
-            (categories) => {
-                this.injuryCategories = categories;
-
-            }
-        );
-
-        this._commonService.loadInjuryType().subscribe(
-            (types) => {
-                this.injuryTypes = types;
-            }
-        );
     }
 
     loadCaseData(id: string) {
-        this._service.getCaseInjuryById(id).subscribe({
+        this._service.getRootCausesDataById(id).subscribe({
             next: (caseData) => {
-            
                 setTimeout(() => {
                     this.composeForm.patchValue(caseData);
                 });
@@ -99,15 +84,14 @@ export class AddformComponent implements OnInit {
     }
 
     onSubmit(): void {
-      
         if (this.composeForm.valid) {
-            this.composeForm.value.caseInjuryId === -1 ? this.saveData() : this.updateData();
+            this.saveData()
         }
     }
 
     saveData() {
         const caseData = this.composeForm.value;
-        this._service.saveinjury(caseData).subscribe({
+        this._service.saveRootCauses(caseData).subscribe({
             next: (response) => {
                 this.matDialogRef.close(true);
             }
@@ -115,14 +99,17 @@ export class AddformComponent implements OnInit {
     }
 
     updateData(): void {
-        this._service.updateinjury(this.composeForm.value).subscribe({
+        this._service.updateinvolvedpersns(this.composeForm.value).subscribe({
             next: (response) => {
                 this.matDialogRef.close(true);
             }
         });
     }
 
+
     Close(): void {
         this.matDialogRef.close();
     }
+
+
 }

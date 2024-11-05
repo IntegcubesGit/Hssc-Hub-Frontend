@@ -155,12 +155,12 @@
         <div class="mt-4 flex items-center sm:mt-0 justify-end w-fulljustify-end w-full">
         
             <!-- Save as draft -->
-            <button class="sm:mx-3" mat-stroked-button  (click)="Close()">
+            <button type="button" class="sm:mx-3" mat-stroked-button  (click)="Close()">
                 <span>Cancel</span>
             </button>
             <!-- Send -->
             <button class="order-first sm:order-last" [disabled]="!composeForm.valid" mat-flat-button [color]="'primary'" (click)="onSubmit()">
-             Save
+                {{ buttonText }}
             </button>
         </div>
     </div>

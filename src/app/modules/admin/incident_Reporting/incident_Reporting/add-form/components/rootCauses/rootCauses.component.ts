@@ -18,10 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-
 import { cloneDeep } from 'lodash';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { AlertService } from 'app/core/alert/alert.service';
@@ -29,8 +27,8 @@ import { AddformComponent } from './dialog/add-form.component';
 
 
 @Component({
-    selector: 'app-injury',
-    templateUrl: './injury.component.html',
+    selector: 'app-rootCauses',
+    templateUrl: './rootCauses.component.html',
     styles: [''],
     standalone: true,
     imports: [
@@ -50,30 +48,25 @@ import { AddformComponent } from './dialog/add-form.component';
         MatButtonModule,
         MatDatepickerModule,
         MatTableModule,
-        DatePipe,
-      
-       
     ],
 })
-export class InjuryComponent implements OnInit, OnDestroy {
+export class RootCausesComponent implements OnInit, OnDestroy {
     @ViewChild('recentTransactionsTable', { read: MatSort })
     recentTransactionsTableMatSort!: MatSort;
 
     data: any;
-    injuries:any[]=[];
+    list:any[]=[];
 
     recentTransactionsTableColumns: string[] = [
-       
-        'injCatId',
-        'courseOfEvent',
-        'injTypeId',
-        'bodyPart',
-        'personName',
-        'personGender',
-        'personNationality',
-        'personDesignation',
-        
+        'caseRootCauseId',
+        'internalExternal',
+        'analysisMethodology',
+        'details',
+        'mostProbableCause',
+        'causeDescription',
+        'lessonLearnt',
     ];
+
     caseId: string | null = null;
     constructor(
       
@@ -93,19 +86,19 @@ export class InjuryComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
        
-        this.getAllInjuries();
+        this.getAll();
       }
 
 
-      getAllInjuries(): void {
+      getAll(): void {
         this.caseId = this.route.parent?.snapshot.paramMap.get('id');
-        this._service.getAllinjury(this.caseId).subscribe({
+        this._service.getAllRootCausesURL(this.caseId).subscribe({
             next: (response) => {
-                this.injuries = response;
+                this.list = response;
            
             },
             error: (error) => {
-                console.error('Error fetching injury data:', error);
+                console.error('Error fetching getAll data:', error);
             }
         });
     }
@@ -122,17 +115,17 @@ export class InjuryComponent implements OnInit, OnDestroy {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result === true) {
-                this.getAllInjuries();
-                this._alertService.showSuccess("Case Injury Information Saved Successfully");
+                this.getAll();
+                this._alertService.showSuccess("Case Potential Loss Saved Successfully");
             }
            
         });
     }
 
+
     onCancel() {
         this.router.navigate(['/case/incident_Reporting']);
       }
-
 
     /**
      * Toggle the drawer

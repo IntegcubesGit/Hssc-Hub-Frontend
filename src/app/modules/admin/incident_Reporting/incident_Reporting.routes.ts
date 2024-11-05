@@ -7,6 +7,9 @@ import { AddFormComponent } from './incident_Reporting/add-form/add-form.compone
 import { GeneralInformationComponent } from './incident_Reporting/add-form/components/general_information/general_information.component';
 import { InjuryComponent } from './incident_Reporting/add-form/components/injury/injury.component';
 import { CommonService } from 'app/modules/common.service';
+import { InvolvedPersonComponent } from './incident_Reporting/add-form/components/involvedPerson/involvedPerson.component';
+import { PotentialLossComponent } from './incident_Reporting/add-form/components/potentialLoss/potentialLoss.component';
+import { RootCausesComponent } from './incident_Reporting/add-form/components/rootCauses/rootCauses.component';
 
 
 export default [
@@ -39,7 +42,10 @@ export default [
         },
             { path: 'general-information', component: GeneralInformationComponent },
             { path: 'injury', component: InjuryComponent },
-       
+            { path: 'involvedPerson', component: InvolvedPersonComponent },
+            { path: 'potentialLoss', component: PotentialLossComponent },
+            { path: 'rootCauses', component: RootCausesComponent },
+            
       ],
     },
   ] as Routes;
