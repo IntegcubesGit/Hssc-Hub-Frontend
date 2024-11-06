@@ -52,3 +52,16 @@ export interface InjuryType {
     code: string;
     title: string;
 }
+
+export interface ActionType {
+    actionTypeId: number;
+    code: string;
+    title: string;
+  }
+  
+  export interface ActionStatus {
+    actionStatusId: number;
+    code: string;
+    title: string;
+    order: number;
+  }

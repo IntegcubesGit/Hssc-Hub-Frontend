@@ -10,6 +10,7 @@ import { CommonService } from 'app/modules/common.service';
 import { InvolvedPersonComponent } from './incident_Reporting/add-form/components/involvedPerson/involvedPerson.component';
 import { PotentialLossComponent } from './incident_Reporting/add-form/components/potentialLoss/potentialLoss.component';
 import { RootCausesComponent } from './incident_Reporting/add-form/components/rootCauses/rootCauses.component';
+import { ActionComponent } from './incident_Reporting/add-form/components/caseActions/action.component';
 
 
 export default [
@@ -45,6 +46,7 @@ export default [
             { path: 'involvedPerson', component: InvolvedPersonComponent },
             { path: 'potentialLoss', component: PotentialLossComponent },
             { path: 'rootCauses', component: RootCausesComponent },
+            { path: 'caseActions', component: ActionComponent },
             
       ],
     },

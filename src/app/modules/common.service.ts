@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environment/environment';
-import { BusinessUnit, CaseCategory, CaseStatus, Department, InjuryCategory, InjuryType, RiskCategory } from './common.model';
+import { ActionStatus, ActionType, BusinessUnit, CaseCategory, CaseStatus, Department, InjuryCategory, InjuryType, RiskCategory } from './common.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +22,6 @@ export class CommonService {
 
 
   private readonly apiUrl = environment.apiUrl;
-
-
-
 
    // Observable for Case Categories
    get caseCategories$(): Observable<CaseCategory[]> {
@@ -104,6 +101,19 @@ export class CommonService {
   loadInjuryType(): Observable<InjuryType[]> {
       return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
   }
+
+
+
+  loadCaseActionStatuses(): Observable<ActionStatus[]> 
+  {
+     return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}GeneralFilters/getAllActionStatuses`);
+  }
+  loadCaseActionTypes(): Observable<ActionType[]> 
+  {
+     return this._httpClient.get<ActionType[]>(`${this.apiUrl}GeneralFilters/getAllActionTypes`);
+  }
+  
+
 
 
 

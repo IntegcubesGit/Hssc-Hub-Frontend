@@ -105,10 +105,11 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             disabled: id == -1 
           },
           {
-            id: 'Immediate-Cause.components.masonry',
+            id: 'Immediate-Cause.components.Case-Actions',
             title: 'Actions',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/masonry',
+            link: `/case/information/${id}/caseActions`,
+            disabled: id == -1
           },
           {
             id: 'Immediate-Cause.components.attachments',
