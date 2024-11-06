@@ -160,7 +160,7 @@
                   </div>
           
                   <div class="flex flex-col w-full">
-                    <mat-checkbox formControlName="isAuthorityNotified" class="mb-2 mt-4" [color]="'primary'" >Authority Notified?</mat-checkbox>
+                    <mat-checkbox formControlName="isAuthorityNotified" class="mb-2 mt-4 pt-1" [color]="'primary'" >Authority Notified?</mat-checkbox>
                   </div>
                 </div>
           
@@ -183,7 +183,7 @@
                 <div class="flex flex-col md:flex-row md:space-x-4">
                   <div class="flex flex-col w-full">
                     <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Case Description</span>
-                    <mat-form-field class="flex-auto">
+                    <mat-form-field class="flex-none">
                       <textarea matInput formControlName="description" [rows]="3"></textarea>
                       <mat-icon
                       class="icon-size-5"
@@ -195,7 +195,7 @@
           
                   <div class="flex flex-col w-full">
                     <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Consequences Comment</span>
-                    <mat-form-field class="flex-auto">
+                    <mat-form-field class="flex-none">
                       <textarea matInput formControlName="comments" [rows]="3"></textarea>
                       <mat-icon
                       class="icon-size-5"
