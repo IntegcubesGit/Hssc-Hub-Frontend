@@ -198,7 +198,6 @@ export class Incident_ReportingListComponent
                   
                 });
 
-            // Get products if sort or page changes
             merge(this._sort.sortChange, this._paginator.page)
                 .pipe(
                     switchMap(() => {
