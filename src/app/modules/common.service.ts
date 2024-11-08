@@ -19,12 +19,17 @@ export class CommonService {
   private _businessUnits$ = new BehaviorSubject<BusinessUnit[]>([]);
   private _caseStatuses$ = new BehaviorSubject<CaseStatus[]>([]);
   private _departments$ = new BehaviorSubject<Department[]>([]);
+  private _cases$ = new BehaviorSubject<any[]>([]);
 
 
   private readonly apiUrl = environment.apiUrl;
 
-   // Observable for Case Categories
-   get caseCategories$(): Observable<CaseCategory[]> {
+  get cases$(): Observable<any[]> {
+    return this._cases$.asObservable();
+  }
+
+  // Observable for Case Categories
+  get caseCategories$(): Observable<CaseCategory[]> {
     return this._caseCategories$.asObservable();
   }
 
@@ -53,7 +58,10 @@ export class CommonService {
     return this._departments$.asObservable();
   }
 
- 
+  loadCasesIdsAndTitles(): void {
+    this._httpClient.get<any[]>(`${this.apiUrl}GeneralFilters/getAllIncidentCasesIdsAndTitles/`)
+      .subscribe(cases => this._cases$.next(cases));
+  }
 
   // Method to fetch Case Categories and update the BehaviorSubject
   loadCaseCategories(): void {
@@ -90,29 +98,27 @@ export class CommonService {
     this._httpClient.get<Department[]>(`${this.apiUrl}GeneralFilters/getAllDepartments`)
       .subscribe(departments => this._departments$.next(departments));
   }
-  
 
-     // Method to fetch and return injury categories as an Observable
-     loadInjuryCategory(): Observable<InjuryCategory[]> {
-      return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}GeneralFilters/getAllInjuryCategories`);
+
+  // Method to fetch and return injury categories as an Observable
+  loadInjuryCategory(): Observable<InjuryCategory[]> {
+    return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}GeneralFilters/getAllInjuryCategories`);
   }
 
   // Method to fetch and return injury types as an Observable
   loadInjuryType(): Observable<InjuryType[]> {
-      return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
+    return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
   }
 
 
 
-  loadCaseActionStatuses(): Observable<ActionStatus[]> 
-  {
-     return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}GeneralFilters/getAllActionStatuses`);
+  loadCaseActionStatuses(): Observable<ActionStatus[]> {
+    return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}GeneralFilters/getAllActionStatuses`);
   }
-  loadCaseActionTypes(): Observable<ActionType[]> 
-  {
-     return this._httpClient.get<ActionType[]>(`${this.apiUrl}GeneralFilters/getAllActionTypes`);
+  loadCaseActionTypes(): Observable<ActionType[]> {
+    return this._httpClient.get<ActionType[]>(`${this.apiUrl}GeneralFilters/getAllActionTypes`);
   }
-  
+
 
 
 

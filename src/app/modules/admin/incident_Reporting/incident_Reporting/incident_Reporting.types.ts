@@ -1,5 +1,5 @@
 export interface Case {
-    caseId: BigInt;        
+    caseId: string;        
     caseIdLong: number;     
     caseNumber: string;      
     workPlace: string;       
@@ -11,7 +11,9 @@ export interface Case {
     timezone:String;
     description:String;
     CreatedOn:Date,
-    CreatedBy:String
+    CreatedBy:String,
+    connectedCaseId:string,
+    title:string
   }
 export interface Pagination {
     length: number;

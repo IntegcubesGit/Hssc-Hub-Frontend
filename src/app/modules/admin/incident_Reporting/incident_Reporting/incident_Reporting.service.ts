@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 
 import {
   BehaviorSubject,
-  catchError,
-  map,
   Observable,
-  of,
   tap,
 } from 'rxjs';
 import { Pagination, Case } from './incident_Reporting.types';
@@ -51,14 +48,17 @@ export class Incident_ReportingService {
   private readonly saveOrUpdateCaseActionByIdURL= `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseAction/`;
 
 
+  private readonly getAllCaseCommentsURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseComments/`;
+  private readonly getCaseCommentByIdURL= `${environment.apiUrl}Cases/IncidentReporting_GetCaseCommentById/`;
+  private readonly saveOrUpdateCaseComment= `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseComment/`;
 
 
 
-  private _pagination: BehaviorSubject<Pagination | null> =
-    new BehaviorSubject(null);
 
-  private _cases: BehaviorSubject<Case[] | null> =
-    new BehaviorSubject(null);
+
+  private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject(null);
+
+  private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject(null);
 
 
   constructor(private _httpClient: HttpClient) { }
@@ -148,7 +148,6 @@ export class Incident_ReportingService {
 
 
   saveinjury(caseData: any): Observable<any> {
-    debugger
     return this._httpClient.post(`${this.saveCaseInjuryURL}`, caseData);
   }
 
@@ -212,6 +211,21 @@ export class Incident_ReportingService {
 
   getRootCausesDataById(id): Observable<any> {
     return this._httpClient.get<any>(`${this.getRootCausesById}${id}`);
+  }
+
+  //case comments
+  getAllCaseComments(caseId): Observable<any>
+  {
+    return this._httpClient.get<any>(`${this.getAllCaseCommentsURL}${caseId}`);
+  }
+  getCaseCommentById(id): Observable<any>
+  {
+    return this._httpClient.get<any>(`${this.getCaseCommentByIdURL}${id}`);
+  }
+  saveCaseComment(caseComment:any): Observable<any>
+  {
+    debugger
+    return this._httpClient.post<any>(`${this.saveOrUpdateCaseComment}`, caseComment);
   }
 
 }

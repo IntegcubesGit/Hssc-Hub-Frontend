@@ -121,20 +121,15 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             id: 'Immediate-Cause.components.comments',
             title: 'Comments',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/comments',
+            link: `/case/information/${id}/comments`,
           },
           {
             id: 'Immediate-Cause.components.signatures',
             title: 'Signatures',
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/signatures',
-          },
-          {
-            id: 'Immediate-Cause.components.connected_case',
-            title: 'Connected Case',
-            type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/connected_case',
-          },
+          }
+         
         ],
       }
     ];

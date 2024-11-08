@@ -11,6 +11,7 @@ import { InvolvedPersonComponent } from './incident_Reporting/add-form/component
 import { PotentialLossComponent } from './incident_Reporting/add-form/components/potentialLoss/potentialLoss.component';
 import { RootCausesComponent } from './incident_Reporting/add-form/components/rootCauses/rootCauses.component';
 import { ActionComponent } from './incident_Reporting/add-form/components/caseActions/action.component';
+import { CommentsComponent } from './incident_Reporting/add-form/components/comments/comments.component';
 
 
 export default [
@@ -34,6 +35,7 @@ export default [
         Categories: () => inject(CommonService).loadCaseCategories(),
         RiskCategories: () => inject(CommonService).loadRiskCategories(),
         Departments: () => inject(CommonService).loadDepartments(),
+        Cases:()=>inject(CommonService).loadCasesIdsAndTitles()
       },
       children: [
         {
@@ -47,6 +49,7 @@ export default [
             { path: 'potentialLoss', component: PotentialLossComponent },
             { path: 'rootCauses', component: RootCausesComponent },
             { path: 'caseActions', component: ActionComponent },
+            { path: 'comments', component: CommentsComponent },
             
       ],
     },
