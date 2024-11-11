@@ -22,12 +22,12 @@ const themes = {
     // Default theme is required for theming system to work correctly!
     default: {
         primary: {
-            ...colors.indigo,
-            DEFAULT: colors.indigo[600],
+            ...colors.orange,
+            DEFAULT: colors.orange[700],
         },
         accent: {
             ...colors.slate,
-            DEFAULT: colors.slate[800],
+            DEFAULT: colors.slate[50],
         },
         warn: {
             ...colors.red,

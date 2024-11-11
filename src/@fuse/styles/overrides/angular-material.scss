@@ -152,7 +152,7 @@
 .mat-mdc-outlined-button,
 .mat-mdc-unelevated-button {
     padding: 0 20px !important;
-    border-radius: 9999px !important;
+    border-radius: 2px !important;
 }
 
 /* Fix the alignment of icons when used within buttons */
@@ -318,7 +318,7 @@
 /* -------------------------------------------------------------------------- */
 .mat-mdc-dialog-container {
     .mdc-dialog__surface {
-        border-radius: 16px !important;
+        border-radius: 2px !important;
         padding: 24px;
     }
 }
@@ -410,7 +410,7 @@
     .mat-mdc-text-field-wrapper {
        
         padding: 0;
-        border-radius: 6px;
+        border-radius: 2px;
         border-width: 1px;
         border-style: solid;
         @apply border-gray-300 bg-white shadow-sm dark:border-gray-500 dark:bg-black dark:bg-opacity-5 #{'!important'};
