@@ -46,13 +46,13 @@
                             <div class="mt-8 flex flex-col items-start sm:flex-row">
                                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
                                     <textarea matInput [placeholder]="'What\'s on your mind?'" [rows]="7"
-                                        cdkTextareaAutosize formControlName="Comment">
+                                        cdkTextareaAutosize formControlName="comment">
                                     </textarea>
                                 </mat-form-field>
                             </div>
                             <button class="ml-3" mat-flat-button [color]="'primary'" (click)="AddComment()">
                                 <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                                <span class="ml-2">Add Comment</span>
+                                <span class="ml-2">{{buttonText}}</span>
                             </button>
                         </form>
                     </fuse-card>
@@ -63,10 +63,10 @@
                     <mat-card-content>{{ comment.comment }} </mat-card-content>
                     <!-- Action Buttons (Edit and Delete) with Icons -->
                     <mat-card-actions>
-                        <button mat-icon-button (click)="editComment(comment)">
+                        <button mat-icon-button (click)="editComment(comment.caseCommentId)">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="deleteComment(comment)">
+                        <button mat-icon-button (click)="deleteComment(comment.caseCommentId)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </mat-card-actions>

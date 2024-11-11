@@ -95,7 +95,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         {
             caseCommentId: [-1, Validators.required],
             caseId: [this.caseId, Validators.required],
-            Comment: ['', Validators.required]
+            comment: ['', Validators.required]
         });
         this.getAllCaseComments();
     }
@@ -112,7 +112,27 @@ export class CommentsComponent implements OnInit, OnDestroy {
             }
         });
     }
+    deleteComment(caseCommentId:number)
+    {
 
+    }
+
+    editComment(caseCommentId:number)
+    {
+        this._service.getCaseCommentById(caseCommentId).subscribe({
+            next: (response) => 
+            {
+                debugger
+                setTimeout(() => {
+                    this.composeForm.patchValue(response);
+                });
+                this.buttonText='Update Comment'
+            },
+            error: (error) => {
+                console.error('Error fetching case comment data:', error);
+            }
+        });
+    }
     onCancel() 
     {
         this.router.navigate(['/case/incident_Reporting']);
@@ -122,6 +142,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     {
         if (this.composeForm.valid) 
         {
+            debugger
             this._service.saveCaseComment(this.composeForm.value).subscribe({
                 next: (response) => 
                 {
@@ -130,6 +151,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
                         caseId: this.caseId, 
                         caseCommentId: -1   
                     });
+                    this.buttonText='Add Comment';
     
                     Object.keys(this.composeForm.controls).forEach((controlName) => 
                         {
