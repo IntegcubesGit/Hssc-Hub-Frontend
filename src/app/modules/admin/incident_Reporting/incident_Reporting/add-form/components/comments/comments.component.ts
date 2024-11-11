@@ -27,6 +27,7 @@ import {MatCardModule} from '@angular/material/card';
     selector: 'comments',
     templateUrl: './comments.component.html',
     styles: [''],
+    providers: [DatePipe],
     standalone: true,
     imports: [
         FuseCardComponent,
@@ -60,9 +61,9 @@ export class CommentsComponent implements OnInit, OnDestroy {
     recentTransactionsTableMatSort!: MatSort;
     data: any;
     comments: any[] = [];
-    buttonText='Add Comment';
+    buttonText='Post a Comment';
     composeForm: UntypedFormGroup;
-
+    
     recentTransactionsTableColumns: string[] = [
 
         'ActionTaken',
@@ -75,7 +76,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     ];
     caseId: string | null = null;
     constructor(
-
+        private datePipe: DatePipe,
         private _fuseComponentsComponent: AddFormComponent,
         private _formBuilder: UntypedFormBuilder,
         private route: ActivatedRoute, 
@@ -101,11 +102,14 @@ export class CommentsComponent implements OnInit, OnDestroy {
     }
 
 
-    getAllCaseComments(): void 
-    {
+    getAllCaseComments(): void {
         this._service.getAllCaseComments(this.caseId).subscribe({
             next: (response) => {
-                this.comments = response;
+                this.comments = response.map(comment => ({
+                    ...comment,
+                    createdOn: this.datePipe.transform(comment.createdOn, 'MM/dd/yyyy, h:mm a'),
+                    modifiedOn: this.datePipe.transform(comment.modifiedOn, 'MM/dd/yyyy, h:mm a')
+                }));
             },
             error: (error) => {
                 console.error('Error fetching case comments data:', error);
@@ -151,7 +155,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
                         caseId: this.caseId, 
                         caseCommentId: -1   
                     });
-                    this.buttonText='Add Comment';
+                    this.buttonText='Post a Comment';
              
     
                     Object.keys(this.composeForm.controls).forEach((controlName) => 
