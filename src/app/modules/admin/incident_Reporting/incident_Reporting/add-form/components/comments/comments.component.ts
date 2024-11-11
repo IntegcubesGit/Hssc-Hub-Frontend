@@ -152,6 +152,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
                         caseCommentId: -1   
                     });
                     this.buttonText='Add Comment';
+             
     
                     Object.keys(this.composeForm.controls).forEach((controlName) => 
                         {
