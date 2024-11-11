@@ -66,8 +66,15 @@
                                             <h5 class="text-gray-900 text-lg font-bold leading-snug">{{comment.createdBy}} added a comment</h5>
                                             <span class="text-right text-gray-500 text-sm font-normal leading-5">{{ comment.createdOn |  date: 'h:mm a, MM/dd/yyyy' }}</span>
                                         </div>
-                                        <h5 class="text-gray-800 text-sm font-normal leading-snug">{{ comment.comment }} <br/><span class="text-gray-600 italic text-xs font-normal leading-snug ml-3">- Last modified by {{comment.modifiedBy}} at {{comment.modifiedOn | date: 'h:mm a, MM/dd/yyyy'}} 
-                                        </span>
+                                        
+                                        <h5 class="text-gray-800 text-sm font-normal leading-snug">{{ comment.comment }} <br/>
+                                           @if(comment.isEdited==1) {
+                                            <span class="text-gray-600 italic text-xs font-normal leading-snug ml-3">
+                                            
+                                                - Last modified by {{comment.modifiedBy}} at {{comment.modifiedOn | date: 'h:mm a, MM/dd/yyyy'}} 
+                                            </span>
+                                           }
+
                                         </h5>
                                         
                                     </div>
