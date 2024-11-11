@@ -41,8 +41,9 @@
 <div class="flex flex-col w-full">
     <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Details</span>
     <mat-form-field class="flex-auto">
-        <textarea matInput formControlName="details" rows="3"></textarea>
+        <textarea matInput formControlName="details" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
+    
 </div>
 
 <!-- Most Probable Cause -->
@@ -58,7 +59,7 @@
 <div class="flex flex-col w-full">
     <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Cause Description</span>
     <mat-form-field class="flex-none">
-        <textarea matInput formControlName="causeDescription" rows="3"></textarea>
+        <textarea matInput formControlName="causeDescription" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
 </div>
 
@@ -66,7 +67,7 @@
 <div class="flex flex-col w-full">
     <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Lesson Learnt</span>
     <mat-form-field class="flex-none">
-        <textarea matInput formControlName="lessonLearnt" rows="3"></textarea>
+        <textarea matInput formControlName="lessonLearnt" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
 </div>
 </div>

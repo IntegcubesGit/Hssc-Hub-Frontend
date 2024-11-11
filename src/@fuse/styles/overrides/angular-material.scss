@@ -334,7 +334,7 @@
 /*  @ Form fields
 /* -------------------------------------------------------------------------- */
 .mat-form-field:not(.mat-form-field-type-mat-textarea) .mat-mdc-text-field-wrapper {
-    height: 32px;
+    height: auto;
   }
 /* "fill" appearance */
 .mat-mdc-form-field.mat-form-field-appearance-fill {
@@ -561,7 +561,7 @@
                 display: flex;
                 align-items: center;
                 width: 88px;
-                min-height: 32px;
+                min-height: auto;
                 font-size: 0.8rem !important;
                 padding: 0;
                 border: 0;
