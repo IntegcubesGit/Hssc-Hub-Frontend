@@ -105,7 +105,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     this._commonService.departments$.subscribe(data => this.departments = data);
     this._commonService.businessUnits$.subscribe(data => this.businessUnits = data);
     this._commonService.caseStatuses$.subscribe(data => this.caseStatuses = data);
-    debugger
     this._commonService.cases$.subscribe(data => this.connectedCases = data);
 
     this.route.parent?.params.subscribe(params => {

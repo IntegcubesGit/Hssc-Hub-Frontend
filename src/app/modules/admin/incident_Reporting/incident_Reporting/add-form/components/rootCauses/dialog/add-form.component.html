@@ -19,7 +19,7 @@
 <div class="flex flex-col md:flex-row md:space-x-4">
 <!-- Internal/External Dropdown -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Cause Type</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Cause Type</span>
     <mat-form-field class="flex-auto">
         <mat-select formControlName="internalExternal" placeholder="Select Internal/External">
             <mat-option value="Internal">Internal</mat-option>
@@ -30,7 +30,7 @@
 
 <!-- Analysis Methodology -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Analysis Methodology</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Analysis Methodology</span>
     <mat-form-field class="flex-auto">
         <input matInput type="text" formControlName="analysisMethodology" />
     </mat-form-field>
@@ -39,15 +39,16 @@
 <div class="flex flex-col md:flex-row md:space-x-4">
 <!-- Details -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Details</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Details</span>
     <mat-form-field class="flex-auto">
-        <textarea matInput formControlName="details" rows="3"></textarea>
+        <textarea matInput formControlName="details" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
+    
 </div>
 
 <!-- Most Probable Cause -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Most Probable Cause</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Most Probable Cause</span>
     <mat-form-field class="flex-auto">
         <input matInput type="text" formControlName="mostProbableCause" />
     </mat-form-field>
@@ -56,17 +57,17 @@
 <div class="flex flex-col md:flex-row md:space-x-4">
 <!-- Cause Description -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Cause Description</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Cause Description</span>
     <mat-form-field class="flex-none">
-        <textarea matInput formControlName="causeDescription" rows="3"></textarea>
+        <textarea matInput formControlName="causeDescription" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
 </div>
 
 <!-- Lesson Learnt -->
 <div class="flex flex-col w-full">
-    <span class="text-left min-w-32 mr-4 mb-1 font-medium hover:font-bold">Lesson Learnt</span>
+    <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Lesson Learnt</span>
     <mat-form-field class="flex-none">
-        <textarea matInput formControlName="lessonLearnt" rows="3"></textarea>
+        <textarea matInput formControlName="lessonLearnt" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
 </div>
 </div>

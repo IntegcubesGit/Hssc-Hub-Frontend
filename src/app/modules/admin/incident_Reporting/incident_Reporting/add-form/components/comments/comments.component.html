@@ -45,8 +45,8 @@
                             <div class="text-xl font-semibold">Leave a comment</div>
                             <div class="mt-8 flex flex-col items-start sm:flex-row">
                                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                                    <textarea matInput [placeholder]="'What\'s on your mind?'" [rows]="7"
-                                        cdkTextareaAutosize formControlName="comment">
+                                    <textarea matInput [placeholder]="'What\'s on your mind?'" cdkAutosizeMinRows="7" cdkAutosizeMaxRows="10"
+                                        cdkTextareaAutosize formControlName="Comment">
                                     </textarea>
                                 </mat-form-field>
                             </div>
