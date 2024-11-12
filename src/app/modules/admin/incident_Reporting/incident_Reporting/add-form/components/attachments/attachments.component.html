@@ -104,9 +104,9 @@
             <mat-icon class="text-hint opacity-50 icon-size-14">{{ selectedFile.icon }}</mat-icon>
           </div>
   
-          <p class="text-center"><strong>{{ selectedFile.name }}</strong></p>
+          <p class="text-left text-xl"><strong>{{ selectedFile.name }}</strong></p>
           <div
-            class="rounded px-1.5 text-sm font-semibold leading-5 w-max"
+            class="rounded px-1.5 text-sm font-semibold leading-5 w-max my-1"
             [ngClass]="{
               'bg-red-600 text-white': selectedFile.type === 'PDF',
               'bg-yellow-300 text-black': selectedFile.type === 'Excel',
@@ -119,21 +119,17 @@
           <!-- Information Section -->
           <div class="mt-8 text-lg font-medium">Information</div>
           <div class="mt-4 flex flex-col divide-y border-b border-t font-medium">
-            <div class="flex items-center justify-between py-3">
+            <div class="flex items-center justify-between py-2">
               <div class="text-secondary">Created By</div>
               <div>{{ selectedFile.createdBy }}</div>
             </div>
-            <div class="flex items-center justify-between py-3">
+            <div class="flex items-center justify-between py-2">
               <div class="text-secondary">Created At</div>
               <div>{{ selectedFile.createdAt }}</div>
             </div>
-            <div class="flex items-center justify-between py-3">
+            <div class="flex items-center justify-between py-2">
               <div class="text-secondary">Size</div>
               <div>{{ selectedFile.size }}</div>
-            </div>
-            <div class="flex items-center justify-between py-3" *ngIf="selectedFile.contents">
-              <div class="text-secondary">Contents</div>
-              <div>{{ selectedFile.contents }}</div>
             </div>
           </div>
   
@@ -161,7 +157,7 @@
           </div>
   
           <!-- Actions Section -->
-          <div class="mt-8 grid w-full grid-cols-2 gap-4">
+          <div class="mt-4 grid w-full grid-cols-2 gap-4">
             <button class="flex-auto" mat-flat-button [color]="'primary'">Download</button>
             <button class="flex-auto" mat-stroked-button>Delete</button>
           </div>

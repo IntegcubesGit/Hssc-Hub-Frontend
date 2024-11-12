@@ -21,9 +21,9 @@ export class AttachmentsComponent {
   ) {}
 
   files: { name: string; type: string; icon: string }[] = [
-    { name: 'File1.pdf', type: 'PDF', icon: 'description' },
-    { name: 'File2.xlsx', type: 'Excel', icon: 'insert_drive_file' },
-    { name: 'File3.docx', type: 'Word', icon: 'insert_drive_file' },
+    { name: 'File-attachment-1', type: 'PDF', icon: 'description' },
+    { name: 'File-attachment-2', type: 'Excel', icon: 'insert_drive_file' },
+    { name: 'File-attachment-3', type: 'Word', icon: 'insert_drive_file' },
   ];
 
   selectedFile: { name: string; type: string; icon: string } | null = null;
