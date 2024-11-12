@@ -236,11 +236,13 @@ export class Incident_ReportingService {
   {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    formData.append('CaseId', caseId);
-    formData.append('Remarks', remarks);
+    formData.append('caseId', caseId);
+    formData.append('remarks', remarks);
+    formData.append('folderName', folderName);
+
   
     return this._httpClient.post<any>(
-      `${this.uploadCaseAttachment}uploadCaseFile/${folderName}/${caseId}/${remarks}`, formData
+      `${this.uploadCaseAttachment}uploadCaseFile`, formData
     );
   }
   downloadCaseAttachment(folderName:string,fileName:string): Observable<any>

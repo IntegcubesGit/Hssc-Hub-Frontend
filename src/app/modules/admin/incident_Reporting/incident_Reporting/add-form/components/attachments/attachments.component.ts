@@ -4,7 +4,6 @@ import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 import { AddFormComponent } from '../../add-form.component';
-import { HttpClient } from '@angular/common/http';  // HttpClient for file upload
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute } from '@angular/router';
 
