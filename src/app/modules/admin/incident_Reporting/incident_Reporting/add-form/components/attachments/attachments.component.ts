@@ -26,6 +26,8 @@ export class AttachmentsComponent {
     { name: 'File-attachment-3', type: 'Word', icon: 'insert_drive_file' },
   ];
 
+
+
   selectedFile: { name: string; type: string; icon: string } | null = null;
   isDrawerOpen: boolean = false;
 
