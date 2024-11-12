@@ -112,7 +112,6 @@ export class AttachmentsComponent implements OnInit
       {
           next: (response) => 
             {
-              debugger
               console.log('File uploaded successfully', response);
             },
           error: (error) => 
@@ -139,12 +138,10 @@ export class AttachmentsComponent implements OnInit
   }
   getAllCaseFiles()
   {
-    debugger
     this.caseService.getAllCaseAttachments(this.caseId).subscribe(
       {
           next: (response) => 
             {
-              debugger
               this.filess = response;
             },
           error: (error) => 

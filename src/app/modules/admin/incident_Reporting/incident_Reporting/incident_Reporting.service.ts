@@ -230,7 +230,7 @@ export class Incident_ReportingService {
 
   getAllCaseAttachments(caseId:string): Observable<any>
   {
-    return this._httpClient.get<any>(`${this.getAllCaseAttachments}${caseId}`);
+    return this._httpClient.get<any>(`${this.getAllCaseAttachmentsURL}${caseId}`);
   }
   uploadCaseAttachment(folderName: string, caseId: string, remarks: string, file: File) : Observable<any>
   {
@@ -243,12 +243,12 @@ export class Incident_ReportingService {
 
   
     return this._httpClient.post<any>(
-      `${this.uploadCaseAttachment}uploadCaseFile`, formData
+      `${this.uploadCaseAttachmentsURL}`, formData
     );
   }
   downloadCaseAttachment(folderName:string,fileName:string): Observable<any>
   {
-    return this._httpClient.get<any>(`${this.downloadCaseAttachment}${folderName}/${fileName}`);
+    return this._httpClient.get<any>(`${this.downloadCaseAttachmentsURL}${folderName}/${fileName}`);
   }
 
 }
