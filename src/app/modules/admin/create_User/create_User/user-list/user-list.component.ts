@@ -50,15 +50,15 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { Case, Pagination } from '../incident_Reporting.types';
-import { Incident_ReportingService } from '../incident_Reporting.service';
+import { User, Pagination } from '../user.type';
+import { UserService } from '../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
-    selector: 'incident_Reporting-list',
-    templateUrl: './incident_Reporting.component.html',
+    selector: 'user-list',
+    templateUrl: './user-list.component.html',
     styles: [
         /* language=SCSS */
         `
@@ -106,7 +106,7 @@ import { MatMenuModule } from '@angular/material/menu';
         MatMenuModule,
     ],
 })
-export class Incident_ReportingListComponent
+export class UserListComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -115,7 +115,7 @@ export class Incident_ReportingListComponent
     isLoading: boolean = false;
     pagination: Pagination;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    cases$: Observable<Case[] | null>;
+    users$: Observable<User[] | null>;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -124,14 +124,10 @@ export class Incident_ReportingListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
 
-        private _Service: Incident_ReportingService,
+        private _Service: UserService,
 
         private _router: Router,
     ) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
 
     ngOnInit(): void {
 
@@ -148,9 +144,10 @@ export class Incident_ReportingListComponent
                 }
             });
 
+        this.users$ = this._Service.user$;
+        this._Service.user$.subscribe(users => {
+        });
 
-
-      this.cases$ = this._Service.cases$;
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -160,7 +157,7 @@ export class Incident_ReportingListComponent
                 switchMap((query) => {
 
                     this.isLoading = true;
-                    return this._Service.getProducts(
+                    return this._Service.getUsers(
                         0,
                         10,
                         'name',
@@ -205,7 +202,7 @@ export class Incident_ReportingListComponent
                     switchMap(() => {
 
                         this.isLoading = true;
-                        return this._Service.getProducts(
+                        return this._Service.getUsers(
                             this._paginator.pageIndex,
                             this._paginator.pageSize,
                             this._sort.active,
@@ -228,23 +225,17 @@ export class Incident_ReportingListComponent
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
     }
-
-
-
-
     create(id: string): void {
 
         this._router.navigate(['/case/information', id]);
     }
 
-
-
-    deleteSelectedProduct(): void {
+    deleteUser(): void {
 
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete product',
+            title: 'Delete user',
             message:
-                'Are you sure you want to remove this product? This action cannot be undone!',
+                'Are you sure you want to remove this user? This action cannot be undone!',
             actions: {
                 confirm: {
                     label: 'Delete',
@@ -278,7 +269,7 @@ export class Incident_ReportingListComponent
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any {
-        return item.id || index;
+    trackByFn(index: number, user: User): any {
+        return user.Id;
     }
 }

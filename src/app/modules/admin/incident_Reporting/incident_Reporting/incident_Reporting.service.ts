@@ -7,7 +7,7 @@ import {
   tap,
 } from 'rxjs';
 import { Pagination, Case } from './incident_Reporting.types';
-import { environment } from 'environment/environment';
+import { environment } from '../../../../../environment/environment';
 
 
 
@@ -56,18 +56,18 @@ export class Incident_ReportingService {
 
 
 
-  private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject(null);
+  private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject<Pagination | null>(null);
 
-  private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject(null);
+  private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject<Case[] | null>(null);
 
 
   constructor(private _httpClient: HttpClient) { }
 
-  get pagination$(): Observable<Pagination> {
+  get pagination$(): Observable<Pagination | null> {
     return this._pagination.asObservable();
   }
 
-  get cases$(): Observable<Case[]> {
+  get cases$(): Observable<Case[] | null> {
     return this._cases.asObservable();
   }
 
@@ -144,7 +144,7 @@ export class Incident_ReportingService {
   {
     return this._httpClient.post(`${this.saveOrUpdateCaseActionByIdURL}`, caseActionData);
   }
-  
+
 
 
   saveinjury(caseData: any): Observable<any> {
