@@ -52,8 +52,9 @@ export class Incident_ReportingService {
   private readonly getCaseCommentByIdURL= `${environment.apiUrl}Cases/IncidentReporting_GetCaseCommentById/`;
   private readonly saveOrUpdateCaseComment= `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseComment/`;
 
-
-
+  private readonly getAllCaseAttachmentsURL =`${environment.apiUrl}CaseFile/GetAllCaseFiles/`;
+  private readonly uploadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/uploadCaseFile/`;  
+  private readonly downloadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/downloadCaseFile/`;
 
 
   private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject(null);
@@ -224,8 +225,27 @@ export class Incident_ReportingService {
   }
   saveCaseComment(caseComment:any): Observable<any>
   {
-    debugger
     return this._httpClient.post<any>(`${this.saveOrUpdateCaseComment}`, caseComment);
+  }
+
+  getAllCaseAttachments(caseId:string): Observable<any>
+  {
+    return this._httpClient.get<any>(`${this.getAllCaseAttachments}${caseId}`);
+  }
+  uploadCaseAttachment(folderName: string, caseId: string, remarks: string, file: File) : Observable<any>
+  {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('CaseId', caseId);
+    formData.append('Remarks', remarks);
+  
+    return this._httpClient.post<any>(
+      `${this.uploadCaseAttachment}uploadCaseFile/${folderName}/${caseId}/${remarks}`, formData
+    );
+  }
+  downloadCaseAttachment(folderName:string,fileName:string): Observable<any>
+  {
+    return this._httpClient.get<any>(`${this.downloadCaseAttachment}${folderName}/${fileName}`);
   }
 
 }
