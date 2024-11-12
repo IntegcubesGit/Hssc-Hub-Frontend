@@ -115,7 +115,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             id: 'Immediate-Cause.components.attachments',
             title: 'Attachments',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/navigation',
+            link: `/case/information/${id}/attachments`,
           },
           {
             id: 'Immediate-Cause.components.comments',
