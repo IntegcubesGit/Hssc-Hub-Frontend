@@ -37,11 +37,10 @@ export class AttachmentsComponent implements OnInit
   ngOnInit(): void 
   {
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
+    debugger
     this.getAllCaseFiles();
     
   }
-
- 
 
   openDrawer(file: { name: string; type: string; icon: string }) {
     this.selectedFile = file;
@@ -73,7 +72,7 @@ export class AttachmentsComponent implements OnInit
       });
       
       // Optionally, upload the file
-      //this.uploadFile(file);
+      this.uploadFile(file,'');
     }
   }
 
@@ -113,7 +112,8 @@ export class AttachmentsComponent implements OnInit
       {
           next: (response) => 
             {
-              
+              debugger
+              console.log('File uploaded successfully', response);
             },
           error: (error) => 
             {
@@ -139,10 +139,12 @@ export class AttachmentsComponent implements OnInit
   }
   getAllCaseFiles()
   {
+    debugger
     this.caseService.getAllCaseAttachments(this.caseId).subscribe(
       {
           next: (response) => 
             {
+              debugger
               this.filess = response;
             },
           error: (error) => 

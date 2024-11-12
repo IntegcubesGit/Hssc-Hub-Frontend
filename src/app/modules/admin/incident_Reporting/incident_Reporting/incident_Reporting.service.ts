@@ -234,6 +234,7 @@ export class Incident_ReportingService {
   }
   uploadCaseAttachment(folderName: string, caseId: string, remarks: string, file: File) : Observable<any>
   {
+    debugger
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     formData.append('caseId', caseId);
