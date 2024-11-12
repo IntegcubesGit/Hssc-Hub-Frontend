@@ -11,12 +11,20 @@ import { CommonModule } from '@angular/common';  // Import CommonModule
   templateUrl: './attachments.component.html',
   styles: [],
 })
-export class AttachmentsComponent {
+export class AttachmentsComponent { 
+  /**
+   *
+   */
+  constructor() {
+    
+  }
   files: { name: string; type: string; icon: string }[] = [
     { name: 'File1.pdf', type: 'PDF', icon: 'description' },
     { name: 'File2.xlsx', type: 'Excel', icon: 'insert_drive_file' },
     { name: 'File3.docx', type: 'Word', icon: 'insert_drive_file' },
   ];
+
+
 
   selectedFile: { name: string; type: string; icon: string } | null = null;
   isDrawerOpen: boolean = false;
