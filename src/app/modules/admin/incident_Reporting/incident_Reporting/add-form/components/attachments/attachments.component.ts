@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 import { AddFormComponent } from '../../add-form.component';
 import { HttpClient } from '@angular/common/http';  // HttpClient for file upload
+import { Incident_ReportingService } from '../../../incident_Reporting.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-attachments',
@@ -13,21 +15,34 @@ import { HttpClient } from '@angular/common/http';  // HttpClient for file uploa
   templateUrl: './attachments.component.html',
   styles: [],
 })
-export class AttachmentsComponent {
-
-  constructor(
-    private _fuseComponentsComponent: AddFormComponent,
-    private http: HttpClient
-  ) {}
-
+export class AttachmentsComponent implements OnInit
+{
+  filess:any =[];
   files: { name: string; type: string; icon: string }[] = [
     { name: 'File-attachment-1', type: 'PDF', icon: 'description' },
     { name: 'File-attachment-2', type: 'Excel', icon: 'insert_drive_file' },
     { name: 'File-attachment-3', type: 'Word', icon: 'insert_drive_file' },
   ];
-
   selectedFile: { name: string; type: string; icon: string } | null = null;
   isDrawerOpen: boolean = false;
+  caseId:string=null;
+
+  constructor(
+    private _fuseComponentsComponent: AddFormComponent,
+    private caseService:Incident_ReportingService,
+    private route: ActivatedRoute, 
+
+
+  ) 
+  {}
+  ngOnInit(): void 
+  {
+    this.caseId = this.route.parent?.snapshot.paramMap.get('id');
+    this.getAllCaseFiles();
+    
+  }
+
+ 
 
   openDrawer(file: { name: string; type: string; icon: string }) {
     this.selectedFile = file;
@@ -59,7 +74,7 @@ export class AttachmentsComponent {
       });
       
       // Optionally, upload the file
-      this.uploadFile(file);
+      //this.uploadFile(file);
     }
   }
 
@@ -92,18 +107,49 @@ export class AttachmentsComponent {
     }
   }
 
-  // Upload file to server (optional)
-  uploadFile(file: File): void {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
 
-    this.http.post('https://your-backend-api-url.com/upload', formData).subscribe(
-      (response) => {
-        console.log('File uploaded successfully', response);
-      },
-      (error) => {
-        console.error('Error uploading file', error);
-      }
-    );
+  uploadFile(file: File,remarks:string): void 
+  {
+    this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
+      {
+          next: (response) => 
+            {
+              
+            },
+          error: (error) => 
+            {
+              console.error('Error uploading the attachment', error);
+            }
+      });
+    this.getAllCaseFiles();
+  }
+
+  downloadFile(fileName:string)
+  {
+      this.caseService.downloadCaseAttachment('cases',fileName).subscribe(
+        {
+            next: (response) => 
+              {
+                
+              },
+              error: (error) => 
+              {
+                console.error('Error downlaoding the attachment', error);
+              }
+        });
+  }
+  getAllCaseFiles()
+  {
+    this.caseService.getAllCaseAttachments(this.caseId).subscribe(
+      {
+          next: (response) => 
+            {
+              this.filess = response;
+            },
+          error: (error) => 
+            {
+              console.error('Error fetching case attachments data:', error);
+            }
+      });
   }
 }
