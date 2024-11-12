@@ -7,16 +7,16 @@
         <!-- Loader -->
 
         <!-- Title -->
-        <div class="text-xl font-extrabold tracking-tight">Incident Reporting</div>
+        <div class="text-xl font-extrabold tracking-tight">Users List</div>
         <!-- Actions -->
         <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
             <!-- Search -->
             <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
                 <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
-                    [placeholder]="'Search products'" />
+                    [placeholder]="'Search users'" />
             </mat-form-field>
-            <!-- Add product button -->
+            <!-- Add user button -->
             <button class="ml-4 h-min-4" mat-flat-button [color]="'primary'" (click)="create('-1')">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
@@ -28,43 +28,32 @@
     <div class="flex flex-auto overflow-hidden">
         <!-- Products list -->
         <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
-            @if (cases$ | async; as cases) {
-            @if (cases.length > 0) {
+            @if (users$ | async; as users) {
+            @if (users.length > 0) {
             <div class="grid">
                 <!-- Header -->
                 <div class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
                     matSort matSortDisableClear>
                     <div>No</div>
-                    <div class="hidden md:block" [mat-sort-header]="'caseNumber'">
-                        Case No
+                    <div [mat-sort-header]="'firstName'">First Name</div>
+                    <div [mat-sort-header]="'lastName'">Last Name</div>
 
+                    <div [mat-sort-header]="'userName'">User Name</div>
+
+                    <div [mat-sort-header]="'email'" class="lg:block">Email</div>
+
+                    <div class="lg:block" [mat-sort-header]="'createdBy'">
+                        Created By
                     </div>
-                    <div [mat-sort-header]="'case'">Case</div>
-
-                    <div [mat-sort-header]="'description'" class="hidden lg:block">Description</div>
-                    <div [mat-sort-header]="'category'">
-                        Category
-                    </div>
-                    <div class="hidden md:block" [mat-sort-header]="'department'">
-                        Department
-
-                    </div>
-                    <div class="hidden lg:block" [mat-sort-header]="'WorkPlace'">
-                        Work Place
-                    </div>
-
-
-                    <div class="hidden md:block" [mat-sort-header]="'caseDate'">Case Date
-                    </div>
-
 
                     <div>Action</div>
                 </div>
+
                 <!-- Rows -->
-                @if (cases$ | async; as cases) {
+                @if (users$ | async; as users) {
                 @for (
-                case of cases;
-                track trackByFn($index, case)
+                user of users;
+                track trackByFn($index, user)
                 ) {
                 <div class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8">
 
@@ -73,45 +62,28 @@
                             {{$index+1}}
                         </div>
                     </div>
-
-
-                    <!-- SKU -->
-                    <div class="hidden truncate md:block">
-                        {{ case.caseNumber }}
-                    </div>
-
-                    <!-- Name -->
                     <div class="truncate">
-                        {{ case.case }}
+                        {{ user.firstName }}
                     </div>
-
-                    <div class="truncate hidden lg:block">
-                        {{ case.description }}
+                    <div class="truncate">
+                        {{ user.lastName }}
                     </div>
-
-                    <div>
-                        {{
-                        case.caseCategory
-                        }}
+                    <div class="truncate">
+                        {{ user.userName }}
                     </div>
-
-                    <div class="hidden md:block"> {{case.department}} </div>
-                    <div class="hidden lg:block"> {{case.workPlace}} </div>
-
-                    <div class="hidden  md:block">
-
-                        {{ case.caseDate| date:'mediumDate'}}
+                    <div class="truncate">
+                        {{ user.email }}
+                    </div>
+                    <div class="truncate">
+                        {{ user.createdBy }}
                     </div>
 
                     <div>
-
-
-                        <button mat-icon-button [matMenuTriggerFor]="budgetMenu">
+                        <button mat-icon-button [matMenuTriggerFor]="userMenu">
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-horizontal'"></mat-icon>
                         </button>
-                        <mat-menu #budgetMenu="matMenu">
-
-                            <button mat-menu-item (click)="create(case.caseId)">
+                        <mat-menu #userMenu="matMenu">
+                            <button mat-menu-item (click)="create(user.Id)">
                                 <span class="flex items-center">
                                     <mat-icon class="mr-3 icon-size-5" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
                                     <span>Edit</span>
@@ -124,9 +96,6 @@
                                 </span>
                             </button>
                         </mat-menu>
-
-
-
                     </div>
                 </div>
                 }
@@ -140,7 +109,7 @@
                 [showFirstLastButtons]="true"></mat-paginator>
             } @else {
             <div class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16">
-                There are no cases!
+                There are no users!
             </div>
             }
             }
