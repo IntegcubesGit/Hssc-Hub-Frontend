@@ -56,6 +56,7 @@ export class Incident_ReportingService {
   private readonly uploadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/uploadCaseFile/`;  
   private readonly downloadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/downloadCaseFile/`;
 
+  private readonly getCaseSignaturesListURL= `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseSignatures/`;
 
   private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject<Pagination | null>(null);
 
@@ -249,6 +250,11 @@ export class Incident_ReportingService {
   downloadCaseAttachment(folderName:string,fileName:string): Observable<any>
   {
     return this._httpClient.get<any>(`${this.downloadCaseAttachmentsURL}${folderName}/${fileName}`);
+  }
+
+  getAllCaseSignatures(caseId:string): Observable<any>
+  {
+    return this._httpClient.get<any>(`${this.getCaseSignaturesListURL}${caseId}`);
   }
 
 }

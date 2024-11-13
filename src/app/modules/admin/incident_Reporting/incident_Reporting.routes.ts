@@ -13,6 +13,7 @@ import { RootCausesComponent } from './incident_Reporting/add-form/components/ro
 import { ActionComponent } from './incident_Reporting/add-form/components/caseActions/action.component';
 import { CommentsComponent } from './incident_Reporting/add-form/components/comments/comments.component';
 import { AttachmentsComponent } from './incident_Reporting/add-form/components/attachments/attachments.component';
+import { SignatureComponent } from './incident_Reporting/add-form/components/signature/signature.component';
 
 
 export default [
@@ -52,6 +53,8 @@ export default [
             { path: 'caseActions', component: ActionComponent },
             { path: 'comments', component: CommentsComponent },
             { path: 'attachments', component: AttachmentsComponent },
+            { path: 'signatures', component: SignatureComponent },
+            
       ],
     },
   ] as Routes;

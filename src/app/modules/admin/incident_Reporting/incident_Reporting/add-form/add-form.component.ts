@@ -127,7 +127,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             id: 'Immediate-Cause.components.signatures',
             title: 'Signatures',
             type: 'basic',
-            link: '/case/incident_Reporting/case_Info/components/signatures',
+            link: `/case/information/${id}/signatures`,
           }
          
         ],
