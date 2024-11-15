@@ -1037,11 +1037,12 @@
 /* -------------------------------------------------------------------------- */
 .mat-mdc-paginator {
     .mat-mdc-paginator-container {
-        padding: 8px 16px;
-        justify-content: space-between;
+        padding: 0px 16px;
+        justify-content: right;
 
         @screen sm {
-            justify-content: normal;
+            justify-content: right;
+
         }
 
         /* Page size select */
