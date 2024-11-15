@@ -61,8 +61,6 @@ export class AttachmentsComponent implements OnInit
     return `${formattedSize} ${postfix}`;
   }
   
-  
-
   openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string;  }): void {
     this.selectedFile = file;
     this.isDrawerOpen = true;
@@ -82,27 +80,20 @@ export class AttachmentsComponent implements OnInit
     const selectedFiles = event.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      const fileName = file.originalFileName;
-      const fileType = this.getFileType(file.fileType);
-      const fileSize = file.fileSize;
-      const remarks = file.remarks;
-      const uploadedBy = file.uploadedBy;
-      const uploadedAt = file.uploadTime;
+      const fileName = file.name;
+      const fileType = this.getFileType(file.name);
+      const fileIcon = this.getFileIcon(fileType);
 
       this.files.push({
         name: fileName,
         type: fileType,
-        icon: 'insert_drive_file',
-        fileSize: fileSize,
-        remarks: remarks,
-        uploadedBy: uploadedBy,
-        uploadedAt: uploadedAt,
+        icon: fileIcon,
       });
       
-      // Optionally, upload the file
       this.uploadFile(file,'');
     }
   }
+
 
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -113,8 +104,6 @@ export class AttachmentsComponent implements OnInit
       case 'xls':
       case 'xlsm':
         return 'excel';
-      case 'docx':
-        return 'docx';
       case 'pptx':
         return 'pptx';
       case 'csv':
@@ -136,13 +125,14 @@ export class AttachmentsComponent implements OnInit
           next: (response) => 
             {
               console.log('File uploaded successfully', response);
+              this.getAllCaseFiles();
             },
           error: (error) => 
             {
               console.error('Error uploading the attachment', error);
+              console.log(error);
             }
       });
-    this.getAllCaseFiles();
   }
 
   downloadFile(fileName:string)
