@@ -17,9 +17,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
 import { CommonService } from 'app/modules/common.service';
-import { Incident_ReportingService } from '../../../incident_Reporting.service';
+import { Incident_ReportingService } from '../../../observations.service';
 import { AlertService } from 'app/core/alert/alert.service';
-import { Case } from '../../../incident_Reporting.types';
+import { Case } from '../../../observations.types';
 @Component({
   selector: 'general_information',
   templateUrl: './general_information.component.html',
@@ -34,6 +34,8 @@ import { Case } from '../../../incident_Reporting.types';
   imports: [
     MatIconModule,
     MatButtonModule,
+    FuseHighlightComponent,
+    FuseAlertComponent,
     MatIconModule,
     FormsModule,
     MatFormFieldModule,
@@ -57,8 +59,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   connectedCases: Case[] = [];
   departments: Department[] = [];
   businessUnits: BusinessUnit[] = [];
-  sites: any[] = [];
-
   caseStatuses: CaseStatus[] = [];
   action: string = "Saved";
   buttonText = 'Save';
@@ -95,9 +95,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
       totalLoss: ['', Validators.required],
       immediateActionTaken: [''],
       comments: [''],
-      connectedCaseId: [''],
-      siteId:[''],
-      businessUnitId:['']
+      connectedCaseId:['']
     });
   }
 
@@ -106,7 +104,6 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     this._commonService.caseCategories$.subscribe(data => this.caseCategories = data);
     this._commonService.departments$.subscribe(data => this.departments = data);
     this._commonService.businessUnits$.subscribe(data => this.businessUnits = data);
-    this._commonService.caseSites$.subscribe(data => this.sites = data);
     this._commonService.caseStatuses$.subscribe(data => this.caseStatuses = data);
     this._commonService.cases$.subscribe(data => this.connectedCases = data);
 

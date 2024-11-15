@@ -20,6 +20,7 @@ export class CommonService {
   private _caseStatuses$ = new BehaviorSubject<CaseStatus[]>([]);
   private _departments$ = new BehaviorSubject<Department[]>([]);
   private _cases$ = new BehaviorSubject<any[]>([]);
+  private _sites$ = new BehaviorSubject<any[]>([]);
 
 
   private readonly apiUrl = environment.apiUrl;
@@ -47,6 +48,10 @@ export class CommonService {
   get businessUnits$(): Observable<BusinessUnit[]> {
     return this._businessUnits$.asObservable();
   }
+  get caseSites$(): Observable<BusinessUnit[]> {
+    return this._sites$.asObservable();
+  }
+
 
   // Observable for Case Statuses
   get caseStatuses$(): Observable<CaseStatus[]> {
@@ -81,11 +86,6 @@ export class CommonService {
       .subscribe(types => this._injuryTypes$.next(types));
   }
 
-  // Method to fetch Business Units and update the BehaviorSubject
-  loadBusinessUnits(): void {
-    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}CommonFilters/getAllBusinessUnits`)
-      .subscribe(units => this._businessUnits$.next(units));
-  }
 
   // Method to fetch Case Statuses and update the BehaviorSubject
   loadAllCaseStatuses(): void {
@@ -119,8 +119,15 @@ export class CommonService {
     return this._httpClient.get<ActionType[]>(`${this.apiUrl}CommonFilters/getAllActionTypes`);
   }
 
+  loadCaseSites(): void {
+    this._httpClient.get<any[]>(`${this.apiUrl}CommonFilters/getAllSites`)
+      .subscribe(sites => this._sites$.next(sites));
+  }
 
-
+  loadBusinessUnits(): void {
+    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}CommonFilters/getAllBusinessUnits`)
+      .subscribe(units => this._businessUnits$.next(units));
+  }
 
 
 }

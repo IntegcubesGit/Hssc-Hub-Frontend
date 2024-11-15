@@ -144,19 +144,18 @@
                 </mat-select>
               </mat-form-field>
             </div>
-
-
-
-
-
-
             <div class="flex flex-col w-full">
               <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Work Place</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
                 <input matInput formControlName="workPlace" />
               </mat-form-field>
             </div>
-            
+            <div class="flex flex-col w-full">
+              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Site</span>
+              <mat-form-field class="fuse-mat-dense flex-auto">
+                <input matInput formControlName="workPlace" />
+              </mat-form-field>
+            </div>
           </div>
 
           <div class="flex flex-col md:flex-row md:space-x-4">
@@ -188,74 +187,32 @@
                     {{ connectedCase.title }}
                   </mat-option>
                   }
+
+
                 </mat-select>
                 <mat-error></mat-error>
               </mat-form-field>
             </div>
-
-
-
-
-          </div>
-
-          <div class="flex flex-col md:flex-row md:space-x-4">
-
-            <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">
-                Business Unit
-              </span>
-              <mat-form-field class="fuse-mat-dense flex-auto">
-                <mat-select formControlName="businessUnitId">
-                  @for (
-                  bu of businessUnits;
-                  track bu
-                  ) {
-                  <mat-option [value]="bu.businessUnitId">
-                    {{ bu.title }}
-                  </mat-option>
-                  }
-                </mat-select>
-                <mat-error></mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">
-                Site
-              </span>
-              <mat-form-field class="fuse-mat-dense flex-auto">
-                <mat-select formControlName="siteId">
-                  @for (
-                  site of sites;
-                  track site
-                  ) {
-                  <mat-option [value]="site.siteId">
-                    {{ site.title }}
-                  </mat-option>
-                  }
-                </mat-select>
-                <mat-error></mat-error>
-              </mat-form-field>
-            </div>
-
-
             <div class="flex flex-col w-full">
               <mat-checkbox formControlName="isAuthorityNotified" class="mb-2 mt-4 pt-1" [color]="'primary'">Authority
                 Notified?</mat-checkbox>
             </div>
+            <!-- ----------------------------------------------- -->
+
+
 
           </div>
 
           <div class="flex flex-col md:flex-row md:space-x-4">
-            <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Immediate Action
+              <div class="flex flex-col w-full">
+                <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Immediate Action
                 Taken</span>
-              <mat-form-field class="flex-none">
-                <textarea matInput formControlName="immediateActionTaken" cdkTextareaAutosize cdkAutosizeMinRows="2"
-                  cdkAutosizeMaxRows="10"></textarea>
-                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
-              </mat-form-field>
-            </div>
+             <mat-form-field class="flex-none">
+               <textarea matInput formControlName="immediateActionTaken"  cdkTextareaAutosize cdkAutosizeMinRows="2"
+                 cdkAutosizeMaxRows="10"></textarea>
+               <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
+             </mat-form-field>
+             </div>
             <div class="flex flex-col w-full">
               <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Consequences
                 Comment</span>

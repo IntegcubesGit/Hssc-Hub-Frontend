@@ -74,8 +74,14 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver
         },
         children: [
+            {
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full',
+            },
             {path: 'dashboard', loadChildren: () => import('app/modules/admin/example/example.routes')},
             {path: 'case', loadChildren: () => import('app/modules/admin/incident_Reporting/incident_Reporting.routes')},
+            {path: 'observations', loadChildren: () => import('app/modules/admin/observations/observations.routes')},
             {path: 'user', loadChildren: () => import('app/modules/admin/create_User/create_User.routes')},
 
         ]

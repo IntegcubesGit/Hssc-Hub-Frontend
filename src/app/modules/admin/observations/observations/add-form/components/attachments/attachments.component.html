@@ -1,0 +1,168 @@
+<div class="flex items-center w-full justify-center">
+    <div class="mx-auto w-full bg-white h-screen overflow-y-auto">
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Title -->
+          <div class="mt-2">
+            <h2 class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl">
+              File Attachments
+            </h2>
+          </div>
+        </div>
+        <button class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0" mat-icon-button (click)="toggleDrawer()">
+          <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+        </button>
+      </div>
+      <form class="py-4 px-9">
+        <!-- Upload Section -->
+        <div class="mb-6 pt-4 mx-2">
+          <label class="mb-5 block text-xl font-bold text-black">Add New Attachments</label>
+  
+          <div class="mb-8 mx-2">
+            <input
+              type="file"
+              name="file"
+              id="file"
+              class="sr-only"
+              (change)="onFileSelected($event)"
+              multiple
+            />
+            <label
+              for="file"
+              class="relative flex min-h-[200px] items-center justify-center rounded-sm border border-dashed border-gray-400 bg-gray-100 p-12 text-center"
+            >
+              <div>
+                <span class="mb-2 block text-xl font-semibold text-black">Drag & Drop files here</span>
+                <span class="mb-2 block text-base font-medium text-neutral-400">Or</span>
+                <span class="inline-flex cursor-pointer rounded-sm bg-orange-700 py-2 px-7 text-base font-medium text-white">
+                  Browse
+                </span>
+              </div>
+            </label>
+          </div>
+  
+          <!-- Display Files -->
+          <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
+          <div class="flex flex-wrap">
+            <mat-card
+              *ngFor="let file of files"
+              class="m-2 flex h-40 w-40 cursor-pointer flex-col rounded-sm p-4 shadow border-gray-400 bg-gray-100"
+              (click)="openDrawer(file)"
+            >
+              <div class="flex items-center justify-between"></div>
+              <div class="aspect-[9/6]">
+                <div class="flex h-full items-center justify-center">
+                  <div class="relative">
+                    <mat-icon class="text-hint opacity-50 icon-size-14">{{ file.icon }}</mat-icon>
+  
+                    <div
+                      class="absolute bottom-0 left-0 rounded px-1.5 text-sm font-semibold leading-5"
+                      [ngClass]="{
+                        'bg-red-600 text-white': file.type === 'PDF',
+                        'bg-yellow-300 text-black': file.type === 'Excel',
+                        'bg-blue-600 text-white': file.type === 'Word'
+                      }"
+                    >
+                      {{ file.type }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-auto flex-col justify-center text-center text-sm font-medium">
+                <div class="text-secondary truncate">{{ file.name }}</div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Right Drawer for File Details -->
+    <div
+      *ngIf="isDrawerOpen"
+      class="h-screen bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+      flex flex-auto flex-col p-4 md:p-6 lg:p-6 w-80 top-0 right-0"
+      [ngClass]="{
+        'translate-x-0 opacity-100 w-80': isDrawerOpen,
+        'translate-x-full opacity-0 w-0': !isDrawerOpen
+      }"
+    >
+      <div class="py-2 px-4">
+        <div class="flex justify-between items-center mb-3 py-3">
+          <h2 class="text-xl font-bold text-black">File Details</h2>
+          <button
+            class="text-gray-500 hover:text-gray-700 focus:outline-none"
+            (click)="closeDrawer()"
+          >
+            <mat-icon class="text-xl">close</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="selectedFile">
+          <div class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100 dark:bg-transparent">
+            <mat-icon class="text-hint opacity-50 icon-size-16">{{ selectedFile.icon }}</mat-icon>
+          </div>
+  
+          <p class="text-center text-lg"><strong>{{ selectedFile.name }}</strong></p>
+            <div
+            class="rounded px-1.5 text-sm font-semibold leading-5 w-max my-1 mx-auto"
+            [ngClass]="{
+              'bg-red-600 text-white': selectedFile.type === 'PDF',
+              'bg-yellow-300 text-black': selectedFile.type === 'Excel',
+              'bg-blue-600 text-white': selectedFile.type === 'Word'
+            }"
+            >
+            {{ selectedFile.type }}
+            </div>
+  
+          <!-- Information Section -->
+          <div class="mt-4 text-md font-medium text-center">File Details</div>
+          <div class="mt-4 flex flex-col divide-y border-b border-t font-medium">
+            <div class="flex items-center justify-between py-1">
+              <div class="text-secondary text-sm">Created By</div>
+              <div>{{ selectedFile.createdBy }}</div>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <div class="text-secondary text-sm">Created At</div>
+              <div>{{ selectedFile.createdAt }}</div>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <div class="text-secondary text-sm">Size</div>
+              <div>{{ selectedFile.size }}</div>
+            </div>
+          </div>
+  
+          <!-- Description Section -->
+          <div class="mt-6 flex items-center justify-between">
+            <div class="text-md font-medium">Remarks</div>
+            <button mat-icon-button>
+              <mat-icon
+                class="icon-size-3"
+                [svgIcon]="'heroicons_solid:pencil'"
+              ></mat-icon>
+            </button>
+          </div>
+          <div class="mt-2 flex border-t">
+            <div class="py-3">
+              <div *ngIf="selectedFile.description; else noDescription" class="text-sm">
+                {{ selectedFile.description }}
+              </div>
+              <ng-template #noDescription>
+                <div class="text-secondary italic" class="text-sm">
+                  Be the first to add comments.
+                </div>
+              </ng-template>
+            </div>
+          </div>
+  
+          <!-- Actions Section -->
+          <div class="mt-4 grid w-full grid-cols-2 gap-4">
+            <button class="flex-auto" mat-flat-button [color]="'primary'">Download</button>
+            <button class="flex-auto" mat-stroked-button>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

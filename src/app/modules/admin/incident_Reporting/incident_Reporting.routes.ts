@@ -13,45 +13,51 @@ import { RootCausesComponent } from './incident_Reporting/add-form/components/ro
 import { ActionComponent } from './incident_Reporting/add-form/components/caseActions/action.component';
 import { CommentsComponent } from './incident_Reporting/add-form/components/comments/comments.component';
 import { AttachmentsComponent } from './incident_Reporting/add-form/components/attachments/attachments.component';
+import { SignatureComponent } from './incident_Reporting/add-form/components/signature/signature.component';
 
 
 export default [
-    {
-      path: '',
-      redirectTo: 'incident_Reporting',
-      pathMatch: 'full',
+  {
+    path: '',
+    redirectTo: 'incident_Reporting',
+    pathMatch: 'full',
+  },
+  {
+    path: 'incident_Reporting',
+    component: Incident_ReportingListComponent,
+    resolve: {
+      products: () => inject(Incident_ReportingService).getProducts(),
     },
-    {
-      path: 'incident_Reporting',
-      component: Incident_ReportingListComponent,
-      resolve: {
-        products: () => inject(Incident_ReportingService).getProducts(),
-      },
+  },
+  {
+    path: 'information/:id',
+    component: AddFormComponent,
+    resolve: {
+      Statuses: () => inject(CommonService).loadAllCaseStatuses(),
+      Categories: () => inject(CommonService).loadCaseCategories(),
+      RiskCategories: () => inject(CommonService).loadRiskCategories(),
+      Departments: () => inject(CommonService).loadDepartments(),
+      Cases: () => inject(CommonService).loadCasesIdsAndTitles(),
+      BusinessUnits:()=>inject(CommonService).loadBusinessUnits(),
+      Sites:()=>inject(CommonService).loadCaseSites()
     },
-    {
-      path: 'information/:id',
-      component: AddFormComponent,
-      resolve: {
-        Statuses: () => inject(CommonService).loadAllCaseStatuses(),
-        Categories: () => inject(CommonService).loadCaseCategories(),
-        RiskCategories: () => inject(CommonService).loadRiskCategories(),
-        Departments: () => inject(CommonService).loadDepartments(),
-        Cases:()=>inject(CommonService).loadCasesIdsAndTitles()
-      },
-      children: [
+    children:
+      [
         {
           path: '',
           redirectTo: 'general-information',
           pathMatch: 'full',
         },
-            { path: 'general-information', component: GeneralInformationComponent },
-            { path: 'injury', component: InjuryComponent },
-            { path: 'involvedPerson', component: InvolvedPersonComponent },
-            { path: 'potentialLoss', component: PotentialLossComponent },
-            { path: 'rootCauses', component: RootCausesComponent },
-            { path: 'caseActions', component: ActionComponent },
-            { path: 'comments', component: CommentsComponent },
-            { path: 'attachments', component: AttachmentsComponent },
+        { path: 'general-information', component: GeneralInformationComponent },
+        { path: 'injury', component: InjuryComponent },
+        { path: 'involvedPerson', component: InvolvedPersonComponent },
+        { path: 'potentialLoss', component: PotentialLossComponent },
+        { path: 'rootCauses', component: RootCausesComponent },
+        { path: 'caseActions', component: ActionComponent },
+        { path: 'comments', component: CommentsComponent },
+        { path: 'attachments', component: AttachmentsComponent },
+        { path: 'signatures', component: SignatureComponent },
+
       ],
-    },
-  ] as Routes;
+  },
+] as Routes;
