@@ -16,7 +16,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { FuseHighlightService } from '@fuse/components/highlight/highlight.service';
+import { FuseHighlightService } from '../../../@fuse/components/highlight/highlight.service';
 
 @Component({
     selector: 'textarea[fuse-highlight]',
@@ -38,8 +38,8 @@ export class FuseHighlightComponent implements OnChanges, AfterViewInit {
     @Input() lang: string;
     @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
 
-    highlightedCode: string;
-    private _viewRef: EmbeddedViewRef<any>;
+    highlightedCode: string | null;
+    private _viewRef: EmbeddedViewRef<any> | null;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks

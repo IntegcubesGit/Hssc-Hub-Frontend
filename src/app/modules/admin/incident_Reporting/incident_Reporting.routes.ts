@@ -6,7 +6,7 @@ import { Incident_ReportingService } from './incident_Reporting/incident_Reporti
 import { AddFormComponent } from './incident_Reporting/add-form/add-form.component';
 import { GeneralInformationComponent } from './incident_Reporting/add-form/components/general_information/general_information.component';
 import { InjuryComponent } from './incident_Reporting/add-form/components/injury/injury.component';
-import { CommonService } from 'app/modules/common.service';
+import { CommonService } from '../../../../app/modules/common.service';
 import { InvolvedPersonComponent } from './incident_Reporting/add-form/components/involvedPerson/involvedPerson.component';
 import { PotentialLossComponent } from './incident_Reporting/add-form/components/potentialLoss/potentialLoss.component';
 import { RootCausesComponent } from './incident_Reporting/add-form/components/rootCauses/rootCauses.component';
@@ -55,4 +55,3 @@ export default [
       ],
     },
   ] as Routes;
-  

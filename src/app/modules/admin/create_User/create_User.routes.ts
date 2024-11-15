@@ -30,6 +30,12 @@ export default [
         products: () => inject(UserService).getUsers(),
       },
     },
+    {
+        path: 'user-info/:id',
+        component: AddUserComponent
+      },
+
+
     // {
     //   path: 'information/:id',
     //   component: AddFormComponent,

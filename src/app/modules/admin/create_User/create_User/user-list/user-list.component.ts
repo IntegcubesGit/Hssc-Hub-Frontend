@@ -92,7 +92,6 @@ import { MatMenuModule } from '@angular/material/menu';
         ReactiveFormsModule,
         MatButtonModule,
         MatSortModule,
-        NgTemplateOutlet,
         MatPaginatorModule,
         NgClass,
         MatSlideToggleModule,
@@ -101,8 +100,6 @@ import { MatMenuModule } from '@angular/material/menu';
         MatCheckboxModule,
         MatRippleModule,
         AsyncPipe,
-        CurrencyPipe,
-        DatePipe,
         MatMenuModule,
     ],
 })
@@ -227,13 +224,13 @@ export class UserListComponent
     }
     create(id: string): void {
 
-        this._router.navigate(['/case/information', id]);
+        this._router.navigate(['/user/user-info', id]);
     }
 
     deleteUser(): void {
 
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete user',
+            title: 'Delete User',
             message:
                 'Are you sure you want to remove this user? This action cannot be undone!',
             actions: {

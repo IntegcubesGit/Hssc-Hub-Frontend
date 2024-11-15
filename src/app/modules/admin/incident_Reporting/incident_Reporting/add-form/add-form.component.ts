@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { FuseNavigationItem, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FuseScrollResetDirective } from '@fuse/directives/scroll-reset';
+import { FuseNavigationItem, FuseVerticalNavigationComponent } from '../../../../../../@fuse/components/navigation';
+import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-watcher';
+import { FuseScrollResetDirective } from '../../../../../../@fuse/directives/scroll-reset';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -37,7 +37,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({ matchingAliases }) => {
-       
+
         if (matchingAliases.includes('md')) {
           this.drawerMode = 'side';
           this.drawerOpened = true;
@@ -50,8 +50,8 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // Subscribe to route parameters
     this.route.params.subscribe(params => {
       const id = params['id'];
-      console.log('AddFormComponent ID:', id); 
-      this.initializeMenuData(id); 
+      console.log('AddFormComponent ID:', id);
+      this.initializeMenuData(id);
     });
   }
 
@@ -73,23 +73,23 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Injury',
             type: 'basic',
             link: `/case/information/${id}/injury`,
-            disabled: id == -1 
+            disabled: id == -1
           },
           {
             id: 'fuse-components.components.fullscreen',
             title: 'Involved Person',
             type: 'basic',
             link: `/case/information/${id}/involvedPerson`,
-            disabled: id == -1 
+            disabled: id == -1
           },
           {
             id: 'fuse-components.components.highlight',
             title: 'Potential Loss',
             type: 'basic',
             link: `/case/information/${id}/potentialLoss`,
-            disabled: id == -1 
+            disabled: id == -1
           }
-          
+
         ],
       },
       {
@@ -102,7 +102,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Root Causes',
             type: 'basic',
             link:  `/case/information/${id}/rootCauses`,
-            disabled: id == -1 
+            disabled: id == -1
           },
           {
             id: 'Immediate-Cause.components.Case-Actions',
@@ -129,7 +129,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'basic',
             link: '/case/incident_Reporting/case_Info/components/signatures',
           }
-         
+
         ],
       }
     ];

@@ -34,8 +34,6 @@ import { Case } from '../../../incident_Reporting.types';
   imports: [
     MatIconModule,
     MatButtonModule,
-    FuseHighlightComponent,
-    FuseAlertComponent,
     MatIconModule,
     FormsModule,
     MatFormFieldModule,

@@ -1,0 +1,33 @@
+<div class="checkbox-container">
+    <div class="select-all">
+        @if (sites.length > 0) {
+            <mat-checkbox class="mb-2 mt-4 pt-1" [color]="'primary'"
+                [(ngModel)]="selectAll"
+                (change)="toggleAllSites(selectAll)"
+            >
+                Select All
+            </mat-checkbox>
+        }
+    </div>
+    @if (sites.length > 0) {
+
+            <div class="site-checkbox-grid">
+                @for (site of sites; track trackBySiteId; let idx = $index) {
+                    <!-- <mat-checkbox
+                        [formControl]="sitesForm.controls[idx]"
+                        (change)="updateSelectAll()"
+                    >
+                        {{ site.title }}
+                    </mat-checkbox> -->
+
+                    <mat-checkbox class="mb-2 mt-4 pt-1" [color]="'primary'"
+                        [(ngModel)]="selectSingle"
+
+                    >
+                        {{ site.title }}
+                    </mat-checkbox>
+                }
+            </div>
+
+    }
+</div>

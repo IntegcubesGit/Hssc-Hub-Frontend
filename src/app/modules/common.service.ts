@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'environment/environment';
+import { environment } from '../../environment/environment';
 import { ActionStatus, ActionType, BusinessUnit, CaseCategory, CaseStatus, Department, InjuryCategory, InjuryType, RiskCategory } from './common.model';
 @Injectable({
   providedIn: 'root'
@@ -59,64 +59,64 @@ export class CommonService {
   }
 
   loadCasesIdsAndTitles(): void {
-    this._httpClient.get<any[]>(`${this.apiUrl}GeneralFilters/getAllIncidentCasesIdsAndTitles/`)
+    this._httpClient.get<any[]>(`${this.apiUrl}CommonFilters/getAllIncidentCasesIdsAndTitles/`)
       .subscribe(cases => this._cases$.next(cases));
   }
 
   // Method to fetch Case Categories and update the BehaviorSubject
   loadCaseCategories(): void {
-    this._httpClient.get<CaseCategory[]>(`${this.apiUrl}GeneralFilters/getAllCaseCategories`)
+    this._httpClient.get<CaseCategory[]>(`${this.apiUrl}CommonFilters/getAllCaseCategories`)
       .subscribe(categories => this._caseCategories$.next(categories));
   }
 
   // Method to fetch Risk Categories and update the BehaviorSubject
   loadRiskCategories(): void {
-    this._httpClient.get<RiskCategory[]>(`${this.apiUrl}GeneralFilters/getAllRiskCategories`)
+    this._httpClient.get<RiskCategory[]>(`${this.apiUrl}CommonFilters/getAllRiskCategories`)
       .subscribe(categories => this._riskCategories$.next(categories));
   }
 
   // Method to fetch Injury Types and update the BehaviorSubject
   loadInjuryTypes(): void {
-    this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`)
+    this._httpClient.get<InjuryType[]>(`${this.apiUrl}CommonFilters/getAllInjuryTypes`)
       .subscribe(types => this._injuryTypes$.next(types));
   }
 
   // Method to fetch Business Units and update the BehaviorSubject
   loadBusinessUnits(): void {
-    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}GeneralFilters/getAllBusinessUnits`)
+    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}CommonFilters/getAllBusinessUnits`)
       .subscribe(units => this._businessUnits$.next(units));
   }
 
   // Method to fetch Case Statuses and update the BehaviorSubject
   loadAllCaseStatuses(): void {
-    this._httpClient.get<CaseStatus[]>(`${this.apiUrl}GeneralFilters/getAllCaseStatuses`)
+    this._httpClient.get<CaseStatus[]>(`${this.apiUrl}CommonFilters/getAllCaseStatuses`)
       .subscribe(statuses => this._caseStatuses$.next(statuses));
   }
 
   // Method to fetch Departments and update the BehaviorSubject
   loadDepartments(): void {
-    this._httpClient.get<Department[]>(`${this.apiUrl}GeneralFilters/getAllDepartments`)
+    this._httpClient.get<Department[]>(`${this.apiUrl}CommonFilters/getAllDepartments`)
       .subscribe(departments => this._departments$.next(departments));
   }
 
 
   // Method to fetch and return injury categories as an Observable
   loadInjuryCategory(): Observable<InjuryCategory[]> {
-    return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}GeneralFilters/getAllInjuryCategories`);
+    return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}CommonFilters/getAllInjuryCategories`);
   }
 
   // Method to fetch and return injury types as an Observable
   loadInjuryType(): Observable<InjuryType[]> {
-    return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
+    return this._httpClient.get<InjuryType[]>(`${this.apiUrl}CommonFilters/getAllInjuryTypes`);
   }
 
 
 
   loadCaseActionStatuses(): Observable<ActionStatus[]> {
-    return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}GeneralFilters/getAllActionStatuses`);
+    return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}CommonFilters/getAllActionStatuses`);
   }
   loadCaseActionTypes(): Observable<ActionType[]> {
-    return this._httpClient.get<ActionType[]>(`${this.apiUrl}GeneralFilters/getAllActionTypes`);
+    return this._httpClient.get<ActionType[]>(`${this.apiUrl}CommonFilters/getAllActionTypes`);
   }
 
 
