@@ -16,13 +16,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AttachmentsComponent implements OnInit
 {
-  filess:any =[];
-  files: { name: string; type: string; icon: string }[] = [
-    { name: 'File-attachment-1', type: 'PDF', icon: 'description' },
-    { name: 'File-attachment-2', type: 'Excel', icon: 'insert_drive_file' },
-    { name: 'File-attachment-3', type: 'Word', icon: 'insert_drive_file' },
-  ];
-  selectedFile: { name: string; type: string; icon: string } | null = null;
+  files:any =[];
+  selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; } | null = null;
   isDrawerOpen: boolean = false;
   caseId:string=null;
 
@@ -30,19 +25,16 @@ export class AttachmentsComponent implements OnInit
     private _fuseComponentsComponent: AddFormComponent,
     private caseService:Incident_ReportingService,
     private route: ActivatedRoute, 
-
-
   ) 
   {}
   ngOnInit(): void 
   {
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
-    debugger
     this.getAllCaseFiles();
     
   }
 
-  openDrawer(file: { name: string; type: string; icon: string }) {
+  openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string;  }): void {
     this.selectedFile = file;
     this.isDrawerOpen = true;
   }
@@ -61,14 +53,21 @@ export class AttachmentsComponent implements OnInit
     const selectedFiles = event.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      const fileType = this.getFileType(file.name);
-      const fileIcon = this.getFileIcon(fileType);
+      const fileName = file.originalFileName;
+      const fileType = this.getFileType(file.fileType);
+      const fileSize = file.fileSize;
+      const remarks = file.remarks;
+      const uploadedBy = file.uploadedBy;
+      const uploadedAt = file.uploadTime;
 
-      // Add selected file to the list
       this.files.push({
-        name: file.name,
+        name: fileName,
         type: fileType,
-        icon: fileIcon,
+        icon: 'insert_drive_file',
+        fileSize: fileSize,
+        remarks: remarks,
+        uploadedBy: uploadedBy,
+        uploadedAt: uploadedAt,
       });
       
       // Optionally, upload the file
@@ -76,33 +75,28 @@ export class AttachmentsComponent implements OnInit
     }
   }
 
-  // Helper method to get file type based on file extension
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
       case 'pdf':
-        return 'PDF';
+        return 'pdf';
       case 'xlsx':
-        return 'Excel';
+      case 'xls':
+      case 'xlsm':
+        return 'excel';
       case 'docx':
-        return 'Word';
+        return 'docx';
+      case 'pptx':
+        return 'pptx';
+      case 'csv':
+        return 'csv';
       default:
-        return 'Unknown';
+        return extension;
     }
   }
 
-  // Helper method to get file icon based on file type
   getFileIcon(fileType: string): string {
-    switch (fileType) {
-      case 'PDF':
-        return 'description';
-      case 'Excel':
-        return 'insert_drive_file';
-      case 'Word':
-        return 'insert_drive_file';
-      default:
-        return 'insert_drive_file';
-    }
+    return 'insert_drive_file';
   }
 
 
@@ -136,19 +130,37 @@ export class AttachmentsComponent implements OnInit
               }
         });
   }
-  getAllCaseFiles()
-  {
-    this.caseService.getAllCaseAttachments(this.caseId).subscribe(
-      {
-          next: (response) => 
-            {
-              debugger
-              this.filess = response;
-            },
-          error: (error) => 
-            {
-              console.error('Error fetching case attachments data:', error);
-            }
-      });
+  getAllCaseFiles() {
+    this.caseService.getAllCaseAttachments(this.caseId).subscribe({
+      next: (response) => {
+        this.files = response.caseFiles.map(file => ({
+          fileName: file.originalFileName,
+          type: this.getFileType(file.extension),
+          icon: this.getFileIcon(this.getFileType(file.extension)),
+          remarks: file.remarks,
+          uploadedBy: file.uploadedBy,
+          uploadedAt: file.uploadTime,
+          fileSize: file.fileSize,
+        }));
+      },
+      error: (error) => {
+        console.error('Error fetching case attachments data:', error);
+      }
+    });
+  }  
+
+  getFileClass(fileType: string): string {
+    const fileClassMap: { [key: string]: string } = {
+      pdf: 'bg-red-600 text-white',
+      excel: 'bg-yellow-300 text-black',
+      docx: 'bg-blue-600 text-white',
+      powerpoint: 'bg-green-600 text-white',
+      csv: 'bg-blue-300 text-black',
+      txt: 'bg-gray-600 text-white',
+      jpg: 'bg-green-600 text-white',
+      png: 'bg-green-600 text-white',
+      mp4: 'bg-orange-600 text-black',
+    };
+    return fileClassMap[fileType] || 'bg-black text-white';
   }
 }
