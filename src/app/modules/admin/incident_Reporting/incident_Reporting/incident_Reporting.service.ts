@@ -247,10 +247,13 @@ export class Incident_ReportingService {
       `${this.uploadCaseAttachmentsURL}`, formData
     );
   }
-  downloadCaseAttachment(folderName:string,fileName:string): Observable<any>
-  {
-    return this._httpClient.get<any>(`${this.downloadCaseAttachmentsURL}${folderName}/${fileName}`);
+  
+  downloadCaseAttachment(folderName: string, fileName: string): Observable<Blob> {
+    return this._httpClient.get<Blob>(`${this.downloadCaseAttachmentsURL}${folderName}/${fileName}`, {
+      responseType: 'blob' as 'json'
+    });
   }
+  
 
   getAllCaseSignatures(caseId:string): Observable<any>
   {

@@ -139,20 +139,23 @@ export class AttachmentsComponent implements OnInit
       });
   }
 
-  downloadFile(fileName:string)
-  {
-      this.caseService.downloadCaseAttachment('cases',fileName).subscribe(
-        {
-            next: (response) => 
-              {
-                console.log('File downloaded successfully', response);
-              },
-              error: (error) => 
-              {
-                console.error('Error downlaoding the attachment', error);
-              }
-        });
+  downloadFile(fileName: string): void {
+    this.caseService.downloadCaseAttachment('cases', fileName).subscribe({
+      next: (response: Blob) => {
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        window.URL.revokeObjectURL(url);
+        console.log('File downloaded successfully');
+      },
+      error: (error) => {
+        console.error('Error downloading the attachment', error);
+      }
+    });
   }
+  
   getAllCaseFiles() {
     this.caseService.getAllCaseAttachments(this.caseId).subscribe({
       next: (response) => {
