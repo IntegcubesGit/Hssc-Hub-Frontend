@@ -20,6 +20,7 @@ export class CommonService {
   private _caseStatuses$ = new BehaviorSubject<CaseStatus[]>([]);
   private _departments$ = new BehaviorSubject<Department[]>([]);
   private _cases$ = new BehaviorSubject<any[]>([]);
+  private _sites$ = new BehaviorSubject<any[]>([]);
 
 
   private readonly apiUrl = environment.apiUrl;
@@ -47,6 +48,10 @@ export class CommonService {
   get businessUnits$(): Observable<BusinessUnit[]> {
     return this._businessUnits$.asObservable();
   }
+  get caseSites$(): Observable<BusinessUnit[]> {
+    return this._sites$.asObservable();
+  }
+
 
   // Observable for Case Statuses
   get caseStatuses$(): Observable<CaseStatus[]> {
@@ -59,68 +64,71 @@ export class CommonService {
   }
 
   loadCasesIdsAndTitles(): void {
-    this._httpClient.get<any[]>(`${this.apiUrl}GeneralFilters/getAllIncidentCasesIdsAndTitles/`)
+    this._httpClient.get<any[]>(`${this.apiUrl}CommonFilters/getAllIncidentCasesIdsAndTitles/`)
       .subscribe(cases => this._cases$.next(cases));
   }
 
   // Method to fetch Case Categories and update the BehaviorSubject
   loadCaseCategories(): void {
-    this._httpClient.get<CaseCategory[]>(`${this.apiUrl}GeneralFilters/getAllCaseCategories`)
+    this._httpClient.get<CaseCategory[]>(`${this.apiUrl}CommonFilters/getAllCaseCategories`)
       .subscribe(categories => this._caseCategories$.next(categories));
   }
 
   // Method to fetch Risk Categories and update the BehaviorSubject
   loadRiskCategories(): void {
-    this._httpClient.get<RiskCategory[]>(`${this.apiUrl}GeneralFilters/getAllRiskCategories`)
+    this._httpClient.get<RiskCategory[]>(`${this.apiUrl}CommonFilters/getAllRiskCategories`)
       .subscribe(categories => this._riskCategories$.next(categories));
   }
 
   // Method to fetch Injury Types and update the BehaviorSubject
   loadInjuryTypes(): void {
-    this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`)
+    this._httpClient.get<InjuryType[]>(`${this.apiUrl}CommonFilters/getAllInjuryTypes`)
       .subscribe(types => this._injuryTypes$.next(types));
   }
 
-  // Method to fetch Business Units and update the BehaviorSubject
-  loadBusinessUnits(): void {
-    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}GeneralFilters/getAllBusinessUnits`)
-      .subscribe(units => this._businessUnits$.next(units));
-  }
+
 
   // Method to fetch Case Statuses and update the BehaviorSubject
   loadAllCaseStatuses(): void {
-    this._httpClient.get<CaseStatus[]>(`${this.apiUrl}GeneralFilters/getAllCaseStatuses`)
+    this._httpClient.get<CaseStatus[]>(`${this.apiUrl}CommonFilters/getAllCaseStatuses`)
       .subscribe(statuses => this._caseStatuses$.next(statuses));
   }
 
   // Method to fetch Departments and update the BehaviorSubject
   loadDepartments(): void {
-    this._httpClient.get<Department[]>(`${this.apiUrl}GeneralFilters/getAllDepartments`)
+    this._httpClient.get<Department[]>(`${this.apiUrl}CommonFilters/getAllDepartments`)
       .subscribe(departments => this._departments$.next(departments));
   }
 
 
   // Method to fetch and return injury categories as an Observable
   loadInjuryCategory(): Observable<InjuryCategory[]> {
-    return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}GeneralFilters/getAllInjuryCategories`);
+    return this._httpClient.get<InjuryCategory[]>(`${this.apiUrl}CommonFilters/getAllInjuryCategories`);
   }
 
   // Method to fetch and return injury types as an Observable
   loadInjuryType(): Observable<InjuryType[]> {
-    return this._httpClient.get<InjuryType[]>(`${this.apiUrl}GeneralFilters/getAllInjuryTypes`);
+    return this._httpClient.get<InjuryType[]>(`${this.apiUrl}CommonFilters/getAllInjuryTypes`);
   }
 
 
 
   loadCaseActionStatuses(): Observable<ActionStatus[]> {
-    return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}GeneralFilters/getAllActionStatuses`);
+    return this._httpClient.get<ActionStatus[]>(`${this.apiUrl}CommonFilters/getAllActionStatuses`);
   }
   loadCaseActionTypes(): Observable<ActionType[]> {
-    return this._httpClient.get<ActionType[]>(`${this.apiUrl}GeneralFilters/getAllActionTypes`);
+    return this._httpClient.get<ActionType[]>(`${this.apiUrl}CommonFilters/getAllActionTypes`);
   }
 
+  loadCaseSites(): void {
+    this._httpClient.get<any[]>(`${this.apiUrl}CommonFilters/getAllSites`)
+      .subscribe(sites => this._sites$.next(sites));
+  }
 
-
+  loadBusinessUnits(): void {
+    this._httpClient.get<BusinessUnit[]>(`${this.apiUrl}CommonFilters/getAllBusinessUnits`)
+      .subscribe(units => this._businessUnits$.next(units));
+  }
 
 
 }

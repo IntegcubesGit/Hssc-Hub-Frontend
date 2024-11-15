@@ -6,7 +6,7 @@ import {
   Observable,
   tap,
 } from 'rxjs';
-import { Pagination, Case } from './incident_Reporting.types';
+import { Pagination, Case } from './observations.types';
 import { environment } from '../../../../../environment/environment';
 
 
@@ -86,7 +86,7 @@ export class Incident_ReportingService {
    */
   getProducts(
     page: number = 0,
-    size: number = 10,
+    size: number = 5,
     sort: string = 'name',
     order: 'asc' | 'desc' | '' = 'asc',
     search: string = ''

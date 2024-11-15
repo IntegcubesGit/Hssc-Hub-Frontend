@@ -16,9 +16,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FuseAlertComponent } from "@fuse/components/alert";
 import { FuseHighlightComponent } from "@fuse/components/highlight";
 import { AddFormComponent } from "../../add-form.component";
-import { Incident_ReportingService } from "../../../incident_Reporting.service";
+import { Incident_ReportingService } from "../../../observations.service";
 import { DatePipe } from "@angular/common";
-import { FuseConfirmationService } from "@fuse/services/confirmation/confirmation.service";
 
 @Component({
     selector: 'app-signature',
@@ -42,8 +41,7 @@ import { FuseConfirmationService } from "@fuse/services/confirmation/confirmatio
         MatButtonModule,
         MatDatepickerModule,
         MatTableModule,
-        DatePipe,
-         
+        DatePipe
     ],
 })
 export class SignatureComponent implements OnInit, OnDestroy {
@@ -55,10 +53,8 @@ export class SignatureComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private _fuseComponentsComponent: AddFormComponent,
-        private service: Incident_ReportingService,
-        private _fuseConfirmationService:FuseConfirmationService 
-    ) 
-    {
+        private service: Incident_ReportingService
+    ) {
 
 
     }
@@ -75,7 +71,11 @@ export class SignatureComponent implements OnInit, OnDestroy {
 
     ];
 
-    
+    openComposeDialog(): void 
+    {
+        
+    };
+
     onCancel() {
         this.router.navigate(['/case/incident_Reporting']);
     }
@@ -104,5 +104,15 @@ export class SignatureComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+    reviewCase() {
+        this.service.reviewCase(this.caseId).subscribe({
+            next: (response) => 
+            {
+            },
+            error: (error) => {
+                console.error('Error approving the review', error);
+            }
+        });
+        this.loadSignatures();
+    }
 }

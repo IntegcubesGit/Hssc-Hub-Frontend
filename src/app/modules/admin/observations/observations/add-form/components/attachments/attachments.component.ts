@@ -4,7 +4,7 @@ import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 import { AddFormComponent } from '../../add-form.component';
-import { Incident_ReportingService } from '../../../incident_Reporting.service';
+import { Incident_ReportingService } from '../../../observations.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -142,7 +142,6 @@ export class AttachmentsComponent implements OnInit
       {
           next: (response) => 
             {
-              debugger
               this.filess = response;
             },
           error: (error) => 

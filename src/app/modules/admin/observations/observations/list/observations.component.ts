@@ -50,15 +50,15 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { Case, Pagination } from '../incident_Reporting.types';
-import { Incident_ReportingService } from '../incident_Reporting.service';
+import { Case, Pagination } from '../observations.types';
+import { Incident_ReportingService } from '../observations.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
-    selector: 'incident_Reporting-list',
-    templateUrl: './incident_Reporting.component.html',
+    selector: 'observations-list',
+    templateUrl: './observations.component.html',
     styles: [
         /* language=SCSS */
         `
@@ -107,7 +107,8 @@ import { MatMenuModule } from '@angular/material/menu';
     ],
 })
 export class Incident_ReportingListComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -126,7 +127,7 @@ export class Incident_ReportingListComponent
         private _Service: Incident_ReportingService,
 
         private _router: Router,
-    ) { }
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -138,7 +139,7 @@ export class Incident_ReportingListComponent
         this._Service.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: Pagination | null) => {
-                if (pagination) {
+                if(pagination){
                     // Update the pagination
                     this.pagination = pagination;
 
@@ -149,7 +150,7 @@ export class Incident_ReportingListComponent
 
 
 
-        this.cases$ = this._Service.cases$;
+      this.cases$ = this._Service.cases$;
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -279,49 +280,5 @@ export class Incident_ReportingListComponent
      */
     trackByFn(index: number, item: any): any {
         return item.id || index;
-    }
-
-    openComposeDialog(caseId:string): void {
-        const dialogRef = this._fuseConfirmationService.open({
-            title: 'Confirm Case Review',
-            message: 'Are you sure you want to approve the case review?',
-            icon: {
-                show: true,
-                name: 'heroicons_outline:check-circle',
-                color: 'success'
-            },
-            actions: {
-                confirm: {
-                    show: true,
-                    label: 'Yes, Approve',
-                    color: 'primary'
-                },
-                cancel: {
-                    show: true,
-                    label: 'No, Cancel'
-                }
-            },
-            dismissible: true
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) 
-            {
-                this.reviewCase(caseId);
-            } 
-            else 
-            {
-                console.log('Deletion canceled');
-            }
-        });
-    };
-    reviewCase(caseId: string) {
-        this._Service.reviewCase(caseId).subscribe({
-            next: (response) => {
-            },
-            error: (error) => {
-                console.error('Error approving the review', error);
-            }
-        });
     }
 }
