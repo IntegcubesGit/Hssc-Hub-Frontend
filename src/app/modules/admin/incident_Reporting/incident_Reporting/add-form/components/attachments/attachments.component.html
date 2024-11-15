@@ -1,7 +1,7 @@
 <div class="flex items-center w-full justify-center">
-  <div class="mx-auto w-full bg-white h-screen overflow-y-auto">
+  <div class="mx-auto w-full bg-white overflow-y-auto h-full">
     <div
-      class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2">
+      class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2">
       <div class="min-w-0 flex-1">
         <!-- Title -->
         <div class="mt-2">
@@ -17,7 +17,7 @@
     <form class="py-4 px-9">
       <!-- Upload Section -->
       <div class="mb-6 pt-4 mx-2">
-        <label class="mb-5 block text-xl font-bold text-black">Add New Attachments</label>
+        <label class="mb-5 block text-xl font-bold text-black overcl" >Add New Attachments</label>
 
         <div class="mb-8 mx-2">
           <input type="file" name="file" id="file" class="sr-only" (change)="onFileSelected($event)" multiple />
@@ -36,7 +36,7 @@
 
         <!-- Display Files -->
         <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap overflow-y-scroll h-72">
           <mat-card *ngFor="let file of files"
             class="m-2 flex h-40 w-40 cursor-pointer flex-col rounded-sm p-4 shadow border-gray-400 bg-gray-100"
             (click)="openDrawer(file)">
@@ -63,9 +63,9 @@
   </div>
 
   <!-- Right Drawer for File Details -->
-  <div *ngIf="isDrawerOpen" class="h-screen bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
-      flex flex-auto flex-col p-4 md:p-6 lg:p-6 w-80 top-0 right-0" [ngClass]="{
-        'translate-x-0 opacity-100 w-80': isDrawerOpen,
+  <div *ngIf="isDrawerOpen" class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+      flex flex-auto flex-col p-4 md:pt-6 lg:pt-6 md:px-5 lg:px-5 md:pb-2 lg:pb-2 w-80 top-0 right-0" [ngClass]="{
+        'translate-x-0 opacity-100 basis-2/5': isDrawerOpen,
         'translate-x-full opacity-0 w-0': !isDrawerOpen
       }">
     <div class="py-2 px-4">
@@ -77,45 +77,45 @@
       </div>
       <div *ngIf="selectedFile">
         <div
-          class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100 dark:bg-transparent">
-          <mat-icon class="text-hint opacity-50 icon-size-16">{{ selectedFile.icon }}</mat-icon>
+          class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
+          <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
         </div>
 
-        <p class="text-center text-md"><strong>{{ selectedFile.fileName }}</strong></p>
+        <p class="text-center text-lg"><strong>{{ selectedFile.fileName }}</strong></p>
 
         <!-- Information Section -->
-        <div class="mt-3 text-md font-medium text-center">Details</div>
+        <div class="mt-3 text-md font-semibold text-center">Details</div>
         <div class="mt-3 flex flex-col divide-y border-b border-t font-medium">
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-[11px]">Format</div>
-            <div class="rounded px-1.5 text-[11px] font-semibold leading-5 w-max"
+            <div class="text-secondary text-sm">File Format</div>
+            <div class="rounded px-1.5 text-sm font-semibold leading-5 w-max"
               [ngClass]="getFileClass(selectedFile.type)">
               .{{ selectedFile.type }}
             </div>
           </div>
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-[11px]">Uploaded By</div>
-            <div class="text-[11px]">{{ selectedFile.uploadedBy }}</div>
+            <div class="text-secondary text-sm">Uploaded By</div>
+            <div class="text-sm">{{ selectedFile.uploadedBy }}</div>
           </div>
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-[11px]">Uploaded At</div>
-            <div class="text-[11px]">{{ formatDate(selectedFile.uploadedAt) }}</div>
+            <div class="text-secondary text-sm">Uploaded At</div>
+            <div class="text-sm">{{ formatDate(selectedFile.uploadedAt) }}</div>
           </div>
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-[11px]">Size</div>
-            <div class="text-[11px]">{{ formatSize(selectedFile.fileSize) }}</div>
+            <div class="text-secondary text-sm">Size</div>
+            <div class="text-sm">{{ formatSize(selectedFile.fileSize) }}</div>
           </div>
         </div>
 
         <!-- Description Section -->
-        <div class="mt-6 flex items-center justify-between">
-          <div class="text-md font-medium">Remarks</div>
+        <div class="mt-8 flex items-center justify-between">
+          <div class="text-md font-semibold">Remarks</div>
           <button mat-icon-button>
             <mat-icon class="icon-size-3" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
           </button>
         </div>
-        <div class="mt-2 flex border-t">
-          <div class="py-3">
+        <div class="mt-2 flex border-t h-24">
+          <div class="py-2">
             <div *ngIf="selectedFile.remarks; else noDescription" class="text-sm">
               {{ selectedFile.remarks }}
             </div>
@@ -128,7 +128,7 @@
         </div>
 
         <!-- Actions Section -->
-        <div class="mt-4 grid w-full grid-cols-2 gap-4">
+        <div class="mt-4 grid w-full grid-cols-2 gap-4 ">
           <button class="flex-auto" mat-flat-button [color]="'primary'">Download</button>
           <button class="flex-auto" mat-stroked-button>Delete</button>
         </div>
