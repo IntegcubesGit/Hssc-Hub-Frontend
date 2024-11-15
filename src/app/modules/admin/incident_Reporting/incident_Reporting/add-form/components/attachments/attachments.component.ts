@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';  // Import CommonModule
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-attachments',
@@ -13,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
   imports: [MatButton, MatCard, MatIcon, CommonModule],  
   templateUrl: './attachments.component.html',
   styles: [],
+  providers: [DatePipe],
 })
 export class AttachmentsComponent implements OnInit
 {
@@ -24,7 +26,8 @@ export class AttachmentsComponent implements OnInit
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
     private caseService:Incident_ReportingService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
+    private datePipe: DatePipe 
   ) 
   {}
   ngOnInit(): void 
@@ -33,6 +36,32 @@ export class AttachmentsComponent implements OnInit
     this.getAllCaseFiles();
     
   }
+  formatDate(date: string): string | null {
+    return this.datePipe.transform(date, 'h:mm a, MM/dd/yyyy');
+  }
+
+  formatSize(size: number): string {
+    let formattedSize: string;
+    let postfix: string;
+  
+    if (size < 1024) {
+      formattedSize = size.toFixed(2);
+      postfix = 'B'; 
+    } else if (size < 1024 * 1024) {
+      formattedSize = (size / 1024).toFixed(2);
+      postfix = 'KB'; 
+    } else if (size < 1024 * 1024 * 1024) {
+      formattedSize = (size / (1024 * 1024)).toFixed(2);
+      postfix = 'MB'; 
+    } else {
+      formattedSize = (size / (1024 * 1024 * 1024)).toFixed(2);
+      postfix = 'GB'; 
+    }
+  
+    return `${formattedSize} ${postfix}`;
+  }
+  
+  
 
   openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string;  }): void {
     this.selectedFile = file;
