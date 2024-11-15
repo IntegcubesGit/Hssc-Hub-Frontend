@@ -1,5 +1,5 @@
 <div class="flex items-center w-full justify-center">
-  <div class="mx-auto w-full bg-white h-screen overflow-y-auto">
+  <div class="mx-auto w-full bg-white overflow-y-auto h-full">
     <div
       class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2">
       <div class="min-w-0 flex-1">
@@ -63,7 +63,7 @@
   </div>
 
   <!-- Right Drawer for File Details -->
-  <div *ngIf="isDrawerOpen" class="h-screen bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+  <div *ngIf="isDrawerOpen" class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
       flex flex-auto flex-col p-4 md:p-6 lg:p-6 w-80 top-0 right-0" [ngClass]="{
         'translate-x-0 opacity-100 w-2/5': isDrawerOpen,
         'translate-x-full opacity-0 w-0': !isDrawerOpen
