@@ -19,7 +19,7 @@ import { DatePipe } from '@angular/common';
 export class AttachmentsComponent implements OnInit
 {
   files:any =[];
-  selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; } | null = null;
+  selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;} | null = null;
   isDrawerOpen: boolean = false;
   caseId:string=null;
 
@@ -61,7 +61,7 @@ export class AttachmentsComponent implements OnInit
     return `${formattedSize} ${postfix}`;
   }
   
-  openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string;  }): void {
+  openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void {
     this.selectedFile = file;
     this.isDrawerOpen = true;
   }
@@ -83,6 +83,7 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
+  
 
       this.files.push({
         name: fileName,
@@ -104,6 +105,9 @@ export class AttachmentsComponent implements OnInit
       case 'xls':
       case 'xlsm':
         return 'excel';
+      case 'docx':
+      case 'doc':
+        return 'docx';
       case 'pptx':
         return 'pptx';
       case 'csv':
@@ -141,7 +145,7 @@ export class AttachmentsComponent implements OnInit
         {
             next: (response) => 
               {
-                
+                console.log('File downloaded successfully', response);
               },
               error: (error) => 
               {
@@ -153,6 +157,7 @@ export class AttachmentsComponent implements OnInit
     this.caseService.getAllCaseAttachments(this.caseId).subscribe({
       next: (response) => {
         this.files = response.caseFiles.map(file => ({
+          completeFileName: file.fileName,
           fileName: file.originalFileName,
           type: this.getFileType(file.extension),
           icon: this.getFileIcon(this.getFileType(file.extension)),

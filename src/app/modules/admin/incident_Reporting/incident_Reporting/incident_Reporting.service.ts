@@ -243,7 +243,6 @@ export class Incident_ReportingService {
     formData.append('remarks', remarks);
     formData.append('folderName', folderName);
 
-  
     return this._httpClient.post<any>(
       `${this.uploadCaseAttachmentsURL}`, formData
     );
