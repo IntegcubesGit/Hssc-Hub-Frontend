@@ -13,7 +13,7 @@
         </div>
             @for (site of sites; track trackBySiteId; let idx = $index) {
                 <mat-checkbox
-                    class="mb-2 mt-4 pt-1"
+                    class="mb-2 mt-4 pt-1 w-40"
                     [color]="'primary'"
                     [checked]="selectSingle.includes(site.siteId)"
                     (change)="onCheckboxChange($event, site.siteId);"

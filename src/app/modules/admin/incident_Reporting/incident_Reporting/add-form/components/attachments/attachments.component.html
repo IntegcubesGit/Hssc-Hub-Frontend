@@ -71,7 +71,8 @@
   </div>
 
   <!-- Right Drawer for File Details -->
-  <div *ngIf="isDrawerOpen" class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+  @if (isDrawerOpen) {
+    <div  class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
       flex flex-auto flex-col p-4 md:pt-6 lg:pt-6 md:px-5 lg:px-5 md:pb-2 lg:pb-2 w-80 top-0 right-0" [ngClass]="{
         'translate-x-0 opacity-100 basis-2/5': isDrawerOpen,
         'translate-x-full opacity-0 w-0': !isDrawerOpen
@@ -83,7 +84,8 @@
           <mat-icon class="text-xl">close</mat-icon>
         </button>
       </div>
-      <div *ngIf="selectedFile">
+      @if (selectedFile) {
+      <div>
         <div class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
           <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
         </div>
@@ -123,15 +125,16 @@
         </div>
         <div class="mt-2 flex border-t h-24">
           <div class="py-2">
-            <div *ngIf="selectedFile.remarks; else noDescription" class="text-sm">
-              {{ selectedFile.remarks }}
-            </div>
-            <ng-template #noDescription>
-              <div class="text-secondary italic" class="text-sm">
+            @if (selectedFile.remarks) {
+              <div class="text-sm">
+                {{ selectedFile.remarks }}
+              </div>
+            } @else {
+              <div class="text-secondary italic text-sm">
                 Be the first to add comments.
               </div>
-            </ng-template>
-          </div>
+            }
+          </div>          
         </div>
 
         <!-- Actions Section -->
@@ -142,6 +145,8 @@
             (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
         </div>
       </div>
+      }
     </div>
   </div>
+}
 </div>

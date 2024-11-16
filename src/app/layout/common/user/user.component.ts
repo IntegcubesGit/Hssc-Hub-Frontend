@@ -32,6 +32,12 @@ import { Subject, takeUntil } from 'rxjs';
         NgClass,
         MatDividerModule,
     ],
+    styles: [`
+        .mat-mdc-form-field-icon-prefix {
+            height: 30px !important;
+            border-radius: 0 !important;
+        }
+        `],
 })
 export class UserComponent implements OnInit, OnDestroy {
     /* eslint-disable @typescript-eslint/naming-convention */
