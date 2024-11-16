@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';  // Import CommonModule
+import { CommonModule } from '@angular/common';  
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-attachments',
@@ -27,7 +28,8 @@ export class AttachmentsComponent implements OnInit
     private _fuseComponentsComponent: AddFormComponent,
     private caseService:Incident_ReportingService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe 
+    private datePipe: DatePipe,
+    private dialog: MatDialog,
   ) 
   {}
   ngOnInit(): void 
@@ -119,6 +121,14 @@ export class AttachmentsComponent implements OnInit
 
   uploadFile(file: File,remarks:string): void 
   {
+    if(file.size > 1024 * 1024)  
+    {
+      alert('File size exceeds the limit of 100MB');
+      this.openFileLimitWarningDialog();
+      this.getAllCaseFiles();
+      return;
+    }
+    else{  
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
           next: (response) => 
@@ -130,8 +140,9 @@ export class AttachmentsComponent implements OnInit
             {
               console.error('Error uploading the attachment', error);
               console.log(error);
+              this.getAllCaseFiles();
             }
-      });
+      });}
   }
 
   downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {
@@ -197,6 +208,10 @@ export class AttachmentsComponent implements OnInit
       mp4: 'bg-orange-600 text-black',
     };
     return fileClassMap[fileType] || 'bg-black text-white';
+  }
+
+  openFileLimitWarningDialog(): void {
+// Dialog to show the warning message when the file size exceeds the limit
   }
   
 }

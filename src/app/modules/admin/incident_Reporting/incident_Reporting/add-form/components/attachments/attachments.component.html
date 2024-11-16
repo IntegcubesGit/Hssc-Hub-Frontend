@@ -17,7 +17,7 @@
     <form class="py-4 px-9">
       <!-- Upload Section -->
       <div class="mb-6 pt-4 mx-2">
-        <label class="mb-5 block text-xl font-bold text-black overcl" >Add New Attachments</label>
+        <label class="mb-5 block text-xl font-bold text-black overcl">Add New Attachments</label>
 
         <div class="mb-8 mx-2">
           <input type="file" name="file" id="file" class="sr-only" (change)="onFileSelected($event)" multiple />
@@ -35,6 +35,7 @@
         </div>
 
         <!-- Display Files -->
+        @if (files.length > 0) {
         <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
         <div class="flex flex-wrap overflow-y-scroll h-72">
           <mat-card *ngFor="let file of files"
@@ -58,12 +59,20 @@
           </mat-card>
 
         </div>
+        }
+        @if (files.length === 0) {
+        <div class="flex items-center justify-center h-72">
+          <div class="text-secondary text-lg">No files uploaded yet.</div>
+        </div>
+        }
+
       </div>
     </form>
   </div>
 
   <!-- Right Drawer for File Details -->
-  <div *ngIf="isDrawerOpen" class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+  @if (isDrawerOpen) {
+    <div  class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
       flex flex-auto flex-col p-4 md:pt-6 lg:pt-6 md:px-5 lg:px-5 md:pb-2 lg:pb-2 w-80 top-0 right-0" [ngClass]="{
         'translate-x-0 opacity-100 basis-2/5': isDrawerOpen,
         'translate-x-full opacity-0 w-0': !isDrawerOpen
@@ -75,9 +84,9 @@
           <mat-icon class="text-xl">close</mat-icon>
         </button>
       </div>
-      <div *ngIf="selectedFile">
-        <div
-          class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
+      @if (selectedFile) {
+      <div>
+        <div class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
           <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
         </div>
 
@@ -116,23 +125,28 @@
         </div>
         <div class="mt-2 flex border-t h-24">
           <div class="py-2">
-            <div *ngIf="selectedFile.remarks; else noDescription" class="text-sm">
-              {{ selectedFile.remarks }}
-            </div>
-            <ng-template #noDescription>
-              <div class="text-secondary italic" class="text-sm">
+            @if (selectedFile.remarks) {
+              <div class="text-sm">
+                {{ selectedFile.remarks }}
+              </div>
+            } @else {
+              <div class="text-secondary italic text-sm">
                 Be the first to add comments.
               </div>
-            </ng-template>
-          </div>
+            }
+          </div>          
         </div>
 
         <!-- Actions Section -->
         <div class="mt-4 grid w-full grid-cols-2 gap-4 ">
-          <button class="flex-auto" mat-flat-button [color]="'primary'" (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">Download</button>
-          <button class="flex-auto" mat-stroked-button (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
+          <button class="flex-auto" mat-flat-button [color]="'primary'"
+            (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">Download</button>
+          <button class="flex-auto" mat-stroked-button
+            (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
         </div>
       </div>
+      }
     </div>
   </div>
+}
 </div>
