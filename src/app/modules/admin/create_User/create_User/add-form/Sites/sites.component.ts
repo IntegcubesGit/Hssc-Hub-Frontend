@@ -19,6 +19,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { SiteCreation } from './Sites.class';
 import { SitesService } from './sites.service';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { UserService } from '../../user.service';
 
 @Component({
     selector: 'app-sites',
@@ -35,7 +37,6 @@ import { MatButtonModule } from '@angular/material/button';
         MatButtonModule,
     ],
     templateUrl: './sites.component.html',
-    styleUrl: './sites.component.scss',
 })
 export class SitesComponent implements OnInit {
     sites: SiteCreation[] = [];
@@ -43,7 +44,11 @@ export class SitesComponent implements OnInit {
     selectSingle: any[] = [];
 
     constructor(
-        private _siteService: SitesService, private cdr: ChangeDetectorRef) {}
+        private _siteService: SitesService,
+        private cdr: ChangeDetectorRef,
+        private _router: Router,
+        private _service: UserService,
+    ) {}
 
     ngOnInit(): void {
         this.GetSitesInfo();
@@ -88,6 +93,12 @@ export class SitesComponent implements OnInit {
 
     saveUserSiteInfo(){
 
+    }
+
+    navigateUserBack(): void {
+
+       // this._service.setFormData(this.accountForm.value);
+        this._service.pannelvalue('generalInfo');
     }
 
     trackBySiteId(index: number, site: SiteCreation): number {

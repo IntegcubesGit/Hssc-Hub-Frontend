@@ -51,7 +51,7 @@ export class SettingsGeneralInfoComponent implements OnInit {
      */
     constructor(
         private _formBuilder: UntypedFormBuilder,
-        private router: Router,
+        private _router: Router,
         private _service: UserService,
         private route: ActivatedRoute
     ) {}
@@ -105,8 +105,14 @@ export class SettingsGeneralInfoComponent implements OnInit {
         }
     }
 
-    navigateUser(): void {
+    navigateUserNext(): void {
         this._service.setFormData(this.accountForm.value);
         this._service.pannelvalue('sites');
+    }
+
+    navigateUserBack(): void {
+
+        //this._router.navigate(['/user/user-info', id]);
+        this._router.navigate(['user/users-list']);
     }
 }

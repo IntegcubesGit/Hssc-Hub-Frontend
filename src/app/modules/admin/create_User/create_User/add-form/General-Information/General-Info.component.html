@@ -153,13 +153,13 @@
 
         <!-- Actions -->
         <div class="flex items-center justify-end">
-            <button mat-stroked-button type="button">Back</button>
+            <button mat-stroked-button type="button" (click)="navigateUserBack()">Cancel</button>
             <button
                 class="ml-4"
                 mat-flat-button
                 type="button"
                 [color]="'primary'"
-                (click)="navigateUser()"
+                (click)="navigateUserNext()"
                 [disabled]="accountForm.invalid"
             >
                 Next
