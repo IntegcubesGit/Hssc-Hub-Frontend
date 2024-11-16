@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';  
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -30,6 +30,7 @@ export class AttachmentsComponent implements OnInit
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private router: Router,
   ) 
   {}
   ngOnInit(): void 
@@ -38,6 +39,11 @@ export class AttachmentsComponent implements OnInit
     this.getAllCaseFiles();
     
   }
+
+  onCancel() 
+    {
+        this.router.navigate(['/case/incident_Reporting']);
+    }
 
   formatDate(date: string): string | null {
     return this.datePipe.transform(date, 'h:mm a, MM/dd/yyyy');
@@ -117,6 +123,7 @@ export class AttachmentsComponent implements OnInit
   getFileIcon(fileType: string): string {
     return 'insert_drive_file';
   }
+  
 
 
   uploadFile(file: File,remarks:string): void 
