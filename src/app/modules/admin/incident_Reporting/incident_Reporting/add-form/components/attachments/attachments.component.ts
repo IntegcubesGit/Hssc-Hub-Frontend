@@ -119,6 +119,13 @@ export class AttachmentsComponent implements OnInit
 
   uploadFile(file: File,remarks:string): void 
   {
+    if(file.size > 1024 * 1024 * 100)  
+    {
+      alert('File size exceeds the limit of 100MB');
+      this.getAllCaseFiles();
+      return;
+    }
+    else{  
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
           next: (response) => 
@@ -131,7 +138,7 @@ export class AttachmentsComponent implements OnInit
               console.error('Error uploading the attachment', error);
               console.log(error);
             }
-      });
+      });}
   }
 
   downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {

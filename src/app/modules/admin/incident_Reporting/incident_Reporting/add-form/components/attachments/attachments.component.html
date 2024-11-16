@@ -17,7 +17,7 @@
     <form class="py-4 px-9">
       <!-- Upload Section -->
       <div class="mb-6 pt-4 mx-2">
-        <label class="mb-5 block text-xl font-bold text-black overcl" >Add New Attachments</label>
+        <label class="mb-5 block text-xl font-bold text-black overcl">Add New Attachments</label>
 
         <div class="mb-8 mx-2">
           <input type="file" name="file" id="file" class="sr-only" (change)="onFileSelected($event)" multiple />
@@ -35,6 +35,7 @@
         </div>
 
         <!-- Display Files -->
+        @if (files.length > 0) {
         <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
         <div class="flex flex-wrap overflow-y-scroll h-72">
           <mat-card *ngFor="let file of files"
@@ -58,6 +59,13 @@
           </mat-card>
 
         </div>
+        }
+        @if (files.length === 0) {
+        <div class="flex items-center justify-center h-72">
+          <div class="text-secondary text-lg">No files uploaded yet.</div>
+        </div>
+        }
+
       </div>
     </form>
   </div>
@@ -76,8 +84,7 @@
         </button>
       </div>
       <div *ngIf="selectedFile">
-        <div
-          class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
+        <div class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
           <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
         </div>
 
@@ -129,8 +136,10 @@
 
         <!-- Actions Section -->
         <div class="mt-4 grid w-full grid-cols-2 gap-4 ">
-          <button class="flex-auto" mat-flat-button [color]="'primary'" (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">Download</button>
-          <button class="flex-auto" mat-stroked-button (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
+          <button class="flex-auto" mat-flat-button [color]="'primary'"
+            (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">Download</button>
+          <button class="flex-auto" mat-stroked-button
+            (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
         </div>
       </div>
     </div>
