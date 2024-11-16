@@ -17,7 +17,7 @@ import {
 export class SitesService {
 
     constructor(private _httpClient: HttpClient) {}
-    private readonly getSitesURL = `${environment.apiUrl}CommonFilters/GetAllSites`
+    private readonly getSitesURL = `${environment.apiUrl}User/GetAllSites`
 
     getSites() {
         return this._httpClient.get<any>(this.getSitesURL).pipe(

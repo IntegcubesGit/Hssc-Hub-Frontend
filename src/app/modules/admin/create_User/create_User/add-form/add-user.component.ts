@@ -46,7 +46,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _service:UserService
+        private _service:UserService,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------

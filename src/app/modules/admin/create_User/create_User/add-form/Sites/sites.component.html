@@ -1,33 +1,42 @@
 <div class="checkbox-container">
-    <div class="select-all">
-        @if (sites.length > 0) {
-            <mat-checkbox class="mb-2 mt-4 pt-1" [color]="'primary'"
+    @if (sites.length > 0) {
+        <div class="site-checkbox-grid">
+            <div>
+            <mat-checkbox
+                class="mb-2 mt-4 pt-1"
+                [color]="'primary'"
                 [(ngModel)]="selectAll"
-                (change)="toggleAllSites(selectAll)"
+                (change)="toggleAllSites($event)"
             >
                 Select All
             </mat-checkbox>
-        }
-    </div>
-    @if (sites.length > 0) {
-
-            <div class="site-checkbox-grid">
-                @for (site of sites; track trackBySiteId; let idx = $index) {
-                    <!-- <mat-checkbox
-                        [formControl]="sitesForm.controls[idx]"
-                        (change)="updateSelectAll()"
-                    >
-                        {{ site.title }}
-                    </mat-checkbox> -->
-
-                    <mat-checkbox class="mb-2 mt-4 pt-1" [color]="'primary'"
-                        [(ngModel)]="selectSingle"
-
-                    >
-                        {{ site.title }}
-                    </mat-checkbox>
-                }
-            </div>
-
+        </div>
+            @for (site of sites; track trackBySiteId; let idx = $index) {
+                <mat-checkbox
+                    class="mb-2 mt-4 pt-1"
+                    [color]="'primary'"
+                    [checked]="selectSingle.includes(site.siteId)"
+                    (change)="onCheckboxChange($event, site.siteId);"
+                >
+                    {{ site.title }}
+                </mat-checkbox>
+            }
+        </div>
     }
+</div>
+<!-- Divider -->
+<div class="mb-10 mt-11 border-t"></div>
+
+<!-- Actions -->
+<div class="flex items-center justify-end">
+    <button mat-stroked-button type="button">Back</button>
+    <button
+        class="ml-4"
+        mat-flat-button
+        type="button"
+        [color]="'primary'"
+        (click)="saveUserSiteInfo()"
+    >
+        Save
+    </button>
 </div>
