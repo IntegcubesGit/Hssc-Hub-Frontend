@@ -8,6 +8,7 @@ import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { FileLimitDialogComponent } from './file-limit-dialog/file-limit-dialog.component';
 
 @Component({
   selector: 'app-attachments',
@@ -128,11 +129,10 @@ export class AttachmentsComponent implements OnInit
 
   uploadFile(file: File,remarks:string): void 
   {
-    if(file.size > 1024 * 1024)  
+    // if(file.size > 1024 * 1024 * 100) 
+    if(file.size > 1024 * 1024 ) // limited for 1mb for testing
     {
-      alert('File size exceeds the limit of 100MB');
       this.openFileLimitWarningDialog();
-      this.getAllCaseFiles();
       return;
     }
     else{  
@@ -218,7 +218,8 @@ export class AttachmentsComponent implements OnInit
   }
 
   openFileLimitWarningDialog(): void {
-// Dialog to show the warning message when the file size exceeds the limit
+    this.dialog.open(FileLimitDialogComponent);
+    this.getAllCaseFiles();
   }
   
 }

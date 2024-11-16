@@ -57,13 +57,13 @@
                     <div class="w-full flex-col  justify-center items-center lg:gap-14 gap-7 inline-flex pt-3">
                         <div class="w-11/12  flex-col justify-start items-start gap-8 flex">
                             <div
-                                class="w-full pb-6 border-b border-gray-300 justify-start items-start gap-0.5 inline-flex">
+                                class="w-full pb-6 border-gray-300 justify-start items-start gap-0.5 inline-flex">
                                 <!-- <img class="w-10 h-10 rounded-full object-cover mr-3"
                                     src="https://img.icons8.com/?size=100&id=7820&format=png&color=000000" alt="User image" /> -->
                                     <img class="w-12 h-12 rounded-full object-cover mr-3"
                                     src="https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000" alt="User image" />
                                 <div class="w-full flex-col justify-start items-start gap-3.5 inline-flex ">
-                                    <div class=" border border-r-8 px-3 py-3 w-full justify-start items-start flex-col flex gap-1  hover:bg-gray-100">
+                                    <div class=" border border-x-4 px-3 py-3 w-full justify-start items-start flex-col flex gap-1  hover:bg-gray-100">
                                         <div class="w-full justify-between items-start gap-1 inline-flex">
                                             <h5 class="text-gray-600 text-lg font-normal leading-snug"><span class="text-gray-800 text-lg font-semibold py-2">{{comment.createdBy}}</span> added a comment</h5>
                                             <span class="text-right text-gray-500 text-sm font-normal leading-5">{{ comment.createdOn |  date: 'h:mm a, MM/dd/yyyy' }}</span>
@@ -71,7 +71,7 @@
                                         
                                         <h5 class="text-gray-800 text-sm font-normal leading-snug">{{ comment.comment }} <br/>
                                            @if(comment.isEdited==1) {
-                                            <span class="text-gray-600 italic text-xs font-normal leading-snug ml-3">
+                                            <span class="text-gray-700 italic text-xs font-normal leading-snug ml-3">
                                             
                                                 - Last modified by {{comment.modifiedBy}} at {{comment.modifiedOn | date: 'h:mm a, MM/dd/yyyy'}} 
                                             </span>
