@@ -253,6 +253,11 @@ export class Incident_ReportingService {
       responseType: 'blob' as 'json'
     });
   }
+
+  deleteCaseAttachment(folderName: string, caseId: string, fileName: string): Observable<any>
+  {
+    return this._httpClient.delete<any>(`${this.uploadCaseAttachmentsURL}${folderName}/${caseId}/${fileName}`);
+  }
   
 
   getAllCaseSignatures(caseId:string): Observable<any>

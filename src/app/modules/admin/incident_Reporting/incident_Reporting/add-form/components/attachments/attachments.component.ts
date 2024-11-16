@@ -36,6 +36,7 @@ export class AttachmentsComponent implements OnInit
     this.getAllCaseFiles();
     
   }
+
   formatDate(date: string): string | null {
     return this.datePipe.transform(date, 'h:mm a, MM/dd/yyyy');
   }
@@ -75,7 +76,6 @@ export class AttachmentsComponent implements OnInit
     this._fuseComponentsComponent.matDrawer.toggle();
   }
 
-  // Handle file selection
   onFileSelected(event: any): void {
     const selectedFiles = event.target.files;
     for (let i = 0; i < selectedFiles.length; i++) {
@@ -83,7 +83,6 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
-  
 
       this.files.push({
         name: fileName,
@@ -95,18 +94,14 @@ export class AttachmentsComponent implements OnInit
     }
   }
 
-
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
       case 'pdf':
         return 'pdf';
       case 'xlsx':
-      case 'xls':
-      case 'xlsm':
         return 'excel';
       case 'docx':
-      case 'doc':
         return 'docx';
       case 'pptx':
         return 'pptx';
@@ -139,19 +134,32 @@ export class AttachmentsComponent implements OnInit
       });
   }
 
-  downloadFile(fileName: string): void {
+  downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {
     this.caseService.downloadCaseAttachment('cases', fileName).subscribe({
       next: (response: Blob) => {
         const link = document.createElement('a');
         const url = window.URL.createObjectURL(response);
+        const setFileName = `${mainFileName+'.'+fileFormat}`;
+        link.download = setFileName;
         link.href = url;
-        link.download = fileName;
         link.click();
         window.URL.revokeObjectURL(url);
         console.log('File downloaded successfully');
       },
       error: (error) => {
         console.error('Error downloading the attachment', error);
+      }
+    });
+  }
+
+  deleteFile(fileName: string): void {
+    this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
+      next: (response) => {
+        console.log('File deleted successfully', response);
+        this.getAllCaseFiles();
+      },
+      error: (error) => {
+        console.error('Error deleting the attachment', error);
       }
     });
   }
@@ -190,4 +198,5 @@ export class AttachmentsComponent implements OnInit
     };
     return fileClassMap[fileType] || 'bg-black text-white';
   }
+  
 }
