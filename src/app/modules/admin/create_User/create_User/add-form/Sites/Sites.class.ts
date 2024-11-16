@@ -1,5 +1,5 @@
 export class SiteCreation {
-    SiteId: number;
+    siteId: number;
     Code: string;
     Title: string;
     Region: number;
