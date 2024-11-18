@@ -5,9 +5,10 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';  
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { FileLimitDialogComponent } from './file-limit-dialog/file-limit-dialog.component';
 
 @Component({
   selector: 'app-attachments',
@@ -30,6 +31,7 @@ export class AttachmentsComponent implements OnInit
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private router: Router,
   ) 
   {}
   ngOnInit(): void 
@@ -37,6 +39,10 @@ export class AttachmentsComponent implements OnInit
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
     this.getAllCaseFiles();
     
+  }
+
+  onCancel() {
+    this.router.navigate(['/case/incident_Reporting']);
   }
 
   formatDate(date: string): string | null {
@@ -85,16 +91,36 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
+      
+      // if(file.size > 1024 * 1024 * 100) 
+      if(file.size > 1024 * 1024 ) { // limited to minimum for testing  
+      this.openFileLimitWarningDialog();
+      break;
+      }
 
       this.files.push({
         name: fileName,
         type: fileType,
         icon: fileIcon,
       });
-      
+
       this.uploadFile(file,'');
     }
+    event.target.value = null;
   }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); 
+  }
+  
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); 
+    if (!event.dataTransfer?.files) return;
+    const selectedFiles = event.dataTransfer.files;
+    const fakeEvent = { target: { files: selectedFiles } }; 
+    this.onFileSelected(fakeEvent);
+  }
+  
 
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -102,7 +128,7 @@ export class AttachmentsComponent implements OnInit
       case 'pdf':
         return 'pdf';
       case 'xlsx':
-        return 'excel';
+        return 'xlsx';
       case 'docx':
         return 'docx';
       case 'pptx':
@@ -121,14 +147,13 @@ export class AttachmentsComponent implements OnInit
 
   uploadFile(file: File,remarks:string): void 
   {
-    if(file.size > 1024 * 1024)  
-    {
-      alert('File size exceeds the limit of 100MB');
-      this.openFileLimitWarningDialog();
-      this.getAllCaseFiles();
-      return;
-    }
-    else{  
+    // // if(file.size > 1024 * 1024 * 100) 
+    // if(file.size > 1024 ) // limited to minimum for testing
+    // {
+    //   this.openFileLimitWarningDialog();
+    //   return;
+    // }
+    // else{  
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
           next: (response) => 
@@ -142,7 +167,8 @@ export class AttachmentsComponent implements OnInit
               console.log(error);
               this.getAllCaseFiles();
             }
-      });}
+      });
+    // }
   }
 
   downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {
@@ -150,8 +176,7 @@ export class AttachmentsComponent implements OnInit
       next: (response: Blob) => {
         const link = document.createElement('a');
         const url = window.URL.createObjectURL(response);
-        const setFileName = `${mainFileName+'.'+fileFormat}`;
-        link.download = setFileName;
+        link.download = `${mainFileName}.${fileFormat}`.replace(/ /g, '_');
         link.href = url;
         link.click();
         window.URL.revokeObjectURL(url);
@@ -211,7 +236,8 @@ export class AttachmentsComponent implements OnInit
   }
 
   openFileLimitWarningDialog(): void {
-// Dialog to show the warning message when the file size exceeds the limit
+    this.dialog.open(FileLimitDialogComponent);
+    this.getAllCaseFiles();
   }
   
 }
