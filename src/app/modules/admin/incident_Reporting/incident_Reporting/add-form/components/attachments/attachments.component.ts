@@ -41,10 +41,9 @@ export class AttachmentsComponent implements OnInit
     
   }
 
-  onCancel() 
-    {
-        this.router.navigate(['/case/incident_Reporting']);
-    }
+  onCancel() {
+    this.router.navigate(['/case/incident_Reporting']);
+  }
 
   formatDate(date: string): string | null {
     return this.datePipe.transform(date, 'h:mm a, MM/dd/yyyy');
@@ -92,16 +91,36 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
+      
+      // if(file.size > 1024 * 1024 * 100) 
+      if(file.size > 1024 * 1024 ) { // limited to minimum for testing  
+      this.openFileLimitWarningDialog();
+      break;
+      }
 
       this.files.push({
         name: fileName,
         type: fileType,
         icon: fileIcon,
       });
-      
+
       this.uploadFile(file,'');
     }
+    event.target.value = null;
   }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); 
+  }
+  
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); 
+    if (!event.dataTransfer?.files) return;
+    const selectedFiles = event.dataTransfer.files;
+    const fakeEvent = { target: { files: selectedFiles } }; 
+    this.onFileSelected(fakeEvent);
+  }
+  
 
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -128,13 +147,13 @@ export class AttachmentsComponent implements OnInit
 
   uploadFile(file: File,remarks:string): void 
   {
-    // if(file.size > 1024 * 1024 * 100) 
-    if(file.size > 1024 * 1024 ) // limited for 1mb for testing
-    {
-      this.openFileLimitWarningDialog();
-      return;
-    }
-    else{  
+    // // if(file.size > 1024 * 1024 * 100) 
+    // if(file.size > 1024 ) // limited to minimum for testing
+    // {
+    //   this.openFileLimitWarningDialog();
+    //   return;
+    // }
+    // else{  
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
           next: (response) => 
@@ -148,7 +167,8 @@ export class AttachmentsComponent implements OnInit
               console.log(error);
               this.getAllCaseFiles();
             }
-      });}
+      });
+    // }
   }
 
   downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {

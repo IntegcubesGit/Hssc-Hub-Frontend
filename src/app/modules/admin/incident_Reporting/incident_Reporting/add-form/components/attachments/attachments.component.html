@@ -35,19 +35,34 @@
       <div class="mb-6 pt-4 mx-2">
         <label class="mb-5 block text-xl font-bold text-black overcl">Add New Attachments</label>
         <div class="mb-8 mx-2">
-          <input type="file" name="file" id="file" class="sr-only" (change)="onFileSelected($event)" multiple />
-          <label for="file"
-            class="relative flex min-h-[200px] items-center justify-center rounded-sm border border-dashed border-gray-400 bg-gray-100 p-12 text-center">
+          <input
+            type="file"
+            name="file"
+            id="file"
+            class="sr-only"
+            (change)="onFileSelected($event)"
+            multiple
+          />
+          <label
+            for="file"
+            class="relative flex min-h-[200px] items-center justify-center rounded-sm border border-dashed border-gray-400 bg-gray-100 p-12 text-center"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event)"
+          >
             <div>
-              <span class="mb-2 block text-xl font-semibold text-black">Drag & Drop files here</span>
+              <span class="mb-2 block text-xl font-semibold text-black">
+                Drag & Drop files here
+              </span>
               <span class="mb-2 block text-base font-medium text-neutral-400">Or</span>
               <span
-                class="inline-flex cursor-pointer rounded-sm bg-orange-700 py-2 px-7 text-base font-medium text-white">
+                class="inline-flex cursor-pointer rounded-sm bg-orange-700 py-2 px-7 text-base font-medium text-white"
+              >
                 Browse
               </span>
             </div>
           </label>
         </div>
+        
 
         <!-- Display Files -->
         @if (files.length > 0) {
