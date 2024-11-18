@@ -109,7 +109,7 @@ export class AttachmentsComponent implements OnInit
       case 'pdf':
         return 'pdf';
       case 'xlsx':
-        return 'excel';
+        return 'xlsx';
       case 'docx':
         return 'docx';
       case 'pptx':
@@ -124,7 +124,6 @@ export class AttachmentsComponent implements OnInit
   getFileIcon(fileType: string): string {
     return 'insert_drive_file';
   }
-  
 
 
   uploadFile(file: File,remarks:string): void 
@@ -157,8 +156,7 @@ export class AttachmentsComponent implements OnInit
       next: (response: Blob) => {
         const link = document.createElement('a');
         const url = window.URL.createObjectURL(response);
-        const setFileName = `${mainFileName+'.'+fileFormat}`;
-        link.download = setFileName;
+        link.download = `${mainFileName}.${fileFormat}`.replace(/ /g, '_');
         link.href = url;
         link.click();
         window.URL.revokeObjectURL(url);
