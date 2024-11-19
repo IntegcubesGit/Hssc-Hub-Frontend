@@ -23,7 +23,7 @@ export class AttachmentsComponent implements OnInit
   selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;} | null = null;
   isDrawerOpen: boolean = false;
   caseId:string = null;
-  minFileSizeLimit = 1024; // define in Bytes
+  minFileSizeLimit = 1; // define in Bytes
   maxFileSizeLimit = 1024 * 1024; // define in Bytes
 
   constructor(
@@ -94,7 +94,7 @@ export class AttachmentsComponent implements OnInit
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
       
-      if(file.size < this.minFileSizeLimit) {
+      if(file.size < this.minFileSizeLimit ) {
         this.fileMinLimitWarning(this.minFileSizeLimit);
         break;
       }
@@ -218,17 +218,17 @@ export class AttachmentsComponent implements OnInit
 
   getFileClass(fileType: string): string {
     const fileClassMap: { [key: string]: string } = {
-      pdf: 'bg-red-600 text-white',
-      xlsm: 'bg-yellow-300 text-black',
-      docx: 'bg-blue-600 text-white',
-      powerpoint: 'bg-green-600 text-white',
-      csv: 'bg-blue-300 text-black',
-      txt: 'bg-gray-600 text-white',
-      jpg: 'bg-green-600 text-white',
-      png: 'bg-green-600 text-white',
-      mp4: 'bg-orange-600 text-black',
+      pdf: 'bg-red-500 text-black',
+      xlsm: 'bg-green-500 text-black',
+      docx: 'bg-blue-500 text-black',
+      csv: 'bg-purple-500 text-black',
+      powerpoint: 'bg-red-400 text-black',
+      txt: 'bg-gray-500 text-black',
+      jpg: 'bg-green-500 text-black',
+      png: 'bg-green-500 text-black',
+      mp4: 'bg-orange-500 text-black',
     };
-    return fileClassMap[fileType] || 'bg-sky-600 text-white';
+    return fileClassMap[fileType] || 'bg-yellow-500 text-black';
   }
 
   fileMaxLimitWarning(fileSize: Number): void {
@@ -243,7 +243,6 @@ export class AttachmentsComponent implements OnInit
   }
 
   fileMinLimitWarning(fileSize: Number): void {
-    fileSize = Number(fileSize) / 1024;  // converts to KB
     this.dialog.open(WarningDialogComponent, {
       data: {
         title: 'File size too Small',
