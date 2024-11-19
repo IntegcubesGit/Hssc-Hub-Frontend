@@ -7,7 +7,7 @@ import { tap } from 'rxjs';
 export class SitesService {
     constructor(private _httpClient: HttpClient) {}
     private readonly getSitesURL = `${environment.apiUrl}User/GetAllSites`;
-    private readonly getUserRolesURL = `${environment.apiUrl}CommonFilters/GetUserRoles`;
+    private readonly getUserRolesURL = `${environment.apiUrl}User/GetUserRoles`;
 
     getSites() {
         return this._httpClient.get<any>(this.getSitesURL).pipe(tap());
