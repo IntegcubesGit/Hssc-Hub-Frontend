@@ -1,6 +1,6 @@
 <div>
     <div class="body">
-        <form>
+        <!-- <form>
             <mat-form-field class="w-full">
                 <mat-label>Assign Roles</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Role selection">
@@ -36,7 +36,32 @@
                     }
                 </mat-autocomplete>
             </mat-form-field>
-        </form>
+        </form> -->
+        
+        <!-- New Mat Select -- Mat Chips -->
+        <mat-form-field class="w-full">
+            <mat-select [formControl]="toppings" multiple>
+              <mat-select-trigger>
+                <mat-chip-grid #chipGrid aria-label="Enter fruits">
+                  @for (topping of toppings.value; track topping) {
+                  <mat-chip-row (removed)="remove(topping)">
+                    {{topping}}
+                    <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                  </mat-chip-row>
+                  }
+                </mat-chip-grid>
+              </mat-select-trigger>
+          
+              @for (topping of toppingList; track topping) {
+              <mat-option [value]="topping">{{topping}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          
+          <br/> 
+          
+
+          <br/>
     </div>
 </div>
 
