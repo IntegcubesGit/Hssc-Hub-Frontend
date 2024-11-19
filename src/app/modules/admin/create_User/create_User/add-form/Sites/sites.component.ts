@@ -35,24 +35,13 @@ import { UserRoles } from './sites.types';
 })
 export class SitesComponent implements OnInit {
     roles = new FormControl<UserRoles[]>([]);
+    roleIds: number[] = [];
     rolesList: UserRoles[] = [];
-
-    remove(role: UserRoles) {
-        const roles = this.roles.value ?? [];
-        this.removeFirst(roles, role);
-        this.roles.setValue(roles);
-    }
-
-    private removeFirst<T>(array: T[], toRemove: T): void {
-        const index = array.indexOf(toRemove);
-        if (index !== -1) {
-            array.splice(index, 1);
-        }
-    }
-
     sites: SiteCreation[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
+    
+
 
     constructor(
         private _siteService: SitesService,
@@ -70,6 +59,20 @@ export class SitesComponent implements OnInit {
         this._site.getRoles().subscribe((res) => {
             this.rolesList = res;
         });
+    }
+
+    remove(role: UserRoles) {
+        const roles = this.roles.value ?? [];
+        this.removeFirst(roles, role);
+        this.roles.setValue(roles);
+        this.roleIds = roles.map(role => role.id);
+    }
+
+    private removeFirst<T>(array: T[], toRemove: T): void {
+        const index = array.indexOf(toRemove);
+        if (index !== -1) {
+            array.splice(index, 1);
+        }
     }
 
     ////////////////////////----sites start here----\\\\\\\\\\\\\\\\\\\\\\
