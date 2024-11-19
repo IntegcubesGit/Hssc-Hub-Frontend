@@ -69,7 +69,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
             {
                 id: 'sites',
                 icon: 'heroicons_outline:credit-card',
-                title: 'Sites',
+                title: 'Roles and Sites Access',
                 description:
                     'Manage your project access',
             },
