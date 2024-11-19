@@ -3,9 +3,9 @@
         <form>
             <mat-form-field class="w-full">
                 <mat-label>Assign Roles</mat-label>
-                <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                <mat-chip-grid #chipGrid aria-label="Role selection">
                     @for (r of roles(); track $index) {
-                        <mat-chip-row (removed)="remove(r.name)">
+                        <mat-chip-row (removed)="remove(r)">
                             {{ r }}
                             <button
                                 matChipRemove
