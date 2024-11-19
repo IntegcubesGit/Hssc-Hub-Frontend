@@ -1,22 +1,68 @@
+<div>
+    <div class="body">
+        <form>
+            <mat-form-field class="w-full">
+                <mat-label>Assign Roles</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                    @for (r of roles(); track $index) {
+                        <mat-chip-row (removed)="remove(r.name)">
+                            {{ r }}
+                            <button
+                                matChipRemove
+                                [attr.aria-label]="'remove ' + r"
+                            >
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip-row>
+                    }
+                </mat-chip-grid>
+                <input
+                    name="currentRole"
+                    placeholder="New Role..."
+                    #roleInput
+                    [(ngModel)]="currentRole"
+                    [matChipInputFor]="chipGrid"
+                    [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (focus)="onInputFocus()"
+                    (matChipInputTokenEnd)="add($event)"
+                />
+                <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="selected($event)"
+                >
+                    @for (r of filteredRoles(); track r) {
+                        <mat-option [value]="r">{{ r.name }}</mat-option>
+                    }
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+
+<!-- Divider -->
+<div class="mb-10 mt-11 border-t"></div>
+<!--  Sites Checkboxes -->
+<strong>Sites Access</strong>
 <div class="checkbox-container">
     @if (sites.length > 0) {
         <div class="site-checkbox-grid">
             <div>
-            <mat-checkbox
-                class="mb-2 mt-4 pt-1"
-                [color]="'primary'"
-                [(ngModel)]="selectAll"
-                (change)="toggleAllSites($event)"
-            >
-                Select All
-            </mat-checkbox>
-        </div>
+                <mat-checkbox
+                    class="mb-2 mt-4 pt-1"
+                    [color]="'primary'"
+                    [(ngModel)]="selectAll"
+                    (change)="toggleAllSites($event)"
+                >
+                    Select All
+                </mat-checkbox>
+            </div>
             @for (site of sites; track trackBySiteId; let idx = $index) {
                 <mat-checkbox
-                    class="mb-2 mt-4 pt-1 w-40"
+                    class="mb-2 mt-4 w-40 pt-1"
                     [color]="'primary'"
                     [checked]="selectSingle.includes(site.siteId)"
-                    (change)="onCheckboxChange($event, site.siteId);"
+                    (change)="onCheckboxChange($event, site.siteId)"
                 >
                     {{ site.title }}
                 </mat-checkbox>
@@ -29,7 +75,9 @@
 
 <!-- Actions -->
 <div class="flex items-center justify-end">
-    <button mat-stroked-button type="button" (click)="navigateUserBack()">Back</button>
+    <button mat-stroked-button type="button" (click)="navigateUserBack()">
+        Back
+    </button>
     <button
         class="ml-4"
         mat-flat-button
