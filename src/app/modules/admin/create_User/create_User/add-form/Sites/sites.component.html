@@ -1,31 +1,34 @@
 <div>
-    <div class="body">
-        <mat-form-field class="w-full">
-            <mat-select [formControl]="roles" multiple>
-                <mat-select-trigger>
-                    <mat-chip-grid #chipGrid aria-label="Enter fruits">
+    <div class="flex ">
+        <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
+            <span class="py-2 font-semibold text-gray-600 text-lg" matTextPrefix="">Roles</span>
+            <mat-select [formControl]="roles" multiple class="">
+                <mat-select-trigger class="min-h-10">
+                    <mat-chip-set #chipGrid aria-label="Enter roles">
                         @for (role of roles.value; track role) {
-                            <mat-chip-row (removed)="remove(role)">
+                            <mat-chip-row   
+                            (removed)="remove(role)">
                                 {{ role.name }}
                                 <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
                                 </button>
                             </mat-chip-row>
                         }
-                    </mat-chip-grid>
+                    </mat-chip-set>
                 </mat-select-trigger>
                 @for (role of rolesList; track role) {
                     <mat-option [value]="role">{{ role.name }}</mat-option>
                 }
             </mat-select>
-        </mat-form-field>
-        <br />
-        <br />
+        </mat-form-field>   
     </div>
+    <div class="text-hint mt-2 mx-1 text-sm">
+        Select all relevant roles from the list below by checking the boxes next to each applicable role. You can choose multiple options if needed.
+    </div>     
 </div>
 
 <!-- Divider -->
-<div class="mb-10 mt-11 border-t"></div>
+<div class="my-6 border-t"></div>
 <!--  Sites Checkboxes -->
 <strong>Sites Access</strong>
 <div class="checkbox-container">

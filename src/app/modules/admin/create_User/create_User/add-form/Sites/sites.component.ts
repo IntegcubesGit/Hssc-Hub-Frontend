@@ -1,16 +1,8 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import {
-    MatCheckboxChange,
-    MatCheckboxModule,
-} from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,7 +30,8 @@ import { UserRoles } from './sites.types';
         MatAutocompleteModule,
     ],
     templateUrl: './sites.component.html',
-    styles: [``],
+    styles: [`
+        `],
 })
 export class SitesComponent implements OnInit {
     roles = new FormControl<UserRoles[]>([]);
@@ -52,7 +45,6 @@ export class SitesComponent implements OnInit {
 
     private removeFirst<T>(array: T[], toRemove: T): void {
         const index = array.indexOf(toRemove);
-
         if (index !== -1) {
             array.splice(index, 1);
         }

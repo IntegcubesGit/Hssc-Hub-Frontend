@@ -585,9 +585,17 @@
                 }
 
                 /* Chips */
-                .mat-mdc-chip-set {
-                    
+                .mat-mdc-standard-chip {
+                    background-color: #c2410c ;
+                    border-radius: 2px;
+                    .mat-icon {
+                        color: white ;
+                    }
+                    .mdc-evolution-chip__text-label{
+                        color: white ;
+                    }
                 }
+                
             }
         }
 
@@ -794,6 +802,7 @@
                     > .mat-icon {
                         margin-right: 16px;
                     }
+
 
                     > .mat-mdc-icon-button {
                         margin: 0 6px 0 -10px !important;
