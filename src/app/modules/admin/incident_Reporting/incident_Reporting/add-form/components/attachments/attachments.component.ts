@@ -8,8 +8,7 @@ import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { FileLimitDialogComponent } from './file-limit-dialog/file-limit-dialog.component';
-
+import { WarningDialogComponent } from 'app/layout/common/warning/warning-dialog.component';
 @Component({
   selector: 'app-attachments',
   standalone: true,
@@ -23,7 +22,9 @@ export class AttachmentsComponent implements OnInit
   files:any =[];
   selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;} | null = null;
   isDrawerOpen: boolean = false;
-  caseId:string=null;
+  caseId:string = null;
+  minFileSizeLimit = 1024; // define in Bytes
+  maxFileSizeLimit = 1024 * 1024; // define in Bytes
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
@@ -86,15 +87,20 @@ export class AttachmentsComponent implements OnInit
 
   onFileSelected(event: any): void {
     const selectedFiles = event.target.files;
+
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
       
-      // if(file.size > 1024 * 1024 * 100) 
-      if(file.size > 1024 * 1024 ) { // limited to minimum for testing  
-      this.openFileLimitWarningDialog();
+      if(file.size < this.minFileSizeLimit) {
+        this.fileMinLimitWarning(this.minFileSizeLimit);
+        break;
+      }
+
+      if(file.size > this.maxFileSizeLimit ) { 
+      this.fileMaxLimitWarning(this.maxFileSizeLimit);
       break;
       }
 
@@ -121,7 +127,6 @@ export class AttachmentsComponent implements OnInit
     this.onFileSelected(fakeEvent);
   }
   
-
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
@@ -144,16 +149,8 @@ export class AttachmentsComponent implements OnInit
     return 'insert_drive_file';
   }
 
-
   uploadFile(file: File,remarks:string): void 
   {
-    // // if(file.size > 1024 * 1024 * 100) 
-    // if(file.size > 1024 ) // limited to minimum for testing
-    // {
-    //   this.openFileLimitWarningDialog();
-    //   return;
-    // }
-    // else{  
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
           next: (response) => 
@@ -168,7 +165,6 @@ export class AttachmentsComponent implements OnInit
               this.getAllCaseFiles();
             }
       });
-    // }
   }
 
   downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {
@@ -223,7 +219,7 @@ export class AttachmentsComponent implements OnInit
   getFileClass(fileType: string): string {
     const fileClassMap: { [key: string]: string } = {
       pdf: 'bg-red-600 text-white',
-      excel: 'bg-yellow-300 text-black',
+      xlsm: 'bg-yellow-300 text-black',
       docx: 'bg-blue-600 text-white',
       powerpoint: 'bg-green-600 text-white',
       csv: 'bg-blue-300 text-black',
@@ -232,11 +228,28 @@ export class AttachmentsComponent implements OnInit
       png: 'bg-green-600 text-white',
       mp4: 'bg-orange-600 text-black',
     };
-    return fileClassMap[fileType] || 'bg-black text-white';
+    return fileClassMap[fileType] || 'bg-sky-600 text-white';
   }
 
-  openFileLimitWarningDialog(): void {
-    this.dialog.open(FileLimitDialogComponent);
+  fileMaxLimitWarning(fileSize: Number): void {
+    fileSize = Number(fileSize) / (1024 * 1024); // converts to MB
+    this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: 'File Size Limit Exceeded',
+        message: `The upload file size limit is ${fileSize}MB. Please upload a file that is less than ${fileSize}MB.`,
+      },
+    });
+    this.getAllCaseFiles();
+  }
+
+  fileMinLimitWarning(fileSize: Number): void {
+    fileSize = Number(fileSize) / 1024;  // converts to KB
+    this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: 'File size too Small',
+        message: `The file is too small. Please select a file larger than ${fileSize} KB.`,
+      },
+    });
     this.getAllCaseFiles();
   }
   
