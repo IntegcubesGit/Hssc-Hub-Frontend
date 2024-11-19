@@ -1,67 +1,26 @@
 <div>
     <div class="body">
-        <!-- <form>
-            <mat-form-field class="w-full">
-                <mat-label>Assign Roles</mat-label>
-                <mat-chip-grid #chipGrid aria-label="Role selection">
-                    @for (r of roles(); track $index) {
-                        <mat-chip-row (removed)="remove(r)">
-                            {{ r }}
-                            <button
-                                matChipRemove
-                                [attr.aria-label]="'remove ' + r"
-                            >
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </mat-chip-row>
-                    }
-                </mat-chip-grid>
-                <input
-                    name="currentRole"
-                    placeholder="New Role..."
-                    #roleInput
-                    [(ngModel)]="currentRole"
-                    [matChipInputFor]="chipGrid"
-                    [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (focus)="onInputFocus()"
-                    (matChipInputTokenEnd)="add($event)"
-                />
-                <mat-autocomplete
-                    #auto="matAutocomplete"
-                    (optionSelected)="selected($event)"
-                >
-                    @for (r of filteredRoles(); track r) {
-                        <mat-option [value]="r">{{ r.name }}</mat-option>
-                    }
-                </mat-autocomplete>
-            </mat-form-field>
-        </form> -->
-        
-        <!-- New Mat Select -- Mat Chips -->
         <mat-form-field class="w-full">
-            <mat-select [formControl]="toppings" multiple>
-              <mat-select-trigger>
-                <mat-chip-grid #chipGrid aria-label="Enter fruits">
-                  @for (topping of toppings.value; track topping) {
-                  <mat-chip-row (removed)="remove(topping)">
-                    {{topping}}
-                    <button matChipRemove><mat-icon>cancel</mat-icon></button>
-                  </mat-chip-row>
-                  }
-                </mat-chip-grid>
-              </mat-select-trigger>
-          
-              @for (topping of toppingList; track topping) {
-              <mat-option [value]="topping">{{topping}}</mat-option>
-              }
+            <mat-select [formControl]="roles" multiple>
+                <mat-select-trigger>
+                    <mat-chip-grid #chipGrid aria-label="Enter fruits">
+                        @for (role of roles.value; track role) {
+                            <mat-chip-row (removed)="remove(role)">
+                                {{ role.name }}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        }
+                    </mat-chip-grid>
+                </mat-select-trigger>
+                @for (role of rolesList; track role) {
+                    <mat-option [value]="role">{{ role.name }}</mat-option>
+                }
             </mat-select>
-          </mat-form-field>
-          
-          <br/> 
-          
-
-          <br/>
+        </mat-form-field>
+        <br />
+        <br />
     </div>
 </div>
 
