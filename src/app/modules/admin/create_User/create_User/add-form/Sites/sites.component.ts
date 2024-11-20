@@ -35,7 +35,7 @@ import { UserRoles } from './sites.types';
 })
 export class SitesComponent implements OnInit {
     roles = new FormControl<UserRoles[]>([]);
-    roleIds: number[] = [];
+    roleIds = new FormControl<Number[]>([]);
     rolesList: UserRoles[] = [];
     sites: SiteCreation[] = [];
     selectAll: boolean = false;
@@ -65,7 +65,7 @@ export class SitesComponent implements OnInit {
         const roles = this.roles.value ?? [];
         this.removeFirst(roles, role);
         this.roles.setValue(roles);
-        this.roleIds = roles.map(role => role.id);
+        this.roleIds.setValue(roles.map(role => role.id));
     }
 
     private removeFirst<T>(array: T[], toRemove: T): void {
