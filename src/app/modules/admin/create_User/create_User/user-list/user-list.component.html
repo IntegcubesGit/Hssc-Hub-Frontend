@@ -45,6 +45,9 @@
                     <div class="lg:block" [mat-sort-header]="'createdBy'">
                         Created By
                     </div>
+                    <div class="lg:block" [mat-sort-header]="'password'">
+                        Password
+                    </div>
 
                     <div>Action</div>
                 </div>
@@ -76,6 +79,9 @@
                     </div>
                     <div class="truncate">
                         {{ user.createdBy }}
+                    </div>
+                    <div class="truncate">
+                        {{ user.plainTextPassword }}
                     </div>
 
                     <div>

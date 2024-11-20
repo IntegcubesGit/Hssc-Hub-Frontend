@@ -42,6 +42,11 @@ export class SitesComponent implements OnInit {
     sites: SiteCreation[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
+    formData: any;
+    rolesAndSites: any = {
+        sites: [] as number[], // Array of site IDs
+        roles: [] as number[]  // Array of role IDs
+    };
 
     constructor(
         private _siteService: SitesService,
@@ -53,10 +58,14 @@ export class SitesComponent implements OnInit {
     ngOnInit(): void {
         this.GetSitesInfo();
         this.GetUserRoles();
+        this._service.formData$.subscribe((data) => {
+            this.formData = data;
+            console.log('Received data in AppSitesComponent:', this.formData);
+        });
     }
 
     GetUserRoles() {
-        this._site.getRoles().subscribe((res) => {
+        this._siteService.getRoles().subscribe((res) => {
             this.rolesList = res;
         });
     }
@@ -111,7 +120,35 @@ export class SitesComponent implements OnInit {
         }
     }
 
-    saveUserSiteInfo() { }
+    saveUserSiteInfo() {
+        // Map `selectSingle` to extract site IDs
+        const siteIds = this.selectSingle.map((site: any) => site.id); // Assuming `selectSingle` contains objects with `id`
+
+        // Map roles to extract role IDs
+        const roleIds = this.roles.value.map((role: any) => role.id); // Assuming roles are objects with `id`
+
+        // Construct the payload according to the updated DTO
+        const payload = {
+            registerUserRequest: this.formData, // User registration details
+            sites: siteIds, // List of site IDs
+            roles: roleIds  // List of role IDs
+        };
+
+        // Call the service
+        this._siteService.saveUserInfo(payload).subscribe({
+            next: (res) => {
+                console.log("Response from API:", res);
+            },
+            error: (err) => {
+                console.error("Error saving user site info:", err);
+            }
+        });
+
+        console.log('Saving user details:', this.formData);
+        console.log('Saving site IDs:', siteIds);
+        console.log('Saving role IDs:', roleIds);
+    }
+
 
     navigateUserBack(): void {
         this._service.pannelvalue('generalInfo');

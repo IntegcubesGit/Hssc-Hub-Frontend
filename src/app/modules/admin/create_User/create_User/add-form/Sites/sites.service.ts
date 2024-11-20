@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environment/environment';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SitesService {
     constructor(private _httpClient: HttpClient) {}
     private readonly getSitesURL = `${environment.apiUrl}User/GetAllSites`;
     private readonly getUserRolesURL = `${environment.apiUrl}User/GetUserRoles`;
+    private readonly saveUserData = `${environment.apiUrl}LogInSignUp/RegisterUser`;
 
     getSites() {
         return this._httpClient.get<any>(this.getSitesURL).pipe(tap());
@@ -16,4 +17,10 @@ export class SitesService {
     getRoles(){
         return this._httpClient.get<any>(this.getUserRolesURL).pipe(tap());
     }
+
+    saveUserInfo(payload: any): Observable<any> {
+        return this._httpClient.post(`${this.saveUserData}`, payload);
+    }
+
+
 }
