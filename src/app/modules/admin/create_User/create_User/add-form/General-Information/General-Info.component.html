@@ -62,26 +62,6 @@
                     <input [formControlName]="'email'" matInput />
                 </mat-form-field>
             </div>
-            @if (userId != '-1') {
-                <div class="sm:col-span-2">
-                    <mat-form-field
-                        class="fuse-mat-emphasized-affix w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Current password</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:key'"
-                            matPrefix
-                        ></mat-icon>
-                        <input
-                            [formControlName]="'currentPassword'"
-                            type="password"
-                            matInput
-                        />
-                    </mat-form-field>
-                </div>
-            }
             <!-- New password -->
             <div class="sm:col-span-2">
                 <mat-form-field
@@ -95,8 +75,8 @@
                         matPrefix
                     ></mat-icon>
                     <input
-                        [formControlName]="'newPassword'"
-                        type="password"
+                        [formControlName]="'Password'"
+                        type="Password"
                         matInput
                     />
                 </mat-form-field>

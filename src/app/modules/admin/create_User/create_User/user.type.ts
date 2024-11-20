@@ -5,6 +5,7 @@ export interface User {
     UserName: string;
     Email: string;
     CreatedBy: number;
+    Password: string;
 }
 export interface Pagination {
     length: number;
