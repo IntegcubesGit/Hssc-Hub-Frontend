@@ -8,6 +8,7 @@ import { Pagination, User } from './user.type';
 @Injectable({ providedIn: 'root' })
 export class UserService {
     private readonly getUsersURL = `${environment.apiUrl}User/getAllUsers`;
+    private readonly getUserId = `${environment.apiUrl}User/getUserById`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
 
@@ -82,4 +83,8 @@ export class UserService {
                 })
             );
     }
+
+    // getUserById(id: string): Observable<any> {
+    //     return this._httpClient.get<any>(`${this.getUserId}`, id);
+    //   }
 }
