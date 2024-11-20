@@ -5,12 +5,13 @@
             <mat-select [formControl]="roles" multiple class="" (selectionChange)="onRoleSelect($event)">
                 <mat-select-trigger class="min-h-10">
                     <mat-chip-set #chipGrid aria-label="Enter roles">
-                        <mat-chip-row *ngFor="let role of roles.value" (removed)="remove(role)">
+                        @for(role of roles.value; track role) {
+                            <mat-chip-row  (removed)="remove(role)">
                             {{ role.name }}
                             <button matChipRemove>
                                 <mat-icon>cancel</mat-icon>
                             </button>
-                        </mat-chip-row>
+                        </mat-chip-row>}
                     </mat-chip-set>
                 </mat-select-trigger>
                 @for (role of rolesList; track role) {
