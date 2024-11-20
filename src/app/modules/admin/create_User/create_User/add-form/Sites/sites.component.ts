@@ -2,16 +2,17 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { UserService } from '../../user.service';
 import { SiteCreation } from './Sites.class';
 import { SitesService } from './sites.service';
 import { UserRoles } from './sites.types';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-sites',
@@ -28,6 +29,7 @@ import { UserRoles } from './sites.types';
         MatButtonModule,
         MatChipsModule,
         MatAutocompleteModule,
+        CommonModule,
     ],
     templateUrl: './sites.component.html',
     styles: [`
@@ -40,15 +42,13 @@ export class SitesComponent implements OnInit {
     sites: SiteCreation[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
-    
-
 
     constructor(
         private _siteService: SitesService,
         private cdr: ChangeDetectorRef,
         private _service: UserService,
         private _site: SitesService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.GetSitesInfo();
@@ -59,6 +59,12 @@ export class SitesComponent implements OnInit {
         this._site.getRoles().subscribe((res) => {
             this.rolesList = res;
         });
+    }
+
+    onRoleSelect(event: MatSelectChange): void {
+        const selectedRoles = event.value as UserRoles[];
+        this.roles.setValue(selectedRoles);
+        this.roleIds.setValue(selectedRoles.map(role => role.id));
     }
 
     remove(role: UserRoles) {
@@ -105,7 +111,7 @@ export class SitesComponent implements OnInit {
         }
     }
 
-    saveUserSiteInfo() {}
+    saveUserSiteInfo() { }
 
     navigateUserBack(): void {
         this._service.pannelvalue('generalInfo');

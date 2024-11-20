@@ -2,29 +2,27 @@
     <div class="flex ">
         <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
             <span class="py-2 font-semibold text-gray-600 text-lg" matTextPrefix="">Roles</span>
-            <mat-select [formControl]="roles" multiple class="">
+            <mat-select [formControl]="roles" multiple class="" (selectionChange)="onRoleSelect($event)">
                 <mat-select-trigger class="min-h-10">
                     <mat-chip-set #chipGrid aria-label="Enter roles">
-                        @for (role of roles.value; track role) {
-                            <mat-chip-row   
-                            (removed)="remove(role)">
-                                {{ role.name }}
-                                <button matChipRemove>
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </mat-chip-row>
-                        }
+                        <mat-chip-row *ngFor="let role of roles.value" (removed)="remove(role)">
+                            {{ role.name }}
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip-row>
                     </mat-chip-set>
                 </mat-select-trigger>
                 @for (role of rolesList; track role) {
-                    <mat-option [value]="role">{{ role.name }}</mat-option>
+                <mat-option [value]="role">{{ role.name }}</mat-option>
                 }
             </mat-select>
-        </mat-form-field>   
+        </mat-form-field>
     </div>
     <div class="text-hint mt-2 mx-1 text-sm">
-        Select all relevant roles from the list below by checking the boxes next to each applicable role. You can choose multiple options if needed.
-    </div>     
+        Select all relevant roles from the list below by checking the boxes next to each applicable role. You can choose
+        multiple options if needed.
+    </div>
 </div>
 
 <!-- Divider -->
@@ -33,28 +31,20 @@
 <strong>Sites Access</strong>
 <div class="checkbox-container">
     @if (sites.length > 0) {
-        <div class="site-checkbox-grid">
-            <div>
-                <mat-checkbox
-                    class="mb-2 mt-4 pt-1"
-                    [color]="'primary'"
-                    [(ngModel)]="selectAll"
-                    (change)="toggleAllSites($event)"
-                >
-                    Select All
-                </mat-checkbox>
-            </div>
-            @for (site of sites; track trackBySiteId; let idx = $index) {
-                <mat-checkbox
-                    class="mb-2 mt-4 w-40 pt-1"
-                    [color]="'primary'"
-                    [checked]="selectSingle.includes(site.siteId)"
-                    (change)="onCheckboxChange($event, site.siteId)"
-                >
-                    {{ site.title }}
-                </mat-checkbox>
-            }
+    <div class="site-checkbox-grid">
+        <div>
+            <mat-checkbox class="mb-2 mt-4 pt-1" [color]="'primary'" [(ngModel)]="selectAll"
+                (change)="toggleAllSites($event)">
+                Select All
+            </mat-checkbox>
         </div>
+        @for (site of sites; track trackBySiteId; let idx = $index) {
+        <mat-checkbox class="mb-2 mt-4 w-40 pt-1" [color]="'primary'" [checked]="selectSingle.includes(site.siteId)"
+            (change)="onCheckboxChange($event, site.siteId)">
+            {{ site.title }}
+        </mat-checkbox>
+        }
+    </div>
     }
 </div>
 <!-- Divider -->
@@ -65,13 +55,7 @@
     <button mat-stroked-button type="button" (click)="navigateUserBack()">
         Back
     </button>
-    <button
-        class="ml-4"
-        mat-flat-button
-        type="button"
-        [color]="'primary'"
-        (click)="saveUserSiteInfo()"
-    >
+    <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="saveUserSiteInfo()">
         Save
     </button>
 </div>
