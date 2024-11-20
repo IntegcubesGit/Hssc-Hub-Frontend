@@ -9,11 +9,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
-import { AlertComponent } from 'app/layout/common/alert/alert.component';
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule, AlertComponent],  
+  imports: [MatButton, MatCard, MatIcon, CommonModule],  
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -24,8 +23,8 @@ export class AttachmentsComponent implements OnInit
   selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;} | null = null;
   isDrawerOpen: boolean = false;
   caseId:string = null;
-  minFileSizeLimit = 1; // define in Bytes
-  maxFileSizeLimit = 1024 * 1024; // define in Bytes
+  minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
+  maxFileSizeLimit = 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,

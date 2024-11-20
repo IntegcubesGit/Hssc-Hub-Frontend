@@ -9,12 +9,6 @@ import { FuseAlertService } from '@fuse/components/alert';
   standalone: true,
   imports: [FuseAlertComponent],
   templateUrl: './alert.component.html',
-  styles: [`
-    .no-backdrop {
-      background: none !important;
-      padding: 0 !important;
-    }
-  `]
 })
 export class AlertComponent implements OnInit, OnDestroy {
   alertType: string = 'primary';
@@ -26,7 +20,6 @@ export class AlertComponent implements OnInit, OnDestroy {
   constructor(private alertService: AlertService) { }
 
   ngOnInit() {
-    // Subscribe to the alert observable to receive updates
     this.alertSubscription = this.alertService.alert$.subscribe(alert => {
       this.alertType = alert.type;
       this.alertTitle = alert.title;
