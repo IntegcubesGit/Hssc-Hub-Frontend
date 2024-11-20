@@ -1,10 +1,4 @@
-import {
-    AsyncPipe,
-    CurrencyPipe,
-    DatePipe,
-    NgClass,
-    NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -18,16 +12,10 @@ import {
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormBuilder,
     UntypedFormControl,
-    UntypedFormGroup,
-    Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-    MatCheckboxChange,
-    MatCheckboxModule,
-} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,8 +27,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '../../../../../../@fuse/animations';
 import { FuseConfirmationService } from '../../../../../../@fuse/services/confirmation';
-import { MatDrawer } from '@angular/material/sidenav';
 
+import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
 import {
     Observable,
     Subject,
@@ -50,11 +39,8 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { User, Pagination } from '../user.type';
 import { UserService } from '../user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatMenuModule } from '@angular/material/menu';
-
+import { Pagination, User } from '../user.type';
 
 @Component({
     selector: 'user-list',
@@ -70,11 +56,11 @@ import { MatMenuModule } from '@angular/material/menu';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;;
+                    grid-template-columns: 48px 100px auto 96px 96px 100px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px  96px 72px;;
+                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px 96px 72px;
                 }
             }
         `,
@@ -103,9 +89,7 @@ import { MatMenuModule } from '@angular/material/menu';
         MatMenuModule,
     ],
 })
-export class UserListComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -116,6 +100,7 @@ export class UserListComponent
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+    users: User[] = [];
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
@@ -123,44 +108,31 @@ export class UserListComponent
 
         private _Service: UserService,
 
-        private _router: Router,
+        private _router: Router
     ) {}
 
     ngOnInit(): void {
-
-        // Get the pagination
         this._Service.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: Pagination | null) => {
-                if(pagination){
-                    // Update the pagination
+                if (pagination) {
                     this.pagination = pagination;
-
-                    // Mark for check
                     this._changeDetectorRef.markForCheck();
                 }
             });
 
         this.users$ = this._Service.user$;
-        this._Service.user$.subscribe(users => {
+        this._Service.user$.subscribe((users) => {
+            this.users = users;
         });
 
-
-        // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
                 debounceTime(300),
                 switchMap((query) => {
-
                     this.isLoading = true;
-                    return this._Service.getUsers(
-                        0,
-                        10,
-                        'name',
-                        'asc',
-                        query
-                    );
+                    return this._Service.getUsers(0, 10, 'name', 'asc', query);
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -190,14 +162,11 @@ export class UserListComponent
                 .subscribe(() => {
                     // Reset back to the first page
                     this._paginator.pageIndex = 0;
-
-
                 });
 
             merge(this._sort.sortChange, this._paginator.page)
                 .pipe(
                     switchMap(() => {
-
                         this.isLoading = true;
                         return this._Service.getUsers(
                             this._paginator.pageIndex,
@@ -222,13 +191,24 @@ export class UserListComponent
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
     }
-    create(id: string): void {
 
+    create(id: string): void {
+        if (!id) {
+            console.error('User ID is missing');
+            return;
+        }
+        this._router.navigate(['/user/user-info', id]);
+    }
+
+    edit(id: string): void {
+        if (!id) {
+            console.error('User ID is missing');
+            return;
+        }
         this._router.navigate(['/user/user-info', id]);
     }
 
     deleteUser(): void {
-
         const confirmation = this._fuseConfirmationService.open({
             title: 'Delete User',
             message:
@@ -246,19 +226,14 @@ export class UserListComponent
             if (result === 'confirmed') {
                 // Get the product object
                 // const product = this.selectedProductForm.getRawValue();
-
                 // Delete the product on the server
                 // this._inventoryService
                 //     .deleteProduct('56756756567567')
                 //     .subscribe(() => {
-
                 //     });
             }
         });
     }
-
-
-
 
     /**
      * Track by function for ngFor loops
@@ -267,6 +242,6 @@ export class UserListComponent
      * @param item
      */
     trackByFn(index: number, user: User): any {
-        return user.Id;
+        return user.id;
     }
 }

@@ -83,6 +83,10 @@ export class SettingsGeneralInfoComponent implements OnInit {
         if (savedData) {
             this.accountForm.patchValue(savedData);
         }
+
+        if(this.userId !== '-1'){
+            this.loadUserData(this.userId)
+        }
     }
 
     validatePassword: ValidatorFn = (
@@ -112,5 +116,14 @@ export class SettingsGeneralInfoComponent implements OnInit {
     navigateUserBack(): void {
         //this._router.navigate(['/user/user-info', id]);
         this._router.navigate(['user/users-list']);
+    }
+
+    loadUserData(id: string) {
+        // debugger;
+        // this._service.getUserById(id).subscribe({
+        //   next: (userData) => {
+        //     this.accountForm.patchValue(userData);
+        //   }
+        // });
     }
 }
