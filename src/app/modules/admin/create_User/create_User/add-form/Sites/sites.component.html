@@ -6,7 +6,7 @@
                 <mat-select-trigger class="min-h-10">
                     <mat-chip-set #chipGrid aria-label="Enter roles">
                         @for(role of roles.value; track role) {
-                            <mat-chip-row  (removed)="remove(role)">
+                        <mat-chip-row (removed)="remove(role)">
                             {{ role.name }}
                             <button matChipRemove>
                                 <mat-icon>cancel</mat-icon>
