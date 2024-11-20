@@ -8,11 +8,12 @@ import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { WarningDialogComponent } from 'app/layout/common/warning/warning-dialog.component';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { AlertComponent } from 'app/layout/common/alert/alert.component';
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],  
+  imports: [MatButton, MatCard, MatIcon, CommonModule, AlertComponent],  
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -29,6 +30,7 @@ export class AttachmentsComponent implements OnInit
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
     private caseService:Incident_ReportingService,
+    private alertService: AlertService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private dialog: MatDialog,
@@ -155,13 +157,12 @@ export class AttachmentsComponent implements OnInit
       {
           next: (response) => 
             {
-              console.log('File uploaded successfully', response);
+              this.alertService.triggerAlert('success', 'Success', 'File uploaded successfully.');
               this.getAllCaseFiles();
             },
           error: (error) => 
             {
-              console.error('Error uploading the attachment', error);
-              console.log(error);
+              this.alertService.triggerAlert('error', 'Operation Failed', 'File uploaded failed.');
               this.getAllCaseFiles();
             }
       });
@@ -176,10 +177,10 @@ export class AttachmentsComponent implements OnInit
         link.href = url;
         link.click();
         window.URL.revokeObjectURL(url);
-        console.log('File downloaded successfully');
+        this.alertService.triggerAlert('success', 'Success', 'File download to begin shortly.');
       },
       error: (error) => {
-        console.error('Error downloading the attachment', error);
+        this.alertService.triggerAlert('error', 'Operation Failed', 'File download failed.');
       }
     });
   }
@@ -187,11 +188,11 @@ export class AttachmentsComponent implements OnInit
   deleteFile(fileName: string): void {
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
-        console.log('File deleted successfully', response);
+        this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
         this.getAllCaseFiles();
       },
       error: (error) => {
-        console.error('Error deleting the attachment', error);
+        this.alertService.triggerAlert('error', 'Operation Failed', 'File deletion failed.');
       }
     });
   }
@@ -211,7 +212,7 @@ export class AttachmentsComponent implements OnInit
         }));
       },
       error: (error) => {
-        console.error('Error fetching case attachments data:', error);
+        this.alertService.triggerAlert('error', 'File Access Failed', 'Failed to Fetch File Data.');
       }
     });
   }  
@@ -233,22 +234,13 @@ export class AttachmentsComponent implements OnInit
 
   fileMaxLimitWarning(fileSize: Number): void {
     fileSize = Number(fileSize) / (1024 * 1024); // converts to MB
-    this.dialog.open(WarningDialogComponent, {
-      data: {
-        title: 'File Size Limit Exceeded',
-        message: `The upload file size limit is ${fileSize}MB. Please upload a file that is less than ${fileSize}MB.`,
-      },
-    });
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The upload file size limit is ${fileSize}MB. Please upload a file that is less than ${fileSize}MB.`);
     this.getAllCaseFiles();
   }
 
   fileMinLimitWarning(fileSize: Number): void {
-    this.dialog.open(WarningDialogComponent, {
-      data: {
-        title: 'File size too Small',
-        message: `The file is too small. Please select a file larger than ${fileSize} KB.`,
-      },
-    });
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
   
