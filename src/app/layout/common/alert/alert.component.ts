@@ -47,3 +47,4 @@ export class AlertComponent implements OnInit, OnDestroy {
     this._fuseAlertService.show(name);
   }
 }
+

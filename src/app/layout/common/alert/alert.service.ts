@@ -20,13 +20,11 @@ export class AlertService {
     private injector: Injector
   ) {}
 
-  // Trigger the alert and create the dynamic component
   triggerAlert(type: string, title: string, message: string) {
     this.alertSubject.next({ type, title, message });
     this.createAlertComponent(type, title, message);
   }
 
-  // Create and append alert component dynamically
   private createAlertComponent(type: string, title: string, message: string) {
     const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
     const alertComponentRef = alertComponentFactory.create(this.injector);
@@ -35,14 +33,11 @@ export class AlertService {
     alertComponentRef.instance.alertTitle = title;
     alertComponentRef.instance.alertMessage = message;
 
-    // Attach component to app's view
     this.appRef.attachView(alertComponentRef.hostView);
 
-    // Get the DOM element and append it to the body
     const domElem = (alertComponentRef.hostView as any).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
 
-    // Automatically hide the alert after 3 seconds
     setTimeout(() => {
       this.appRef.detachView(alertComponentRef.hostView);
       alertComponentRef.destroy();
@@ -53,3 +48,14 @@ export class AlertService {
     this.alertSubject.next({ type: '', title: '', message: '' });
   }
 }
+
+/*
+Usage:
+1) import : import { AlertService } from 'app/layout/common/alert/alert.service';
+2) Add to constructor : private alertService: AlertService
+3) Calls: 
+Success: this.alertService.triggerAlert('success', 'Success', 'This is a success alert');
+Error: this.alertService.triggerAlert('error', 'Error', 'This is an error alert');
+Info: this.alertService.triggerAlert('info', 'Info', 'This is an info alert');
+Warning: this.alertService.triggerAlert('warning', 'Warning', 'This is a warning alert');
+*/
