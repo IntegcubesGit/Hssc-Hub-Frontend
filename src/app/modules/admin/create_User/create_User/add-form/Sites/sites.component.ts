@@ -1,26 +1,9 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    OnInit,
-    computed,
-    inject,
-    model,
-    signal,
-} from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-    MatAutocompleteModule,
-    MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import {
-    MatCheckboxChange,
-    MatCheckboxModule,
-} from '@angular/material/checkbox';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -47,28 +30,18 @@ import { UserRoles } from './sites.types';
         MatAutocompleteModule,
     ],
     templateUrl: './sites.component.html',
+    styles: [`
+        `],
 })
 export class SitesComponent implements OnInit {
+    roles = new FormControl<UserRoles[]>([]);
+    roleIds: number[] = [];
+    rolesList: UserRoles[] = [];
     sites: SiteCreation[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-    readonly currentRole = model('');
-    readonly roles = signal([]);
-    readonly allRoles = signal<UserRoles[]>([]);
-    readonly filteredRoles = computed(() => {
-        const currentRole = this.currentRole().toLowerCase();
-        const roles = this.allRoles();
-        return roles.length > 0
-            ? currentRole
-                ? roles.filter((r) =>
-                      r.name.toLowerCase().includes(currentRole)
-                  )
-                : roles
-            : [];
-    });
+    
 
-    readonly announcer = inject(LiveAnnouncer);
 
     constructor(
         private _siteService: SitesService,
@@ -82,52 +55,24 @@ export class SitesComponent implements OnInit {
         this.GetUserRoles();
     }
 
-    add(event: MatChipInputEvent): void {
-        const value = (event.value || '').trim();
-        if (value) {
-            this.roles.update((r) => [...r, value]);
-        }
-        this.currentRole.set('');
-    }
-
-    // remove(role: string): void {
-    //     this.roles.update((r) => {
-    //         const index = r.indexOf(role);
-    //         if (index < 0) {
-    //             return r;
-    //         }
-    //         r.splice(index, 1);
-    //         this.announcer.announce(`Removed ${r}`);
-    //         return [...r];
-    //     });
-    // }
-
-    remove(role: string): void {
-        this.roles.update((r) => {
-            const updatedRoles = r.filter((item) => item !== role); // Create a new array without the removed role
-            this.announcer.announce(`Removed ${role}`); // Announce the removed role
-            return updatedRoles; // Update the signal with the new array
-        });
-    }
-
-    selected(event: MatAutocompleteSelectedEvent): void {
-        this.roles.update((r) => [...r, event.option.viewValue]);
-        this.currentRole.set('');
-        event.option.deselect();
-    }
-
-    onInputFocus(): void {
-        if (this.allRoles.length > 0 && this.currentRole() === '') {
-            this.currentRole.set('');
-        }
-    }
-
     GetUserRoles() {
         this._site.getRoles().subscribe((res) => {
-            this.allRoles.set(res);
-            this.currentRole.set('');
-            console.log('Roles fetched from backend:', res);
+            this.rolesList = res;
         });
+    }
+
+    remove(role: UserRoles) {
+        const roles = this.roles.value ?? [];
+        this.removeFirst(roles, role);
+        this.roles.setValue(roles);
+        this.roleIds = roles.map(role => role.id);
+    }
+
+    private removeFirst<T>(array: T[], toRemove: T): void {
+        const index = array.indexOf(toRemove);
+        if (index !== -1) {
+            array.splice(index, 1);
+        }
     }
 
     ////////////////////////----sites start here----\\\\\\\\\\\\\\\\\\\\\\
