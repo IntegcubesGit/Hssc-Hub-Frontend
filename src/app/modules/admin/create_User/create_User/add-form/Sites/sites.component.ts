@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnInit,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import {
+    MatCheckboxChange,
+    MatCheckboxModule,
+} from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +21,6 @@ import { UserService } from '../../user.service';
 import { SiteCreation } from './Sites.class';
 import { SitesService } from './sites.service';
 import { UserRoles } from './sites.types';
-import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-sites',
@@ -32,8 +40,7 @@ import { CommonModule } from '@angular/common';
         CommonModule,
     ],
     templateUrl: './sites.component.html',
-    styles: [`
-        `],
+    styles: [``],
 })
 export class SitesComponent implements OnInit {
     roles = new FormControl<UserRoles[]>([]);
@@ -45,22 +52,20 @@ export class SitesComponent implements OnInit {
     formData: any;
     rolesAndSites: any = {
         sites: [] as number[], // Array of site IDs
-        roles: [] as number[]  // Array of role IDs
+        roles: [] as number[], // Array of role IDs
     };
 
     constructor(
         private _siteService: SitesService,
         private cdr: ChangeDetectorRef,
-        private _service: UserService,
-        private _site: SitesService
-    ) { }
+        private _service: UserService
+    ) {}
 
     ngOnInit(): void {
         this.GetSitesInfo();
         this.GetUserRoles();
         this._service.formData$.subscribe((data) => {
             this.formData = data;
-            console.log('Received data in AppSitesComponent:', this.formData);
         });
     }
 
@@ -73,14 +78,14 @@ export class SitesComponent implements OnInit {
     onRoleSelect(event: MatSelectChange): void {
         const selectedRoles = event.value as UserRoles[];
         this.roles.setValue(selectedRoles);
-        this.roleIds.setValue(selectedRoles.map(role => role.id));
+        this.roleIds.setValue(selectedRoles.map((role) => role.id));
     }
 
     remove(role: UserRoles) {
         const roles = this.roles.value ?? [];
         this.removeFirst(roles, role);
         this.roles.setValue(roles);
-        this.roleIds.setValue(roles.map(role => role.id));
+        this.roleIds.setValue(roles.map((role) => role.id));
     }
 
     private removeFirst<T>(array: T[], toRemove: T): void {
@@ -121,34 +126,21 @@ export class SitesComponent implements OnInit {
     }
 
     saveUserSiteInfo() {
-        // Map `selectSingle` to extract site IDs
-        const siteIds = this.selectSingle.map((site: any) => site.id); // Assuming `selectSingle` contains objects with `id`
-
-        // Map roles to extract role IDs
-        const roleIds = this.roles.value.map((role: any) => role.id); // Assuming roles are objects with `id`
-
-        // Construct the payload according to the updated DTO
         const payload = {
-            registerUserRequest: this.formData, // User registration details
-            sites: siteIds, // List of site IDs
-            roles: roleIds  // List of role IDs
+            registerUserRequest: this.formData,
+            sites: this.selectSingle,
+            roles: this.roleIds.value,
         };
 
-        // Call the service
         this._siteService.saveUserInfo(payload).subscribe({
             next: (res) => {
-                console.log("Response from API:", res);
+                console.log('Response from API:', res);
             },
             error: (err) => {
-                console.error("Error saving user site info:", err);
-            }
+                console.error('Error saving user site info:', err);
+            },
         });
-
-        console.log('Saving user details:', this.formData);
-        console.log('Saving site IDs:', siteIds);
-        console.log('Saving role IDs:', roleIds);
     }
-
 
     navigateUserBack(): void {
         this._service.pannelvalue('generalInfo');
