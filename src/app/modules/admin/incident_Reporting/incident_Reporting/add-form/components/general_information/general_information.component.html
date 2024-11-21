@@ -82,26 +82,26 @@
                 </mat-select>
                 <mat-error></mat-error>
               </mat-form-field>
-
             </div>
+
             <div class="flex flex-col w-full">
-              <mat-form-field class="flex-auto">
-                <mat-label class="font-medium text-gray-600 hover:font-semibold">Case Date</mat-label>
-                <input matInput [matDatepicker]="picker1" formControlName="caseDate" />
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
+              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Case Date</span>
+              <mat-form-field class="fuse-mat-dense flex-auto">
+                <input matInput [matDatepicker]="picker2" formControlName="caseDate" />
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
             </div>
 
             <div class="flex flex-col w-full">
-              <mat-form-field class="flex-auto">
-                <mat-label class="font-medium text-gray-600 hover:font-semibold">Due Date</mat-label>
+              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Due Date</span>
+              <mat-form-field class="fuse-mat-dense flex-auto">
                 <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
+              
             </div>
-
           </div>
           <div class="flex flex-col md:flex-row md:space-x-4">
 
