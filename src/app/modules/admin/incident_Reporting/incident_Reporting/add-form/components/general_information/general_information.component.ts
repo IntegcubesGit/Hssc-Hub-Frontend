@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FuseAlertComponent, FuseAlertService } from '@fuse/components/alert';
-import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { AddFormComponent } from '../../add-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +16,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
 import { CommonService } from 'app/modules/common.service';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
-import { AlertService } from 'app/core/alert/alert.service';
 import { Case } from '../../../incident_Reporting.types';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseAlertService } from '@fuse/components/alert';
+
 @Component({
   selector: 'general_information',
   templateUrl: './general_information.component.html',
@@ -70,7 +70,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     private router: Router,
     private _commonService: CommonService,
     private _service: Incident_ReportingService,
-    private _alertService: AlertService
+    private alertService: AlertService
   ) {
 
     this.createForm();
@@ -139,7 +139,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
         next: (response) => {
           const caseId = BigInt(response.caseId);
           this.router.navigate(['/case/information/', caseId, 'general-information']);
-          this._alertService.showSuccess("Case General Information Saved Successfully");
+          this.alertService.triggerAlert('success', 'Success', 'Case General Information Saved Successfully');
         }
       });
     }
@@ -148,7 +148,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   updateData(): void {
     if (this.caseForm.valid) {
       this._service.updateCase(this.caseForm.value).subscribe(response => {
-        this._alertService.showSuccess("Case General Information updated Successfully");
+        this.alertService.triggerAlert('success', 'Success', 'Case General Information Updated Successfully');
       });
     }
   }
