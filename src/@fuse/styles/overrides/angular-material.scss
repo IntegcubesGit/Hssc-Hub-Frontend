@@ -89,9 +89,7 @@
 .mat-mdc-icon-button,
 .mat-mdc-fab,
 .mat-mdc-mini-fab {
-    height: 40px;
-    min-height: 40px;
-    max-height: 40px;
+    max-height: 32px;
     line-height: 1 !important;
 
     /* Large button */
@@ -118,8 +116,9 @@
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    width: 40px !important;
-    padding: 0 0 5px 0 !important;
+    width: 30px !important;
+    padding: 0 0 0 0 !important;
+    margin: 1px 0 !important;
 
     svg,
     img {
@@ -193,6 +192,7 @@
         'colors.gray[400]'
     ) !important;
     --mat-mdc-button-ripple-color: rgba(0, 0, 0, 0.1) !important;
+   
 
     .dark & {
         --mat-mdc-button-persistent-ripple-color: theme(
@@ -207,6 +207,7 @@
 
     .mat-ripple-element {
         @apply bg-black/10 #{'!important'};
+        width: 80% !important;
     }
 }
 
@@ -1056,8 +1057,8 @@
         /* Page size select */
         .mat-mdc-paginator-page-size {
             align-items: center;
-            min-height: 40px;
-            margin: 8px;
+            min-height: 16px;
+            margin: 0px 8px 12px 8px;
 
             .mat-mdc-paginator-page-size-label {
                 display: none;
@@ -1070,12 +1071,20 @@
 
             .mat-mdc-paginator-page-size-select {
                 margin: 0;
-
+                background: #ffffff;
+                border-radius: 2px;
+                
                 .mat-mdc-text-field-wrapper {
-                    padding: 0 10px;
+                    padding: 0 5px;
+                    min-height: 14px;
 
                     .mat-form-field-flex {
-                        min-height: 32px;
+                        min-height: 14px;
+                        
+                    }
+                    .mat-mdc-form-field-infix {
+                        padding: 2px 0;
+                        min-height: 8px;
                     }
                 }
             }
@@ -1083,7 +1092,7 @@
 
         /* Range actions */
         .mat-mdc-paginator-range-actions {
-            margin: 8px 0;
+            margin: 0 0 8px 0;
 
             .mat-mdc-paginator-range-label {
                 margin-right: 16px;
