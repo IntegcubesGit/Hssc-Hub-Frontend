@@ -73,8 +73,7 @@ export class SettingsGeneralInfoComponent implements OnInit {
                 lastName: ['', Validators.required],
                 username: ['', Validators.required],
                 email: ['', [Validators.required, Validators.email]],
-                currentPassword: [''],
-                newPassword: ['', [Validators.required, Validators.minLength(6)]],
+                Password: ['', [Validators.required, Validators.minLength(6)]],
                 confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
                 phone: [''],
             },
@@ -84,22 +83,26 @@ export class SettingsGeneralInfoComponent implements OnInit {
         if (savedData) {
             this.accountForm.patchValue(savedData);
         }
+
+        if(this.userId !== '-1'){
+            this.loadUserData(this.userId)
+        }
     }
 
     validatePassword: ValidatorFn = (
         group: AbstractControl
     ): ValidationErrors | null => {
-        const newPassword = group.get('newPassword')?.value;
+        const Password = group.get('Password')?.value;
         const confirmPassword = group.get('confirmPassword')?.value;
 
-        return newPassword && confirmPassword && newPassword !== confirmPassword
+        return Password && confirmPassword && Password !== confirmPassword
             ? { passwordMismatch: true }
             : null;
     };
 
     onSubmit(): void {
         if (this.accountForm.valid) {
-            alert('Form Submitted');
+            this._service.setFormData(this.accountForm.value);
         } else {
            alert('Form is invalid');
         }
@@ -111,8 +114,16 @@ export class SettingsGeneralInfoComponent implements OnInit {
     }
 
     navigateUserBack(): void {
-
         //this._router.navigate(['/user/user-info', id]);
         this._router.navigate(['user/users-list']);
+    }
+
+    loadUserData(id: string) {
+        // debugger;
+        // this._service.getUserById(id).subscribe({
+        //   next: (userData) => {
+        //     this.accountForm.patchValue(userData);
+        //   }
+        // });
     }
 }

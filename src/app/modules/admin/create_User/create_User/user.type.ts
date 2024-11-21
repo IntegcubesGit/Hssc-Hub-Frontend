@@ -1,10 +1,11 @@
 export interface User {
-    Id: number;
+    id: number;
     FirstName: string;
     LastName: string;
     UserName: string;
     Email: string;
     CreatedBy: number;
+    Password: string;
 }
 export interface Pagination {
     length: number;

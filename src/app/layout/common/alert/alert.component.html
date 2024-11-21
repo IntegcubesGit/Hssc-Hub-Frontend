@@ -1,0 +1,9 @@
+<div class="fixed inset-0 flex items-end my-4 mx-2 justify-center z-max pointer-events-none">
+    <div
+        class="max-w-lg w-full shadow-2xl transform transition-all duration-300 ease-in-out animate__animated animate__fadeIn animate__fadeOut animate__faster pointer-events-auto">
+        <fuse-alert [type]="alertType" [appearance]="'outline'" [dismissed]="false" [dismissible]="true">
+            <span fuseAlertTitle>{{ alertTitle }}</span>
+            <p>{{ alertMessage }}</p>
+        </fuse-alert>
+    </div>
+</div>

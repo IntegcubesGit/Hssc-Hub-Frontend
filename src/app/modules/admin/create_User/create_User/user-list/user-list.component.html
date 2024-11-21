@@ -1,9 +1,10 @@
-<div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden">
-
-
+<div
+    class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden"
+>
     <!-- Header -->
     <div
-        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
+        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8"
+    >
         <!-- Loader -->
 
         <!-- Title -->
@@ -11,13 +12,29 @@
         <!-- Actions -->
         <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
             <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
-                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
-                <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
-                    [placeholder]="'Search users'" />
+            <mat-form-field
+                class="fuse-mat-dense fuse-mat-rounded min-w-64"
+                [subscriptSizing]="'dynamic'"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:magnifying-glass'"
+                ></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search users'"
+                />
             </mat-form-field>
             <!-- Add user button -->
-            <button class="ml-4 h-min-4" mat-flat-button [color]="'primary'" (click)="create('-1')">
+            <button
+                class="h-min-4 ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="create('-1')"
+            >
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
@@ -27,93 +44,135 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
         <!-- Products list -->
-        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
+        <div
+            class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"
+        >
             @if (users$ | async; as users) {
-            @if (users.length > 0) {
-            <div class="grid">
-                <!-- Header -->
-                <div class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
-                    matSort matSortDisableClear>
-                    <div>No</div>
-                    <div [mat-sort-header]="'firstName'">First Name</div>
-                    <div [mat-sort-header]="'lastName'">Last Name</div>
+                @if (users.length > 0) {
+                    <div class="grid">
+                        <!-- Header -->
+                        <div
+                            class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
+                            matSort
+                            matSortDisableClear
+                        >
+                            <div>No</div>
+                            <div [mat-sort-header]="'firstName'">
+                                First Name
+                            </div>
+                            <div [mat-sort-header]="'lastName'">Last Name</div>
 
-                    <div [mat-sort-header]="'userName'">User Name</div>
+                            <div [mat-sort-header]="'userName'">User Name</div>
 
-                    <div [mat-sort-header]="'email'" class="lg:block">Email</div>
+                            <div [mat-sort-header]="'email'" class="lg:block">
+                                Email
+                            </div>
 
-                    <div class="lg:block" [mat-sort-header]="'createdBy'">
-                        Created By
-                    </div>
-
-                    <div>Action</div>
-                </div>
-
-                <!-- Rows -->
-                @if (users$ | async; as users) {
-                @for (
-                user of users;
-                track trackByFn($index, user)
-                ) {
-                <div class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8">
-
-                    <div class="flex items-center">
-                        <div class="overflow-hidden">
-                            {{$index+1}}
+                            <div
+                                class="lg:block"
+                                [mat-sort-header]="'createdBy'"
+                            >
+                                Created By
+                            </div>
+                            <div>Action</div>
                         </div>
-                    </div>
-                    <div class="truncate">
-                        {{ user.firstName }}
-                    </div>
-                    <div class="truncate">
-                        {{ user.lastName }}
-                    </div>
-                    <div class="truncate">
-                        {{ user.userName }}
-                    </div>
-                    <div class="truncate">
-                        {{ user.email }}
-                    </div>
-                    <div class="truncate">
-                        {{ user.createdBy }}
+
+                        <!-- Rows -->
+                        @if (users$ | async; as users) {
+                            @for (
+                                user of users;
+                                track trackByFn($index, user)
+                            ) {
+                                <div
+                                    class="inventory-grid grid items-center gap-2 border-b px-4 text-md md:px-8"
+                                >
+                                    <div class="flex items-center">
+                                        <div class="overflow-hidden">
+                                            {{ $index + 1 }}
+                                        </div>
+                                    </div>
+                                    <div class="truncate">
+                                        {{ user.firstName }}
+                                    </div>
+                                    <div class="truncate">
+                                        {{ user.lastName }}
+                                    </div>
+                                    <div class="truncate">
+                                        <a
+                                            (click)="edit(user.id)"
+                                            class="link"
+                                        >
+                                            {{ user.userName }}
+                                        </a>
+                                    </div>
+                                    <div class="truncate">
+                                        {{ user.email }}
+                                    </div>
+                                    <div class="truncate">
+                                        {{ user.createdBy }}
+                                    </div>
+                                    <div>
+                                        <button
+                                            mat-icon-button
+                                            [matMenuTriggerFor]="userMenu"
+                                        >
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                [svgIcon]="
+                                                    'heroicons_mini:ellipsis-horizontal'
+                                                "
+                                            ></mat-icon>
+                                        </button>
+                                        <mat-menu #userMenu="matMenu">
+                                            <button
+                                                mat-menu-item
+                                                (click)="edit(user.id)"
+                                            >
+                                                <span class="flex items-center">
+                                                    <mat-icon
+                                                        class="mr-3 icon-size-5"
+                                                        [svgIcon]="
+                                                            'heroicons_solid:pencil'
+                                                        "
+                                                    ></mat-icon>
+                                                    <span>Edit</span>
+                                                </span>
+                                            </button>
+                                            <button mat-menu-item>
+                                                <span class="flex items-center">
+                                                    <mat-icon
+                                                        class="mr-3 icon-size-5"
+                                                        [svgIcon]="
+                                                            'heroicons_solid:trash'
+                                                        "
+                                                    ></mat-icon>
+                                                    <span>Delete</span>
+                                                </span>
+                                            </button>
+                                        </mat-menu>
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
 
-                    <div>
-                        <button mat-icon-button [matMenuTriggerFor]="userMenu">
-                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-horizontal'"></mat-icon>
-                        </button>
-                        <mat-menu #userMenu="matMenu">
-                            <button mat-menu-item (click)="create(user.Id)">
-                                <span class="flex items-center">
-                                    <mat-icon class="mr-3 icon-size-5" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
-                                    <span>Edit</span>
-                                </span>
-                            </button>
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon class="mr-3 icon-size-5" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
-                                    <span>Delete</span>
-                                </span>
-                            </button>
-                        </mat-menu>
+                    <mat-paginator
+                        class="z-10 h-18 border-b bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+                        [ngClass]="{ 'pointer-events-none': isLoading }"
+                        [length]="pagination.length"
+                        [pageIndex]="pagination.page"
+                        [pageSize]="pagination.size"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        [showFirstLastButtons]="true"
+                    ></mat-paginator>
+                } @else {
+                    <div
+                        class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16"
+                    >
+                        There are no users!
                     </div>
-                </div>
                 }
-                }
-            </div>
-
-            <mat-paginator
-                class="z-10 border-b h-18 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
-                [ngClass]="{ 'pointer-events-none': isLoading }" [length]="pagination.length"
-                [pageIndex]="pagination.page" [pageSize]="pagination.size" [pageSizeOptions]="[5, 10, 25, 100]"
-                [showFirstLastButtons]="true"></mat-paginator>
-            } @else {
-            <div class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16">
-                There are no users!
-            </div>
             }
-            }
-
         </div>
     </div>
 </div>
