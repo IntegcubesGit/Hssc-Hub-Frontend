@@ -56,11 +56,12 @@ import { Pagination, User } from '../user.type';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto 96px 96px 100px 72px;
+                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px 96px 72px;
+                    grid-template-columns: 48px 220px 220px 150px 300px 220px 100px 0px 0px;
+
                 }
             }
         `,
