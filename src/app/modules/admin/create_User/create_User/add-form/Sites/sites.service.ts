@@ -9,6 +9,7 @@ export class SitesService {
     private readonly getSitesURL = `${environment.apiUrl}User/GetAllSites`;
     private readonly getUserRolesURL = `${environment.apiUrl}User/GetUserRoles`;
     private readonly saveUserData = `${environment.apiUrl}LogInSignUp/RegisterUser`;
+    private readonly updateUserData = `${environment.apiUrl}LogInSignUp/UpdateUser`;
 
     getSites() {
         return this._httpClient.get<any>(this.getSitesURL).pipe(tap());
@@ -20,6 +21,10 @@ export class SitesService {
 
     saveUserInfo(payload: any): Observable<any> {
         return this._httpClient.post(`${this.saveUserData}`, payload);
+    }
+
+    updateUserInfo(payload: any): Observable<any> {
+        return this._httpClient.put(`${this.updateUserData}`, payload);
     }
 
 

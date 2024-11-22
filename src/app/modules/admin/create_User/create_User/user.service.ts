@@ -8,7 +8,7 @@ import { Pagination, User } from './user.type';
 @Injectable({ providedIn: 'root' })
 export class UserService {
     private readonly getUsersURL = `${environment.apiUrl}User/getAllUsers`;
-    private readonly getUserId = `${environment.apiUrl}User/getUserById`;
+    private readonly getUserWithId = `${environment.apiUrl}User/getUserById`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
 
@@ -18,6 +18,8 @@ export class UserService {
 
     private _selectedPanel: BehaviorSubject<string> =
         new BehaviorSubject<string>('generalInfo');
+
+    private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     private _formData = new BehaviorSubject<any>(null);
 
@@ -84,7 +86,20 @@ export class UserService {
             );
     }
 
-    // getUserById(id: string): Observable<any> {
-    //     return this._httpClient.get<any>(`${this.getUserId}`, id);
-    //   }
+
+    getUserById(id: string): Observable<any> {
+        return this._httpClient.get<any>(`${this.getUserWithId}?userId=${id}`).pipe(
+          tap(user => {
+            this.userSubject.next(user);
+          })
+        );
+    }
+
+    get getUserById$(): Observable<any>
+    {
+        return this.userSubject.asObservable();
+    }
+
+
+
 }
