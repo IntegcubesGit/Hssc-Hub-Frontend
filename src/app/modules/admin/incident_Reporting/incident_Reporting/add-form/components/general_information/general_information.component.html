@@ -31,7 +31,7 @@
           </div>
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Case Description</mat-label>
+              <mat-label class="font-medium text-gray-600 hover:font-semibold">Case Description</mat-label>
               <mat-form-field class="flex-none">
                 <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="2"
                   cdkAutosizeMaxRows="10" required></textarea>
@@ -123,10 +123,6 @@
                 </mat-select>
               </mat-form-field>
             </div>
-
-
-
-
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
               <mat-label class="text-gray-600 hover:font-semibold">Reporting
@@ -145,22 +141,12 @@
                 </mat-select>
               </mat-form-field>
             </div>
-
-
-
-
-
-
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
                 <mat-label class="text-gray-600 hover:font-semibold">Work Place</mat-label>
                 <input matInput formControlName="workPlace" required/>
               </mat-form-field>
             </div>
-
-          </div>
-
-          <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
               <mat-label class="text-gray-600 hover:font-semibold">Consequences
@@ -168,6 +154,10 @@
                 <input matInput formControlName="totalLoss" required/>
               </mat-form-field>
             </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:space-x-4">
+
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
                 <mat-label class="text-gray-600 hover:font-semibold">Technology
@@ -194,13 +184,6 @@
               </mat-form-field>
             </div>
 
-
-
-
-          </div>
-
-          <div class="flex flex-col md:flex-row md:space-x-4">
-
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
                 <mat-label class="text-gray-600 hover:font-semibold">Business Unit</mat-label>
@@ -217,7 +200,6 @@
                 <mat-error></mat-error>
               </mat-form-field>
             </div>
-
             <div class="flex flex-col w-full">
               <mat-form-field class="fuse-mat-dense flex-auto">
                 <mat-label class="text-gray-600 hover:font-semibold">Site</mat-label>
@@ -236,16 +218,13 @@
             </div>
 
 
-            <div class="flex flex-col w-full">
-              <mat-checkbox formControlName="isAuthorityNotified" class="mb-2 mt-4 pt-1" [color]="'primary'">Authority
-                Notified?</mat-checkbox>
-            </div>
-
           </div>
+
+          
 
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Immediate Action
+              <mat-label class="font-medium text-gray-600 hover:font-semibold">Immediate Action
                 Taken</mat-label>
                 <mat-form-field class="flex-none">
                 <textarea matInput formControlName="immediateActionTaken" cdkTextareaAutosize cdkAutosizeMinRows="2"
@@ -254,13 +233,20 @@
               </mat-form-field>
             </div>
             <div class="flex flex-col w-full">
-              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Consequences
+              <mat-label class="font-medium text-gray-600 hover:font-semibold">Consequences
                 Comment</mat-label>
                 <mat-form-field class="flex-none">
                 <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="2"
                   cdkAutosizeMaxRows="10"></textarea>
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
               </mat-form-field>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:space-x-4">
+            <div class="flex flex-col w-full">
+              <mat-checkbox formControlName="isAuthorityNotified" class="my-2 pt-1 justify-end" [color]="'primary'">Authority
+                Notified?</mat-checkbox>
             </div>
           </div>
         </div>
