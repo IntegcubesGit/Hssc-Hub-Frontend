@@ -44,21 +44,22 @@ export class Incident_ReportingService {
   private readonly getRootCausesById = `${environment.apiUrl}Cases/IncidentReporting_GetRootCauseById/`;
 
   private readonly getAllCaseActionsURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseActions/`;
-  private readonly getCaseActionByIdURL= `${environment.apiUrl}Cases/IncidentReporting_GetCaseActionById/`;
-  private readonly saveOrUpdateCaseActionByIdURL= `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseAction/`;
+  private readonly getCaseActionByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetCaseActionById/`;
+  private readonly saveOrUpdateCaseActionByIdURL = `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseAction/`;
 
 
   private readonly getAllCaseCommentsURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseComments/`;
-  private readonly getCaseCommentByIdURL= `${environment.apiUrl}Cases/IncidentReporting_GetCaseCommentById/`;
-  private readonly saveOrUpdateCaseComment= `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseComment/`;
+  private readonly getCaseCommentByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetCaseCommentById/`;
+  private readonly saveOrUpdateCaseComment = `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseComment/`;
 
-  private readonly getAllCaseAttachmentsURL =`${environment.apiUrl}CaseFile/GetAllCaseFiles/`;
-  private readonly uploadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/uploadCaseFile/`;  
-  private readonly downloadCaseAttachmentsURL =`${environment.apiUrl}CaseFile/downloadCaseFile/`;
+  private readonly getAllCaseAttachmentsURL = `${environment.apiUrl}CaseFile/GetAllCaseFiles/`;
+  private readonly uploadCaseAttachmentsURL = `${environment.apiUrl}CaseFile/uploadCaseFile/`;
+  private readonly downloadCaseAttachmentsURL = `${environment.apiUrl}CaseFile/downloadCaseFile/`;
+  private readonly deleteCaseAttachmentsURL = `${environment.apiUrl}CaseFile/deleteCaseFile/`;
 
-  private readonly getCaseSignaturesListURL= `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseSignatures/`;
-  private readonly reviewCaseURL= `${environment.apiUrl}Cases/IncidentReporting_ReviewIncidentCase/`;
-  
+  private readonly getCaseSignaturesListURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseSignatures/`;
+  private readonly reviewCaseURL = `${environment.apiUrl}Cases/IncidentReporting_ReviewIncidentCase/`;
+
 
   private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject<Pagination | null>(null);
 
@@ -144,8 +145,7 @@ export class Incident_ReportingService {
     return this._httpClient.get<any>(`${this.getCaseActionByIdURL}${id}`);
   }
 
-  saveCaseAction(caseActionData:any):Observable<any>
-  {
+  saveCaseAction(caseActionData: any): Observable<any> {
     return this._httpClient.post(`${this.saveOrUpdateCaseActionByIdURL}`, caseActionData);
   }
 
@@ -218,25 +218,20 @@ export class Incident_ReportingService {
   }
 
   //case comments
-  getAllCaseComments(caseId): Observable<any>
-  {
+  getAllCaseComments(caseId): Observable<any> {
     return this._httpClient.get<any>(`${this.getAllCaseCommentsURL}${caseId}`);
   }
-  getCaseCommentById(id): Observable<any>
-  {
+  getCaseCommentById(id): Observable<any> {
     return this._httpClient.get<any>(`${this.getCaseCommentByIdURL}${id}`);
   }
-  saveCaseComment(caseComment:any): Observable<any>
-  {
+  saveCaseComment(caseComment: any): Observable<any> {
     return this._httpClient.post<any>(`${this.saveOrUpdateCaseComment}`, caseComment);
   }
 
-  getAllCaseAttachments(caseId:string): Observable<any>
-  {
+  getAllCaseAttachments(caseId: string): Observable<any> {
     return this._httpClient.get<any>(`${this.getAllCaseAttachmentsURL}${caseId}`);
   }
-  uploadCaseAttachment(folderName: string, caseId: string, remarks: string, file: File) : Observable<any>
-  {
+  uploadCaseAttachment(folderName: string, caseId: string, remarks: string, file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     formData.append('caseId', caseId);
@@ -247,25 +242,21 @@ export class Incident_ReportingService {
       `${this.uploadCaseAttachmentsURL}`, formData
     );
   }
-  
+
   downloadCaseAttachment(folderName: string, fileName: string): Observable<Blob> {
     return this._httpClient.get<Blob>(`${this.downloadCaseAttachmentsURL}${folderName}/${fileName}`, {
       responseType: 'blob' as 'json'
     });
   }
 
-  deleteCaseAttachment(folderName: string, caseId: string, fileName: string): Observable<any>
-  {
-    return this._httpClient.delete<any>(`${this.uploadCaseAttachmentsURL}${folderName}/${caseId}/${fileName}`);
+  deleteCaseAttachment(folderName: string, caseId: string, fileName: string): Observable<any> {
+    return this._httpClient.delete<any>(`${this.deleteCaseAttachmentsURL}${caseId}/${fileName}`);
   }
-  
 
-  getAllCaseSignatures(caseId:string): Observable<any>
-  {
+  getAllCaseSignatures(caseId: string): Observable<any> {
     return this._httpClient.get<any>(`${this.getCaseSignaturesListURL}${caseId}`);
   }
-  reviewCase(caseId:string): Observable<any>
-  {
+  reviewCase(caseId: string): Observable<any> {
     return this._httpClient.get<any>(`${this.reviewCaseURL}${caseId}`);
   }
 

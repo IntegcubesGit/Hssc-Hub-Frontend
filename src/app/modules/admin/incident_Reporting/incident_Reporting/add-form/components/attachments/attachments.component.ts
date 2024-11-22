@@ -188,6 +188,7 @@ export class AttachmentsComponent implements OnInit
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
         this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
+        this.closeDrawer();
         this.getAllCaseFiles();
       },
       error: (error) => {
@@ -242,5 +243,4 @@ export class AttachmentsComponent implements OnInit
     this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
-  
 }
