@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { AlertService } from 'app/layout/common/alert/alert.service';
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],  
+  imports: [MatButton, MatCard, MatIcon, CommonModule],
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -34,13 +34,13 @@ export class AttachmentsComponent implements OnInit
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private router: Router,
-  ) 
+  )
   {}
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
     this.getAllCaseFiles();
-    
+
   }
 
   onCancel() {
@@ -54,24 +54,24 @@ export class AttachmentsComponent implements OnInit
   formatSize(size: number): string {
     let formattedSize: string;
     let postfix: string;
-  
+
     if (size < 1024) {
       formattedSize = size.toFixed(2);
-      postfix = 'B'; 
+      postfix = 'B';
     } else if (size < 1024 * 1024) {
       formattedSize = (size / 1024).toFixed(2);
-      postfix = 'KB'; 
+      postfix = 'KB';
     } else if (size < 1024 * 1024 * 1024) {
       formattedSize = (size / (1024 * 1024)).toFixed(2);
-      postfix = 'MB'; 
+      postfix = 'MB';
     } else {
       formattedSize = (size / (1024 * 1024 * 1024)).toFixed(2);
-      postfix = 'GB'; 
+      postfix = 'GB';
     }
-  
+
     return `${formattedSize} ${postfix}`;
   }
-  
+
   openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void {
     this.selectedFile = file;
     this.isDrawerOpen = true;
@@ -94,13 +94,13 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
-      
+
       if(file.size < this.minFileSizeLimit ) {
         this.fileMinLimitWarning(this.minFileSizeLimit);
         break;
       }
 
-      if(file.size > this.maxFileSizeLimit ) { 
+      if(file.size > this.maxFileSizeLimit ) {
       this.fileMaxLimitWarning(this.maxFileSizeLimit);
       break;
       }
@@ -117,17 +117,17 @@ export class AttachmentsComponent implements OnInit
   }
 
   onDragOver(event: DragEvent): void {
-    event.preventDefault(); 
+    event.preventDefault();
   }
-  
+
   onDrop(event: DragEvent): void {
-    event.preventDefault(); 
+    event.preventDefault();
     if (!event.dataTransfer?.files) return;
     const selectedFiles = event.dataTransfer.files;
-    const fakeEvent = { target: { files: selectedFiles } }; 
+    const fakeEvent = { target: { files: selectedFiles } };
     this.onFileSelected(fakeEvent);
   }
-  
+
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
@@ -150,16 +150,16 @@ export class AttachmentsComponent implements OnInit
     return 'insert_drive_file';
   }
 
-  uploadFile(file: File,remarks:string): void 
+  uploadFile(file: File,remarks:string): void
   {
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
-          next: (response) => 
+          next: (response) =>
             {
               this.alertService.triggerAlert('success', 'Success', 'File uploaded successfully.');
               this.getAllCaseFiles();
             },
-          error: (error) => 
+          error: (error) =>
             {
               this.alertService.triggerAlert('error', 'Operation Failed', 'File uploaded failed.');
               this.getAllCaseFiles();
@@ -195,7 +195,7 @@ export class AttachmentsComponent implements OnInit
       }
     });
   }
-  
+
   getAllCaseFiles() {
     this.caseService.getAllCaseAttachments(this.caseId).subscribe({
       next: (response) => {
@@ -214,7 +214,7 @@ export class AttachmentsComponent implements OnInit
         this.alertService.triggerAlert('error', 'File Access Failed', 'Failed to Fetch File Data.');
       }
     });
-  }  
+  }
 
   getFileClass(fileType: string): string {
     const fileClassMap: { [key: string]: string } = {
@@ -242,5 +242,5 @@ export class AttachmentsComponent implements OnInit
     this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
-  
+
 }
