@@ -27,6 +27,7 @@ export class AttachmentsComponent implements OnInit
   caseId:string = null;
   minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
   maxFileSizeLimit = 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  isRemarksEditable: boolean = false;
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
@@ -267,5 +268,13 @@ export class AttachmentsComponent implements OnInit
     this.getAllCaseFiles();
   }
 
+  toggleEditRemarks(): void {
+    this.isRemarksEditable = true;
+  }
+
+  saveRemarks(): void {
+    this.isRemarksEditable = false;
+    this.alertService.triggerAlert('warn', 'Operation Failed', `Failed to update remarks.`);
+  }
 
 }
