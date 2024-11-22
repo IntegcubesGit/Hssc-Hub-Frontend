@@ -6,7 +6,7 @@ import { environment } from '../../../../../environment/environment';
 import { Pagination, User } from './user.type';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserListService {
     private readonly getUsersURL = `${environment.apiUrl}User/getAllUsers`;
     private readonly getUserWithId = `${environment.apiUrl}User/getUserById`;
     private _pagination: BehaviorSubject<Pagination | null> =
@@ -60,7 +60,7 @@ export class UserService {
 
     getUsers(
         page: number = 0,
-        size: number = 5,
+        size: number = 10,
         sort: string = 'name',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
@@ -86,20 +86,17 @@ export class UserService {
             );
     }
 
-
     getUserById(id: string): Observable<any> {
-        return this._httpClient.get<any>(`${this.getUserWithId}?userId=${id}`).pipe(
-          tap(user => {
-            this.userSubject.next(user);
-          })
-        );
+        return this._httpClient
+            .get<any>(`${this.getUserWithId}?userId=${id}`)
+            .pipe(
+                tap((user) => {
+                    this.userSubject.next(user);
+                })
+            );
     }
 
-    get getUserById$(): Observable<any>
-    {
+    get getUserById$(): Observable<any> {
         return this.userSubject.asObservable();
     }
-
-
-
 }
