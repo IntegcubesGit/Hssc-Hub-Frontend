@@ -206,8 +206,8 @@ export class AttachmentsComponent implements OnInit
           type: this.getFileType(file.extension),
           icon: this.getFileIcon(this.getFileType(file.extension)),
           remarks: file.remarks,
-          uploadedBy: file.uploadedBy,
-          uploadedAt: file.uploadTime,
+          uploadedBy: file.createdBy,
+          uploadedAt: file.createdOn,
           fileSize: file.fileSize,
         }));
       },

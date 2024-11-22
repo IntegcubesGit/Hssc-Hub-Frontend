@@ -67,12 +67,16 @@
         <!-- Display Files -->
         @if (files.length > 0) {
         <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
-        <div class="flex flex-wrap overflow-y-scroll max-h-36">
+        <div class="flex flex-wrap overflow-y-scroll max-h-38">
           <mat-card *ngFor="let file of files"
-            class="m-2 flex h-36 w-36 cursor-pointer flex-col rounded-sm px-4 py-2 shadow border-gray-400 bg-gray-100"
+            class="m-2 flex h-36 w-36 cursor-pointer flex-col rounded-sm px-1 py-1 shadow border-gray-400 bg-gray-100"
             (click)="openDrawer(file)">
-            <div class="flex items-center justify-between"></div>
-            <div class="aspect-[9/6]">
+            <div class="flex items-end justify-end">
+              <button type="button" mat-icon-button (click)="deleteFile(file.completeFileName)">
+                <mat-icon class="icon-size-4">close</mat-icon>
+              </button>
+            </div>
+            <div class="">
               <div class="flex h-full items-center justify-center">
                 <div class="relative">
                   <mat-icon class="text-hint opacity-50 icon-size-14">{{ file.icon }}</mat-icon>
