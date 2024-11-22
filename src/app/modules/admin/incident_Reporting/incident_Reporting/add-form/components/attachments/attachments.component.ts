@@ -273,7 +273,7 @@ export class AttachmentsComponent implements OnInit
   }
 
   saveRemarks(): void {
-    this.isRemarksEditable = false;
+    this.isRemarksEditable = !this.isRemarksEditable;
     this.alertService.triggerAlert('warn', 'Operation Failed', `Failed to update remarks.`);
   }
 
