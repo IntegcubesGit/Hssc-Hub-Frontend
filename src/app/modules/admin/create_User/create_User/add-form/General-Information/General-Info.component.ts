@@ -64,7 +64,6 @@ export class SettingsGeneralInfoComponent implements OnInit {
      * On init
      */
     ngOnInit(): void {
-        debugger;
         this.userId = this.route.snapshot.paramMap.get('id');
         // Create the form
         this.accountForm = this._formBuilder.group(
