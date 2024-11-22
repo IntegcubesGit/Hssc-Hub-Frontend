@@ -86,10 +86,8 @@ export class SitesComponent implements OnInit {
     }
 
     AssignSitesAndRoles() {
-        debugger;
         this._service.getUserById$.subscribe({
             next: (data) => {
-                debugger;
                 const RoleList = this.rolesList.filter((role) =>
                     data.roles.includes(role.id)
                 );
@@ -117,7 +115,6 @@ export class SitesComponent implements OnInit {
     }
 
     onRoleSelect(event: MatSelectChange): void {
-        debugger;
         const selectedRoles = event.value as UserRoles[];
         this.roles.setValue(selectedRoles);
         this.roleIds.setValue(selectedRoles.map((role) => role.id));
