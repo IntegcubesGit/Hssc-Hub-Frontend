@@ -355,7 +355,7 @@
         /* Select */
         .mat-mdc-select {
             .mat-mdc-select-trigger{
-                margin-bottom: 2px !important;
+                margin-bottom: 1px !important;
             }
             /* Placeholder color */
             .mat-mdc-select-placeholder {
@@ -975,7 +975,7 @@
 /* -------------------------------------------------------------------------- */
 .mat-mdc-input-element {
     align-items: center;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
     &::placeholder {
         transition: none !important;
         @apply text-hint #{'!important'};
