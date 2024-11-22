@@ -71,10 +71,13 @@ export class SettingsGeneralInfoComponent implements OnInit {
             {
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
-                username: ['', Validators.required],
+                userName: ['', Validators.required],
                 email: ['', [Validators.required, Validators.email]],
-                Password: ['', [Validators.required, Validators.minLength(6)]],
-                confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+                password: ['', [Validators.required, Validators.minLength(6)]],
+                confirmPassword: [
+                    '',
+                    [Validators.required, Validators.minLength(6)],
+                ],
                 phone: [''],
             },
             { validators: this.validatePassword }
@@ -84,15 +87,15 @@ export class SettingsGeneralInfoComponent implements OnInit {
             this.accountForm.patchValue(savedData);
         }
 
-        if(this.userId !== '-1'){
-            this.loadUserData(this.userId)
+        if (this.userId !== '-1') {
+            this.loadUserData(this.userId);
         }
     }
 
     validatePassword: ValidatorFn = (
         group: AbstractControl
     ): ValidationErrors | null => {
-        const Password = group.get('Password')?.value;
+        const Password = group.get('password')?.value;
         const confirmPassword = group.get('confirmPassword')?.value;
 
         return Password && confirmPassword && Password !== confirmPassword
@@ -104,7 +107,7 @@ export class SettingsGeneralInfoComponent implements OnInit {
         if (this.accountForm.valid) {
             this._service.setFormData(this.accountForm.value);
         } else {
-           alert('Form is invalid');
+            alert('Form is invalid');
         }
     }
 
@@ -119,11 +122,11 @@ export class SettingsGeneralInfoComponent implements OnInit {
     }
 
     loadUserData(id: string) {
-        // debugger;
-        // this._service.getUserById(id).subscribe({
-        //   next: (userData) => {
-        //     this.accountForm.patchValue(userData);
-        //   }
-        // });
+        this._service.getUserById(id).subscribe({
+            next: (userData) => {
+                console.log('this is user data for patch', userData);
+                this.accountForm.patchValue(userData.user);
+            },
+        });
     }
 }
