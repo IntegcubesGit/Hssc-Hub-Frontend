@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { AddUserComponent } from './create_User/add-form/add-user.component';
 import { UserListComponent } from './create_User/user-list/user-list.component';
-import { UserService } from './create_User/user.service';
+import { UserListService } from './create_User/user-list.service';
 
 export default [
     {
@@ -14,7 +14,7 @@ export default [
         path: 'users-list',
         component: UserListComponent,
         resolve: {
-            products: () => inject(UserService).getUsers(),
+            products: () => inject(UserListService).getUsers(),
         },
     },
     {

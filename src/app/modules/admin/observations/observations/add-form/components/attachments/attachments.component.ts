@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],  
+  imports: [MatButton, MatCard, MatIcon, CommonModule],
   templateUrl: './attachments.component.html',
   styles: [],
 })
@@ -29,17 +29,16 @@ export class AttachmentsComponent implements OnInit
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
     private caseService:Incident_ReportingService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
 
 
-  ) 
+  )
   {}
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
-    debugger
     this.getAllCaseFiles();
-    
+
   }
 
   openDrawer(file: { name: string; type: string; icon: string }) {
@@ -70,7 +69,7 @@ export class AttachmentsComponent implements OnInit
         type: fileType,
         icon: fileIcon,
       });
-      
+
       // Optionally, upload the file
       this.uploadFile(file,'');
     }
@@ -106,15 +105,15 @@ export class AttachmentsComponent implements OnInit
   }
 
 
-  uploadFile(file: File,remarks:string): void 
+  uploadFile(file: File,remarks:string): void
   {
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
-          next: (response) => 
+          next: (response) =>
             {
               console.log('File uploaded successfully', response);
             },
-          error: (error) => 
+          error: (error) =>
             {
               console.error('Error uploading the attachment', error);
             }
@@ -126,11 +125,11 @@ export class AttachmentsComponent implements OnInit
   {
       this.caseService.downloadCaseAttachment('cases',fileName).subscribe(
         {
-            next: (response) => 
+            next: (response) =>
               {
-                
+
               },
-              error: (error) => 
+              error: (error) =>
               {
                 console.error('Error downlaoding the attachment', error);
               }
@@ -140,11 +139,11 @@ export class AttachmentsComponent implements OnInit
   {
     this.caseService.getAllCaseAttachments(this.caseId).subscribe(
       {
-          next: (response) => 
+          next: (response) =>
             {
               this.filess = response;
             },
-          error: (error) => 
+          error: (error) =>
             {
               console.error('Error fetching case attachments data:', error);
             }
