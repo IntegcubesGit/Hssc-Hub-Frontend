@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 @Component({
   selector: 'app-attachments',
   standalone: true,
@@ -28,6 +30,7 @@ export class AttachmentsComponent implements OnInit
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
+    private _fuseConfirmationService: FuseConfirmationService,
     private caseService:Incident_ReportingService,
     private alertService: AlertService,
     private route: ActivatedRoute,
@@ -183,8 +186,28 @@ export class AttachmentsComponent implements OnInit
       }
     });
   }
-
   deleteFile(fileName: string): void {
+    console.log('delete file', fileName);
+    const confirmation = this._fuseConfirmationService.open({
+      title: 'Delete file',
+      message:
+          'Are you sure you want to remove this file? This action cannot be undone.',
+      actions: {
+          confirm: {
+              label: 'Delete',
+          },
+      },
+  });
+  // Subscribe to the confirmation dialog closed action
+  confirmation.afterClosed().subscribe((result) => {
+      // If the confirm button pressed...
+      if (result === 'confirmed') {
+          this.deleteFileHandler(fileName);
+      }
+  });
+  }
+
+  deleteFileHandler(fileName: string): void {
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
         this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
@@ -243,4 +266,6 @@ export class AttachmentsComponent implements OnInit
     this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
+
+
 }
