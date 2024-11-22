@@ -22,7 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../user.service';
+import { UserListService } from '../../user-list.service';
 
 @Component({
     selector: 'settings-generalInfo',
@@ -52,7 +52,7 @@ export class SettingsGeneralInfoComponent implements OnInit {
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private _service: UserService,
+        private _service: UserListService,
         private route: ActivatedRoute
     ) {}
 
@@ -64,8 +64,8 @@ export class SettingsGeneralInfoComponent implements OnInit {
      * On init
      */
     ngOnInit(): void {
+        debugger;
         this.userId = this.route.snapshot.paramMap.get('id');
-
         // Create the form
         this.accountForm = this._formBuilder.group(
             {
@@ -82,6 +82,10 @@ export class SettingsGeneralInfoComponent implements OnInit {
             },
             { validators: this.validatePassword }
         );
+
+        if (this.userId === '-1') {
+            this.accountForm.reset();
+        }
         const savedData = this._service.getFormData();
         if (savedData) {
             this.accountForm.patchValue(savedData);
@@ -124,7 +128,6 @@ export class SettingsGeneralInfoComponent implements OnInit {
     loadUserData(id: string) {
         this._service.getUserById(id).subscribe({
             next: (userData) => {
-                console.log('this is user data for patch', userData);
                 this.accountForm.patchValue(userData.user);
             },
         });

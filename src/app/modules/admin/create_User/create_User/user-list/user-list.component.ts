@@ -39,7 +39,7 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { UserService } from '../user.service';
+import { UserListService } from '../user-list.service';
 import { Pagination, User } from '../user.type';
 
 @Component({
@@ -56,12 +56,11 @@ import { Pagination, User } from '../user.type';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;
+                    grid-template-columns: 48px 100px auto 96px 96px 100px 72px;
                 }
 
                 @screen lg {
                     grid-template-columns: 48px 220px 220px 150px 300px 220px 100px 0px 0px;
-
                 }
             }
         `,
@@ -107,7 +106,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
 
-        private _Service: UserService,
+        private _Service: UserListService,
 
         private _router: Router
     ) {}
