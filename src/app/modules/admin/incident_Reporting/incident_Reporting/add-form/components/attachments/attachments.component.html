@@ -16,7 +16,7 @@
       <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
     </button>
   </div>
-    <div class="flex-auto pl-4 pr-4 ">
+    <div class="flex-auto px-4 ">
       <div class="flex w-full items-center justify-between mt-2">
         <div>
             <div class="text-secondary font-medium tracking-tight ml-3 hidden sm:flex">
@@ -102,7 +102,7 @@
 
   <!-- Right Drawer for File Details -->
   @if (isDrawerOpen) {
-    <div  class="h-full bg-white shadow-lg z-50 transform transition-all duration-500 ease-in opacity-0
+    <div  class="min-h-screen absolute bg-white shadow-lg z-50 transition-transform transform translate-x-full ease-in-out duration-300 opacity-0
       flex flex-auto flex-col p-4 md:pt-6 lg:pt-6 md:px-5 lg:px-5 md:pb-2 lg:pb-2 w-80 top-0 right-0" [ngClass]="{
         'translate-x-0 opacity-100 basis-2/5': isDrawerOpen,
         'translate-x-full opacity-0 w-0': !isDrawerOpen
