@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FuseAlertComponent } from '@fuse/components/alert';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { AddFormComponent } from '../../add-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,10 +17,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
-import { AlertService } from 'app/core/alert/alert.service';
 import { FuseCardComponent } from '@fuse/components/card';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
+import { AlertService } from 'app/layout/common/alert/alert.service';
 
 @Component({
     selector: 'comments',
@@ -34,7 +33,6 @@ import {MatCardModule} from '@angular/material/card';
         MatIconModule,
         MatButtonModule,
         FuseHighlightComponent,
-        FuseAlertComponent,
         MatIconModule,
         FormsModule,
         MatFormFieldModule,
@@ -82,7 +80,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute, 
         private router: Router,
         private _service: Incident_ReportingService,
-        private _alertService: AlertService) 
+        private alertService: AlertService) 
     {
 
 
@@ -112,13 +110,13 @@ export class CommentsComponent implements OnInit, OnDestroy {
                 }));
             },
             error: (error) => {
-                console.error('Error fetching case comments data:', error);
+                this.alertService.triggerAlert('error', 'Error', 'Failed to fetch case comments.');
             }
         });
     }
     deleteComment(caseCommentId:number)
     {
-
+        
     }
 
     editComment(caseCommentId:number)
@@ -133,7 +131,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
                 this.buttonText='Update Comment'
             },
             error: (error) => {
-                console.error('Error fetching case comment data:', error);
+                this.alertService.triggerAlert('error', 'Error', 'Failed to edit case comment.');
             }
         });
     }
@@ -146,7 +144,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     {
         if (this.composeForm.valid) 
         {
-            debugger
+
             this._service.saveCaseComment(this.composeForm.value).subscribe({
                 next: (response) => 
                 {
@@ -166,9 +164,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
                             control.markAsUntouched(); 
                         }
                     });
+                    this.alertService.triggerAlert('success', 'Success', 'Case Comment Posted Successfully');
                 },
                 error: (error) => {
-                    console.error('Error fetching case comments data:', error);
+                    this.alertService.triggerAlert('error', 'Error', 'Failed to add case comment.');
                 }
             });
             

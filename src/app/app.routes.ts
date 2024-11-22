@@ -9,10 +9,10 @@ import { LayoutComponent } from 'app/layout/layout.component';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
 
-    // Redirect empty path to '/example'
+    // Redirect empty path to '/dashboard'
     {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
 
-    // Redirect signed-in user to the '/example'
+    // Redirect signed-in user to the '/dashboard'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
@@ -79,7 +79,7 @@ export const appRoutes: Route[] = [
                 redirectTo: 'dashboard',
                 pathMatch: 'full',
             },
-            {path: 'dashboard', loadChildren: () => import('app/modules/admin/example/example.routes')},
+            {path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
             {path: 'case', loadChildren: () => import('app/modules/admin/incident_Reporting/incident_Reporting.routes')},
             {path: 'observations', loadChildren: () => import('app/modules/admin/observations/observations.routes')},
             {path: 'user', loadChildren: () => import('app/modules/admin/create_User/create_User.routes')},
