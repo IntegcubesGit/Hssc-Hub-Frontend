@@ -22,28 +22,27 @@
         <div class="p-8 pb-4">
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Case Title</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <input matInput formControlName="caseTitle" />
+                <mat-label class="font-medium  text-gray-600 hover:font-semibold">Case Title</mat-label>
+                <input matInput formControlName="caseTitle" required />
                 <mat-error> </mat-error>
               </mat-form-field>
             </div>
           </div>
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Case
-                Description</span>
+              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Case Description</mat-label>
               <mat-form-field class="flex-none">
                 <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="2"
-                  cdkAutosizeMaxRows="10"></textarea>
+                  cdkAutosizeMaxRows="10" required></textarea>
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
               </mat-form-field>
             </div>
           </div>
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Category</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
+                <mat-label class="text-gray-600 hover:font-semibold">Category</mat-label>
                 <mat-select formControlName="categoryId">
                   @for (
                   category of caseCategories;
@@ -63,9 +62,9 @@
 
             </div>
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Risk
-                Category</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
+                <mat-label class="text-gray-600 hover:font-semibold">Risk
+                  Category</mat-label>
                 <mat-select formControlName="riskCategoryId">
                   @for (
                   category of riskCategories;
@@ -82,32 +81,34 @@
                 </mat-select>
                 <mat-error></mat-error>
               </mat-form-field>
-
             </div>
+
+
             <div class="flex flex-col w-full">
-              <mat-form-field class="flex-auto">
-                <mat-label class="font-medium text-gray-600 hover:font-semibold">Case Date</mat-label>
-                <input matInput [matDatepicker]="picker1" formControlName="caseDate" />
+              <mat-form-field class="fuse-mat-dense flex-auto ">
+                <mat-label class="text-gray-600 hover:font-semibold">Case Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="caseDate" required />
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
             </div>
 
+
             <div class="flex flex-col w-full">
-              <mat-form-field class="flex-auto">
-                <mat-label class="font-medium text-gray-600 hover:font-semibold">Due Date</mat-label>
+              <mat-form-field class="fuse-mat-dense flex-auto">
+                <mat-label class="text-gray-600 hover:font-semibold">Due Date</mat-label>
                 <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
-            </div>
 
+            </div>
           </div>
           <div class="flex flex-col md:flex-row md:space-x-4">
 
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Status</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
+                <mat-label class="text-gray-600 hover:font-semibold">Status</mat-label>
                 <mat-select formControlName="statusId">
                   @for (
                   status of caseStatuses;
@@ -127,9 +128,9 @@
 
 
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Reporting
-                Department</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
+              <mat-label class="text-gray-600 hover:font-semibold">Reporting
+                Department</mat-label>
                 <mat-select formControlName="departmentId">
                   @for (
                   category of departments;
@@ -151,35 +152,35 @@
 
 
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Work Place</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <input matInput formControlName="workPlace" />
+                <mat-label class="text-gray-600 hover:font-semibold">Work Place</mat-label>
+                <input matInput formControlName="workPlace" required/>
               </mat-form-field>
             </div>
-            
+
           </div>
 
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Consequences
-                Total Loss</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <input matInput formControlName="totalLoss" />
+              <mat-label class="text-gray-600 hover:font-semibold">Consequences
+                Total Loss</mat-label>
+                <input matInput formControlName="totalLoss" required/>
               </mat-form-field>
             </div>
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Technology
-                Type</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <input matInput formControlName="technologyType" />
+                <mat-label class="text-gray-600 hover:font-semibold">Technology
+                  Type</mat-label>
+                <input matInput formControlName="technologyType" required/>
               </mat-form-field>
             </div>
             <!-- ----------------------------------------------- -->
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Connected
-                Case</span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <mat-select formControlName="connectedCaseId">
+                <mat-label class="text-gray-600 hover:font-semibold">Connected
+                  Case</mat-label>
+                <mat-select formControlName="connectedCaseId" required>
                   @for (
                   connectedCase of connectedCases;
                   track connectedCase
@@ -201,11 +202,9 @@
           <div class="flex flex-col md:flex-row md:space-x-4">
 
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">
-                Business Unit
-              </span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <mat-select formControlName="businessUnitId">
+                <mat-label class="text-gray-600 hover:font-semibold">Business Unit</mat-label>
+                <mat-select formControlName="businessUnitId" required="">
                   @for (
                   bu of businessUnits;
                   track bu
@@ -220,11 +219,9 @@
             </div>
 
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">
-                Site
-              </span>
               <mat-form-field class="fuse-mat-dense flex-auto">
-                <mat-select formControlName="siteId">
+                <mat-label class="text-gray-600 hover:font-semibold">Site</mat-label>
+                <mat-select formControlName="siteId" required>
                   @for (
                   site of sites;
                   track site
@@ -248,18 +245,18 @@
 
           <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Immediate Action
-                Taken</span>
-              <mat-form-field class="flex-none">
+              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Immediate Action
+                Taken</mat-label>
+                <mat-form-field class="flex-none">
                 <textarea matInput formControlName="immediateActionTaken" cdkTextareaAutosize cdkAutosizeMinRows="2"
                   cdkAutosizeMaxRows="10"></textarea>
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
               </mat-form-field>
             </div>
             <div class="flex flex-col w-full">
-              <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Consequences
-                Comment</span>
-              <mat-form-field class="flex-none">
+              <mat-label class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Consequences
+                Comment</mat-label>
+                <mat-form-field class="flex-none">
                 <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="2"
                   cdkAutosizeMaxRows="10"></textarea>
                 <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
