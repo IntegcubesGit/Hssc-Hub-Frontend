@@ -187,6 +187,7 @@ export class AttachmentsComponent implements OnInit
       }
     });
   }
+
   deleteFile(fileName: string): void {
     console.log('delete file', fileName);
     const confirmation = this._fuseConfirmationService.open({
@@ -199,9 +200,7 @@ export class AttachmentsComponent implements OnInit
           },
       },
   });
-  // Subscribe to the confirmation dialog closed action
   confirmation.afterClosed().subscribe((result) => {
-      // If the confirm button pressed...
       if (result === 'confirmed') {
           this.deleteFileHandler(fileName);
       }
