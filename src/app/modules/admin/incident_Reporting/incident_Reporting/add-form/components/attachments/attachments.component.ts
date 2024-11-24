@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 @Component({
   selector: 'app-attachments',
   standalone: true,
@@ -25,9 +27,11 @@ export class AttachmentsComponent implements OnInit
   caseId:string = null;
   minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
   maxFileSizeLimit = 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  isRemarksEditable: boolean = false;
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
+    private _fuseConfirmationService: FuseConfirmationService,
     private caseService:Incident_ReportingService,
     private alertService: AlertService,
     private route: ActivatedRoute,
@@ -185,6 +189,25 @@ export class AttachmentsComponent implements OnInit
   }
 
   deleteFile(fileName: string): void {
+    console.log('delete file', fileName);
+    const confirmation = this._fuseConfirmationService.open({
+      title: 'Delete file',
+      message:
+          'Are you sure you want to remove this file? This action cannot be undone.',
+      actions: {
+          confirm: {
+              label: 'Delete',
+          },
+      },
+  });
+  confirmation.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+          this.deleteFileHandler(fileName);
+      }
+  });
+  }
+
+  deleteFileHandler(fileName: string): void {
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
         this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
@@ -243,4 +266,14 @@ export class AttachmentsComponent implements OnInit
     this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
+
+  toggleEditRemarks(): void {
+    this.isRemarksEditable = !this.isRemarksEditable;
+  }
+
+  saveRemarks(): void {
+    this.isRemarksEditable = false;
+    this.alertService.triggerAlert('warn', 'Operation Failed', `Failed to update remarks.`);
+  }
+
 }
