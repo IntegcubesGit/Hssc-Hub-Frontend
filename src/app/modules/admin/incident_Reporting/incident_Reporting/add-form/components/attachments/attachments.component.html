@@ -130,19 +130,19 @@
         <div class="mt-3 text-md font-semibold text-center">Details</div>
         <div class="mt-3 flex flex-col divide-y border-b border-t font-medium">
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">File Format</div>
+            <div class="text-secondary text-sm">Type</div>
             <div class="rounded px-1.5 text-sm font-semibold leading-5 w-max"
               [ngClass]="getFileClass(selectedFile.type)">
               .{{ selectedFile.type }}
             </div>
           </div>
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Uploaded By</div>
+            <div class="text-secondary text-sm">Upload By</div>
             <div class="text-sm">{{ selectedFile.uploadedBy }}</div>
           </div>
           <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Uploaded At</div>
-            <div class="text-sm">{{ formatDate(selectedFile.uploadedAt) }}</div>
+            <div class="text-secondary text-sm">Upload On</div>
+            <div class="text-sm">{{selectedFile.uploadedAt | date:'dd-MMM-yyyy h:mm a' }}</div>
           </div>
           <div class="flex items-center justify-between py-1">
             <div class="text-secondary text-sm">Size</div>
