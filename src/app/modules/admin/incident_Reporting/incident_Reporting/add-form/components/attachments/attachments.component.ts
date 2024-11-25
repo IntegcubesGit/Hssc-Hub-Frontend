@@ -26,7 +26,7 @@ export class AttachmentsComponent implements OnInit
   isDrawerOpen: boolean = false;
   caseId:string = null;
   minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
-  maxFileSizeLimit = 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  maxFileSizeLimit = 10 * 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
   isRemarksEditable: boolean = false;
 
   constructor(
@@ -242,15 +242,29 @@ export class AttachmentsComponent implements OnInit
 
   getFileClass(fileType: string): string {
     const fileClassMap: { [key: string]: string } = {
-      pdf: 'bg-red-500 text-black',
-      xlsm: 'bg-green-500 text-black',
-      docx: 'bg-blue-500 text-black',
-      csv: 'bg-purple-500 text-black',
-      powerpoint: 'bg-red-400 text-black',
-      txt: 'bg-gray-500 text-black',
-      jpg: 'bg-green-500 text-black',
-      png: 'bg-green-500 text-black',
-      mp4: 'bg-orange-500 text-black',
+      pdf: 'bg-red-500 text-white',          // PDF (Red)
+      xlsm: 'bg-green-500 text-white',       // Excel Macro (Green)
+      docx: 'bg-blue-500 text-white',        // Word Document (Blue)
+      csv: 'bg-purple-500 text-white',       // CSV (Purple)
+      xlsx: 'bg-green-800 text-white',       // Excel (Green)
+      powerpoint: 'bg-yellow-500 text-black',// PowerPoint (Yellow)
+      txt: 'bg-gray-500 text-white',         // Text File (Gray)
+      jpg: 'bg-pink-500 text-white',         // JPG Image (Pink)
+      png: 'bg-pink-500 text-white',         // PNG Image (Pink)
+      mp4: 'bg-orange-500 text-white',       // Video (Orange)
+      avi: 'bg-teal-500 text-white',         // AVI Video (Teal)
+      gif: 'bg-indigo-500 text-white',       // GIF Image (Indigo)
+      zip: 'bg-blue-800 text-white',         // ZIP Archive (Blue)
+      rar: 'bg-blue-700 text-white',         // RAR Archive (Blue)
+      html: 'bg-yellow-600 text-black',      // HTML File (Yellow)
+      css: 'bg-blue-300 text-black',         // CSS File (Blue)
+      js: 'bg-yellow-300 text-black',        // JavaScript File (Yellow)
+      json: 'bg-teal-700 text-white',        // JSON File (Teal)
+      xml: 'bg-gray-700 text-white',         // XML File (Gray)
+      markdown: 'bg-green-300 text-black',   // Markdown File (Green)
+      svg: 'bg-purple-600 text-white',       // SVG Image (Purple)
+      mp3: 'bg-purple-400 text-white',       // MP3 Audio (Purple)
+      wav: 'bg-blue-600 text-white',         // WAV Audio (Blue)
     };
     return fileClassMap[fileType] || 'bg-yellow-500 text-black';
   }

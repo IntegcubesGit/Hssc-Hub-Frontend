@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -49,18 +49,18 @@ import { Pagination, User } from '../user.type';
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 48px auto 100px 40px;
+                grid-template-columns: 20px 120px 120px 40px;
 
                 @screen sm {
-                    grid-template-columns: 48px auto 100px 72px;
+                    grid-template-columns: 48px 100px 100px 100px 72px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto 96px 96px 100px 72px;
+                    grid-template-columns: 48px 120px 120px 120px 180px 180px 200px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 220px 220px 150px 300px 220px 100px 0px 0px;
+                    grid-template-columns: 48px 130px 130px 150px 150px 150px 250px 200px 72px;
                 }
             }
         `,
@@ -87,6 +87,7 @@ import { Pagination, User } from '../user.type';
         MatRippleModule,
         AsyncPipe,
         MatMenuModule,
+        DatePipe
     ],
 })
 export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
