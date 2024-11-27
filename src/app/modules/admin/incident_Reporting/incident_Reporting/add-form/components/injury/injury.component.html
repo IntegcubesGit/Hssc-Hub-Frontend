@@ -1,47 +1,24 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <!-- Header -->
-    <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2"
-    >
-        <div class="min-w-0 flex-1">
-  
-            <!-- Title -->
-            <div class="mt-2">
-                <h2
-                    class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl"
-                >
-               Incident Injury Information
-                </h2>
-            </div>
-        </div>
-        <button
-            class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0"
-            mat-icon-button
-            (click)="toggleDrawer()"
-        >
-            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
-        </button>
-    </div>
+    
 
     <div class="flex-auto pl-4  pr-4">
-
+   
       <div class="flex w-full items-center justify-between mt-2">
         <div>
             
-            <div class="text-secondary font-medium tracking-tight ml-3 hidden sm:flex">
-              Add Injuries against  Incident.
-            </div>
-        </div>
-        <div class="ml-6 flex items-center">
-            <button class="" mat-stroked-button (click)="onCancel()">
+            <button class="rounded-full" mat-stroked-button (click)="onCancel()">
                 <mat-icon
                     class="icon-size-5"
                     [svgIcon]="'heroicons_solid:arrow-left'"
                 ></mat-icon>
-                <span class="ml-2">Back to list</span>
+                <span class="ml-2"></span>
             </button>
+        </div>
+        <div class="flex items-center">
+
             <button
-                class="ml-3"
+            class="rounded-full"
                 mat-flat-button
                 [color]="'primary'"
                 (click)="openComposeDialog(-1)"
@@ -50,86 +27,185 @@
                     class="icon-size-5"
                     [svgIcon]="'heroicons_solid:plus'"
                 ></mat-icon>
-                <span class="ml-2">Add Injury</span>
+                <span class=""></span>
             </button>
 
           
         </div>
-    </div>
+       </div>
 
       <div class="mt-4 mb-4 grid w-full grid-cols-1">
-      
-        <div class="bg-card flex flex-auto flex-col overflow-hidden  shadow " >
-
-            <div class="mx-6 overflow-x-auto">
-              <table mat-table matSort [dataSource]="injuries" class="w-full bg-transparent">
-
-                
-            
-            
-                <!-- Injury Category ID -->
-                <ng-container matColumnDef="injCatId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.injCatId }}</td>
-                </ng-container>
-            
-                <!-- Course Of Event -->
-                <ng-container matColumnDef="courseOfEvent">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Course Of Event</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.courseOfEvent }}</td>
-                </ng-container>
-            
-                <!-- Injury Type ID -->
-                <ng-container matColumnDef="injTypeId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.injTypeId }}</td>
-                </ng-container>
-            
-                <!-- Body Part -->
-                <ng-container matColumnDef="bodyPart">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body Part</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.bodyPart }}</td>
-                </ng-container>
-            
-                <!-- Person Name -->
-                <ng-container matColumnDef="personName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Person Name</th>
-                    <td mat-cell *matCellDef="let injury">
-                      <a  (click)="openComposeDialog(injury.caseInjuryId)"
-                      class="link"              
-                      >{{ injury.personName }}
-                  </a>
-                      
+        <div class="bg-card flex flex-auto flex-col overflow-hidden shadow" >
+            <div class="shadow-2xl overflow-x-auto">
+                <table mat-table matSort [dataSource]="injuries" class="w-full bg-white border border-gray-200 drop-shadow-2xl rounded-lg">
+                    <!-- Sr number -->
+                    <ng-container class="w-25" matColumnDef="srNo">
+                        <th 
+                          mat-header-cell 
+                          *matHeaderCellDef 
+                          class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-l border-b border-gray-200">
+                          No.
+                        </th>
+                        <td 
+                          mat-cell 
+                          *matCellDef="let injury; let i = index" 
+                          class="px-3 text-md text-gray-500 border-b border-l">
+                          {{ i + 1 }}
+                        </td>
+                      </ng-container>
                     
-                    </td>
-                </ng-container>
-            
-                <!-- Person Gender -->
-                <ng-container matColumnDef="personGender">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.personGender }}</td>
-                </ng-container>
-            
-       
-            
-                <!-- Person Nationality -->
-                <ng-container matColumnDef="personNationality">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nationality</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.personNationality }}</td>
-                </ng-container>
-            
-                <!-- Person Designation -->
-                <ng-container matColumnDef="personDesignation">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
-                    <td mat-cell *matCellDef="let injury">{{ injury.personDesignation }}</td>
-                </ng-container>
-            
-    
-                <!-- Header and Rows -->
-                <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
-            </table>
-            
+                    <!-- Injury Category ID -->
+                    <ng-container class="w-25" matColumnDef="injCatId">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Category
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.injCatId }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Course Of Event -->
+                    <ng-container class="w-25" matColumnDef="courseOfEvent">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Course Of Event
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.courseOfEvent }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Injury Type ID -->
+                    <ng-container class="w-25" matColumnDef="injTypeId">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Type
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.injTypeId }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Body Part -->
+                    <ng-container class="w-25" matColumnDef="bodyPart">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Body Part
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.bodyPart }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Person Name -->
+                    <ng-container class="w-25" matColumnDef="personName">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Person Name
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-blue-600 border-b">
+                        <a 
+                          (click)="openComposeDialog(injury.caseInjuryId)" 
+                          class="underline hover:text-blue-800">
+                          {{ injury.personName }}
+                        </a>
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Person Gender -->
+                    <ng-container class="w-25" matColumnDef="personGender">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Gender
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.personGender }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Person Nationality -->
+                    <ng-container class="w-25" matColumnDef="personNationality">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                        Nationality
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b">
+                        {{ injury.personNationality }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Person Designation -->
+                    <ng-container class="w-25" matColumnDef="personDesignation">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-r border-b border-gray-200">
+                        Designation
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let injury" 
+                        class="px-3 text-md text-gray-500 border-b border-r">
+                        {{ injury.personDesignation }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Header and Rows -->
+                    <tr 
+                      mat-header-row 
+                      *matHeaderRowDef="recentTransactionsTableColumns" 
+                      class="bg-slate-50 border h-8 hover:bg-red-700">
+                    </tr>
+                    <tr 
+                      mat-row 
+                      *matRowDef="let row; columns: recentTransactionsTableColumns;" 
+                      class="h-8 ">
+                    </tr>
+                  </table>
             </div>
         </div>
     </div>
