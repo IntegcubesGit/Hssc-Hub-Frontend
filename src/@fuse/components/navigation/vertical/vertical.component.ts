@@ -29,6 +29,8 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -55,7 +57,6 @@ import {
     Subscription,
     takeUntil,
 } from 'rxjs';
-
 @Component({
     selector: 'fuse-vertical-navigation',
     templateUrl: './vertical.component.html',
@@ -73,6 +74,8 @@ import {
         FuseVerticalNavigationDividerItemComponent,
         FuseVerticalNavigationGroupItemComponent,
         FuseVerticalNavigationSpacerItemComponent,
+        MatIconModule,
+        MatButtonModule
     ],
 })
 export class FuseVerticalNavigationComponent
@@ -138,7 +141,7 @@ export class FuseVerticalNavigationComponent
     /**
      * Constructor
      */
-    constructor() {
+    constructor( private router: Router) {
         this._handleAsideOverlayClick = (): void => {
             this.closeAside();
         };
@@ -828,4 +831,7 @@ export class FuseVerticalNavigationComponent
         // Execute the observable
         this.openedChanged.next(open);
     }
+    onCancel() {
+        this.router.navigate(['/case/incident_Reporting']);
+      }
 }

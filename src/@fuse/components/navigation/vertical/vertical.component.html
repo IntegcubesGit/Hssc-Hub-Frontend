@@ -1,91 +1,82 @@
-<div class="fuse-vertical-navigation-wrapper">
+<div class="fuse-vertical-navigation-wrapper bg-gray-50 shadow-none">
     <!-- Header -->
     <div class="fuse-vertical-navigation-header">
-        <ng-content select="[fuseVerticalNavigationHeader]"></ng-content>
+
+        <ng-content select="[fuseVerticalNavigationHeader]">
+            <div class="mt-8">
+                    <!-- <svg class="w-18 h-18 mx-auto p-2 bg-primary-50 rounded-full ring-primary ring-2"  viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 10V14M12.5 17V15.5M14.2483 5.64697L20.8493 17.5287C21.5899 18.8618 20.6259 20.5 19.101 20.5H5.89903C4.37406 20.5 3.41013 18.8618 4.15072 17.5287L10.7517 5.64697C11.5137 4.27535 13.4863 4.27535 14.2483 5.64697Z" stroke="#134e4a" stroke-width="1.2"/>
+                    </svg> -->
+                    <svg class="w-18 h-18 mx-auto p-2 bg-primary-50 rounded-full ring-primary ring-2" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" clip-rule="evenodd" viewBox="0 0 64 64" id="Warning">
+                        <rect width="18" height="18" fill="none"></rect>
+                        <path d="M190,28C190,27.448 189.552,27 189,27L187,27C186.448,27 186,27.448 186,28L186,30C186,30.552 186.448,31 187,31L189,31C189.552,31 190,30.552 190,30L190,28Z" transform="translate(-156 12)" fill="#134e4a" class="color000000 svgShape"></path>
+                        <path d="M190,28C190,27.915 189.552,27.846 189,27.846L187,27.846C186.448,27.846 186,27.915 186,28L186,30C186,30.085 186.448,30.154 187,30.154L189,30.154C189.552,30.154 190,30.085 190,30L190,28Z" transform="matrix(1 0 0 6.5 -156 -160)" fill="#134e4a" class="color000000 svgShape"></path>
+                        <path d="M666,284.333C655.882,284.333 647.667,276.118 647.667,266C647.667,255.882 655.882,247.667 666,247.667C676.118,247.667 684.333,255.882 684.333,266C684.333,273.976 679.229,280.77 672.111,283.289C671.243,283.596 670.789,284.549 671.095,285.416C671.402,286.283 672.356,286.738 673.223,286.431C681.634,283.454 687.667,275.426 687.667,266C687.667,254.042 677.958,244.333 666,244.333C654.042,244.333 644.333,254.042 644.333,266C644.333,277.958 654.042,287.667 666,287.667C666.92,287.667 667.667,286.92 667.667,286C667.667,285.08 666.92,284.333 666,284.333Z" transform="rotate(-45 68.919 1101.692)scale(1.2)" fill="#134e4a" class="color000000 svgShape"></path>
+                      </svg>
+                      
+                      
+            </div>
+            <div class="my-4">
+                <h1 class="text-primary text-lg font-bold text-center uppercase">Incident Reporting</h1>
+                <h1 class="text-hint text-sm font-medium text-center">View Incident Information</h1>
+            </div>
+        </ng-content>
+        
     </div>
 
     <!-- Content -->
-    <div
-        class="fuse-vertical-navigation-content"
-        fuseScrollbar
-        [fuseScrollbarOptions]="{
+    <div class="fuse-vertical-navigation-content" fuseScrollbar [fuseScrollbarOptions]="{
             wheelPropagation: inner,
             suppressScrollX: true,
-        }"
-        #navigationContent
-    >
+        }" #navigationContent>
         <!-- Content header -->
         <div class="fuse-vertical-navigation-content-header">
-            <ng-content
-                select="[fuseVerticalNavigationContentHeader]"
-            ></ng-content>
+            <ng-content select="[fuseVerticalNavigationContentHeader]"></ng-content>
         </div>
 
         <!-- Items -->
         @for (item of navigation; track trackByFn($index, item)) {
-            <!-- Skip the hidden items -->
-            @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
-                <!-- Aside -->
-                @if (item.type === 'aside') {
-                    <fuse-vertical-navigation-aside-item
-                        [item]="item"
-                        [name]="name"
-                        [activeItemId]="activeAsideItemId"
-                        [autoCollapse]="autoCollapse"
-                        [skipChildren]="true"
-                        (click)="toggleAside(item)"
-                    ></fuse-vertical-navigation-aside-item>
-                }
+        <!-- Skip the hidden items -->
+        @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
+        <!-- Aside -->
+        @if (item.type === 'aside') {
+        <fuse-vertical-navigation-aside-item [item]="item" [name]="name" [activeItemId]="activeAsideItemId"
+            [autoCollapse]="autoCollapse" [skipChildren]="true"
+            (click)="toggleAside(item)"></fuse-vertical-navigation-aside-item>
+        }
 
-                <!-- Basic -->
-                @if (item.type === 'basic') {
-                    <fuse-vertical-navigation-basic-item
-                        [item]="item"
-                        [name]="name"
-                    ></fuse-vertical-navigation-basic-item>
-                }
+        <!-- Basic -->
+        @if (item.type === 'basic') {
+        <fuse-vertical-navigation-basic-item [item]="item" [name]="name"></fuse-vertical-navigation-basic-item>
+        }
 
-                <!-- Collapsable -->
-                @if (item.type === 'collapsable') {
-                    <fuse-vertical-navigation-collapsable-item
-                        [item]="item"
-                        [name]="name"
-                        [autoCollapse]="autoCollapse"
-                    ></fuse-vertical-navigation-collapsable-item>
-                }
+        <!-- Collapsable -->
+        @if (item.type === 'collapsable') {
+        <fuse-vertical-navigation-collapsable-item [item]="item" [name]="name"
+            [autoCollapse]="autoCollapse"></fuse-vertical-navigation-collapsable-item>
+        }
 
-                <!-- Divider -->
-                @if (item.type === 'divider') {
-                    <fuse-vertical-navigation-divider-item
-                        [item]="item"
-                        [name]="name"
-                    ></fuse-vertical-navigation-divider-item>
-                }
+        <!-- Divider -->
+        @if (item.type === 'divider') {
+        <fuse-vertical-navigation-divider-item [item]="item" [name]="name"></fuse-vertical-navigation-divider-item>
+        }
 
-                <!-- Group -->
-                @if (item.type === 'group') {
-                    <fuse-vertical-navigation-group-item
-                        [item]="item"
-                        [name]="name"
-                        [autoCollapse]="autoCollapse"
-                    ></fuse-vertical-navigation-group-item>
-                }
+        <!-- Group -->
+        @if (item.type === 'group') {
+        <fuse-vertical-navigation-group-item [item]="item" [name]="name"
+            [autoCollapse]="autoCollapse"></fuse-vertical-navigation-group-item>
+        }
 
-                <!-- Spacer -->
-                @if (item.type === 'spacer') {
-                    <fuse-vertical-navigation-spacer-item
-                        [item]="item"
-                        [name]="name"
-                    ></fuse-vertical-navigation-spacer-item>
-                }
-            }
+        <!-- Spacer -->
+        @if (item.type === 'spacer') {
+        <fuse-vertical-navigation-spacer-item [item]="item" [name]="name"></fuse-vertical-navigation-spacer-item>
+        }
+        }
         }
 
         <!-- Content footer -->
         <div class="fuse-vertical-navigation-content-footer">
-            <ng-content
-                select="[fuseVerticalNavigationContentFooter]"
-            ></ng-content>
+            <ng-content select="[fuseVerticalNavigationContentFooter]"></ng-content>
         </div>
     </div>
 
@@ -97,31 +88,21 @@
 
 <!-- Aside -->
 @if (activeAsideItemId) {
-    <div
-        class="fuse-vertical-navigation-aside-wrapper"
-        fuseScrollbar
-        [fuseScrollbarOptions]="{
+<div class="fuse-vertical-navigation-aside-wrapper" fuseScrollbar [fuseScrollbarOptions]="{
             wheelPropagation: false,
             suppressScrollX: true,
-        }"
-        [@fadeInLeft]="position === 'left'"
-        [@fadeInRight]="position === 'right'"
-        [@fadeOutLeft]="position === 'left'"
-        [@fadeOutRight]="position === 'right'"
-    >
-        <!-- Items -->
-        @for (item of navigation; track trackByFn($index, item)) {
-            <!-- Skip the hidden items -->
-            @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
-                <!-- Aside -->
-                @if (item.type === 'aside' && item.id === activeAsideItemId) {
-                    <fuse-vertical-navigation-aside-item
-                        [item]="item"
-                        [name]="name"
-                        [autoCollapse]="autoCollapse"
-                    ></fuse-vertical-navigation-aside-item>
-                }
-            }
-        }
-    </div>
+        }" [@fadeInLeft]="position === 'left'" [@fadeInRight]="position === 'right'"
+    [@fadeOutLeft]="position === 'left'" [@fadeOutRight]="position === 'right'">
+    <!-- Items -->
+    @for (item of navigation; track trackByFn($index, item)) {
+    <!-- Skip the hidden items -->
+    @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
+    <!-- Aside -->
+    @if (item.type === 'aside' && item.id === activeAsideItemId) {
+    <fuse-vertical-navigation-aside-item [item]="item" [name]="name"
+        [autoCollapse]="autoCollapse"></fuse-vertical-navigation-aside-item>
+    }
+    }
+    }
+</div>
 }
