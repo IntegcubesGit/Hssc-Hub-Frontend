@@ -63,7 +63,7 @@ export class InjuryComponent implements OnInit, OnDestroy {
     injuries:any[]=[];
 
     recentTransactionsTableColumns: string[] = [
-       
+        'srNo',
         'injCatId',
         'courseOfEvent',
         'injTypeId',

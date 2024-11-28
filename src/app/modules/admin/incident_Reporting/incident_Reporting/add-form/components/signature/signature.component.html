@@ -1,86 +1,90 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <!-- Header -->
     <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2">
-        <div class="min-w-0 flex-1">
-
-            <!-- Title -->
-            <div class="mt-2">
-                <h2 class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl">
+      class="bg-gray-50 flex flex-0 flex-col border-b p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
+      <div class="min-w-0 flex-1">
+        <div class="flex-auto px-1">
+          <div class="bg-card min-h-[85vh] my-2 flex flex-col overflow-hidden rounded shadow">
+            <div class="flex w-full items-center justify-between">
+              <div class="flex justify-start pt-4 px-4 ">
+                <span class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
                     Signatures Information
-                </h2>
-            </div>
-        </div>
-        <button class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0" mat-icon-button (click)="toggleDrawer()">
-            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
-        </button>
-    </div>
-
-    <div class="flex-auto pl-4  pr-4">
-
-        <div class="flex w-full items-center justify-between mt-2">
-            <div>
-
-                <div class="text-secondary font-medium tracking-tight ml-3 hidden sm:flex">
-                    Case Signatures will automatically be added against the case
-                </div>
-            </div>
-            <div class="ml-6 flex items-center">
-                <button class="" mat-stroked-button (click)="onCancel()">
-                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
-                    <span class="ml-2">Back to list</span>
+                </span>
+              </div>
+              <div class="flex items-end my-2  mr-2"> 
+                <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" mat-flat-button
+                  (click)="onCancel()">
+                  <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md text-primary font-semibold tracking-tight">Go Back</span>
+                  <mat-icon class="icon-size-4 prefix stroke-primary"
+                    [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
                 </button>
-                
-
-
+              </div>
             </div>
-        </div>
-
-        <div class="mt-4 mb-4 grid w-full grid-cols-1">
-
-            <div class="bg-card flex flex-auto flex-col overflow-hidden  shadow ">
-
-                <div class="mx-6 overflow-x-auto">
-                    <table mat-table matSort [dataSource]="list" class="w-full bg-transparent">
-
-                        <!-- No# Column -->
-                        <ng-container matColumnDef="caseSignatureNumber">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>No#</th>
-                            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-                        </ng-container>
-
-                        <!-- Internal/External Column -->
-                        <ng-container matColumnDef="signatureType">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Signature Type</th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.type }}
-                            </td>
-                        </ng-container>
-
-                        <!-- Analysis Methodology Column -->
-                        <ng-container matColumnDef="signedBy">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Signed By</th>
-                            <td mat-cell *matCellDef="let element">{{ element.signedBy }}</td>
-                        </ng-container>
-
-                        <!-- Details Column -->
-                        <ng-container matColumnDef="signDate">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Signature Date</th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.signDate | date: 'yyyy-MM-dd HH:mm:ss' }}
-                            </td>
-                        </ng-container>
-
-
-
-                        <!-- Header and Rows -->
-                        <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
-                    </table>
-
-                </div>
+            <div class="bg-white mx-2">
+                <table mat-table matSort [dataSource]="list"
+                class="max-w-full bg-white border border-gray-200 drop-shadow-md rounded-lg">
+              
+                <!-- No. Column -->
+                <ng-container matColumnDef="caseSignatureNumber">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-l border-b border-gray-200">
+                    No.
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index"
+                    class="px-3 text-md text-gray-500 border-b border-l">
+                    {{ i + 1 }}
+                  </td>
+                </ng-container>
+              
+                <!-- Internal/External Column -->
+                <ng-container matColumnDef="signatureType">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                    Signature Type
+                  </th>
+                  <td mat-cell *matCellDef="let element" class="px-3 text-md text-gray-500 border-b">
+                    {{ element.type }}
+                  </td>
+                </ng-container>
+              
+                <!-- Analysis Methodology Column -->
+                <ng-container matColumnDef="signedBy">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                    Signed By
+                  </th>
+                  <td mat-cell *matCellDef="let element" class="px-3 text-md text-gray-500 border-b">
+                    {{ element.signedBy }}
+                  </td>
+                </ng-container>
+              
+                <!-- Details Column -->
+                <ng-container matColumnDef="signDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="px-3 text-left text-md font-semibold text-gray-600 bg-slate-50 border-t border-b border-gray-200">
+                    Signature Date
+                  </th>
+                  <td mat-cell *matCellDef="let element" class="px-3 text-md text-gray-500 border-b">
+                    {{ element.signDate | date: 'yyyy-MM-dd HH:mm:ss' }}
+                  </td>
+                </ng-container>
+              
+                <!-- Header and Rows -->
+                <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"
+                  class="bg-slate-50 border h-8 hover:bg-red-700">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;" class="h-8 "></tr>
+              </table>
+                           
             </div>
+            <div class="flex justify-end p-1 mr-4">
+              <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
+                <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total</span>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight">{{ injuries.length }}</span> -->
+              </div>
+            </div>
+          </div>
         </div>
-
+  
+      </div>
     </div>
-</div>

@@ -1,4 +1,4 @@
-/* Root navigation specific */
+
 fuse-horizontal-navigation {
     .fuse-horizontal-navigation-wrapper {
         display: flex;
@@ -72,7 +72,7 @@ fuse-horizontal-navigation {
 
 /* Menu panel specific */
 .fuse-horizontal-navigation-menu-panel {
-    background-color: #12344d!important;
+    background-color: var(--fuse-primary) !important;
     .fuse-horizontal-navigation-menu-item {
         height: auto;
         min-height: 0;

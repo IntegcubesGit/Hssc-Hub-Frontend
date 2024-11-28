@@ -590,7 +590,7 @@
 
                 /* Chips */
                 .mat-mdc-standard-chip {
-                    background-color: #c2410c ;
+                    background-color: var(--fuse-primary) !important;
                     border-radius: 2px;
                     .mat-icon {
                         color: white ;
@@ -1316,4 +1316,8 @@ textarea.mat-mdc-input-element {
         background-color: var(--fuse-text-secondary) !important;
         color: var(--fuse-bg-default) !important;
     }
+}
+
+.mat-form-field-required-marker {
+    color: purple !important;
 }
