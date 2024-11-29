@@ -37,9 +37,9 @@
     </div>
 
     <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
+    <div class="flex flex-auto overflow-auto">
         <div
-            class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"
+            class="flex flex-auto flex-col overflow-hidden lg:overflow-auto sm:mb-18 sm:overflow-y-auto"
         >
             @if (users$ | async; as users) {
                 @if (users.length > 0) {
@@ -77,13 +77,13 @@
                                 Created By
                             </div>
                             <div
-                                class="hidden md:block"
+                                class="hidden md:block whitespace-nowrap"
                                 [mat-sort-header]="'createdOn'"
                             >
                                 Created On/ Time Zone
                             </div>
                             <div
-                                class="hidden lg:block"
+                                class="hidden lg:block whitespace-nowrap"
                                 [mat-sort-header]="'createdLocal'"
                             >
                                 Reflect Your Time Zone
@@ -105,31 +105,31 @@
                                             {{ $index + 1 }}
                                         </div>
                                     </div>
-                                    <div class="truncate">
+                                    <div class="truncate" title="First Name: {{ user.firstName }}">
                                         {{ user.firstName }}
                                     </div>
                                     <div class="hidden truncate sm:block">
                                         {{ user.lastName }}
                                     </div>
-                                    <div class="truncate">
+                                    <div class="truncate" matTooltip="Click to view or Edit {{ user.userName }}">
                                         <a (click)="edit(user.id)" class="link">
                                             {{ user.userName }}
                                         </a>
                                     </div>
-                                    <div class="hidden truncate md:block">
+                                    <div class="hidden truncate md:block text-left">
                                         {{ user.email }}
                                     </div>
-                                    <div class="hidden truncate md:block">
+                                    <div class="hidden truncate md:block text-left">
                                         {{ user.createdBy }}
                                     </div>
-                                    <div class="hidden truncate md:block">
+                                    <div class="hidden truncate md:block text-left " matTooltip="{{user.createdOn| date: 'dd-MMM-yyyy hh:mm a'}} TimeZone {{ user.timezone }}">
                                         {{
                                             user.createdOn
                                                 | date: 'dd-MMM-yyyy hh:mm a'
                                         }}
                                         {{ user.timezone }}
                                     </div>
-                                    <div class="hidden truncate lg:block">
+                                    <div class="hidden truncate lg:block text-left"  matTooltip="{{ user.createdLocal| date: 'dd-MMM-yyyy hh:mm a'}}">
                                         {{
                                             user.createdLocal
                                                 | date: 'dd-MMM-yyyy hh:mm a'
@@ -140,7 +140,7 @@
                                         <button
                                             mat-icon-button
                                             [matMenuTriggerFor]="userMenu"
-                                        >
+                                            matTooltip="Click to Edit or Inactivate">
                                             <mat-icon
                                                 class="icon-size-5"
                                                 [svgIcon]="

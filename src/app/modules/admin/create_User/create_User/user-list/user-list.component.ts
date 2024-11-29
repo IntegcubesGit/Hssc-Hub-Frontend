@@ -42,6 +42,8 @@ import {
 } from 'rxjs';
 import { UserListService } from '../user-list.service';
 import { Pagination, User } from '../user.type';
+import { matTabsAnimations } from '@angular/material/tabs';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
     selector: 'user-list',
@@ -57,11 +59,11 @@ import { Pagination, User } from '../user.type';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px 100px 150px auto 100px 150px auto auto;
+                    grid-template-columns: 48px 100px 100px 150px auto 100px 250px 250px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 200px 200px 200px 200px 100px 200px auto auto;
+                    grid-template-columns: 48px 150px 150px 150px 150px 150px 200px auto 72px;
                 }
             }
         `,
@@ -89,6 +91,7 @@ import { Pagination, User } from '../user.type';
         AsyncPipe,
         MatMenuModule,
         DatePipe,
+        MatTooltip
     ],
 })
 export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
