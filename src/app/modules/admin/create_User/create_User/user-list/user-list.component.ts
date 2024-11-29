@@ -57,11 +57,11 @@ import { Pagination, User } from '../user.type';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 120px 120px 120px 180px 180px 200px 72px;
+                    grid-template-columns: 48px 100px 100px 150px auto 100px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 130px 130px 150px 150px 150px 250px 200px 72px;
+                    grid-template-columns: 48px 250px 250px 280px auto 250px 100px;
                 }
             }
         `,

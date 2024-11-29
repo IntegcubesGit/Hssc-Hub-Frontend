@@ -70,11 +70,11 @@ import { MatMenuModule } from '@angular/material/menu';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;;
+                    grid-template-columns: 48px 100px 100px auto 96px 100px  72px;;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px  96px 72px;;
+                    grid-template-columns: 48px 200px 200px auto 150px 150px 150px  150px 72px;;
                 }
             }
         `,
