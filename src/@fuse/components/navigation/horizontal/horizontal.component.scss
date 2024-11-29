@@ -36,7 +36,7 @@ fuse-horizontal-navigation {
             .fuse-horizontal-navigation-item-active,
             .fuse-horizontal-navigation-item-active-forced {
                 .fuse-horizontal-navigation-item-title {
-                    @apply   text-red-300 #{'!important'};
+                    @apply   text-green-300 #{'!important'};
                 }
 
                 .fuse-horizontal-navigation-item-subtitle {
@@ -116,7 +116,7 @@ fuse-horizontal-navigation {
         .fuse-horizontal-navigation-item-active,
         .fuse-horizontal-navigation-item-active-forced {
             .fuse-horizontal-navigation-item-title {
-                @apply   text-primary-200 #{'!important'};
+                @apply   text-green-300 #{'!important'};
             }
 
             .fuse-horizontal-navigation-item-subtitle {
@@ -128,7 +128,7 @@ fuse-horizontal-navigation {
             }
 
             .fuse-horizontal-navigation-item-icon {
-                @apply  text-primary-400 #{'!important'};
+                @apply  text-green-300 #{'!important'};
             }
         }
     }

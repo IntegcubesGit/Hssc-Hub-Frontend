@@ -32,7 +32,6 @@ export class dashboardComponent implements OnInit, OnDestroy
         }, () => {
             this.loading = false; 
         });
-        console.log(` USER ${this.user}`);
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
