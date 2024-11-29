@@ -9,6 +9,7 @@ import { Pagination, User } from './user.type';
 export class UserListService {
     private readonly getUsersURL = `${environment.apiUrl}User/getAllUsers`;
     private readonly getUserWithId = `${environment.apiUrl}User/getUserById`;
+    private readonly deleteUser = `${environment.apiUrl}LogInSignUp/DeleteUser`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
 
@@ -98,5 +99,18 @@ export class UserListService {
 
     get getUserById$(): Observable<any> {
         return this.userSubject.asObservable();
+    }
+
+    deleteUserById(userId: string): Observable<any> {
+        return this._httpClient
+            .delete<any>(`${this.deleteUser}?userId=${userId}`)
+            .pipe(
+                tap(() => {
+                    const updatedUsers = this._users.value.filter(
+                        (user) => user.id !== Number(userId)
+                    );
+                    this._users.next(updatedUsers);
+                })
+            );
     }
 }

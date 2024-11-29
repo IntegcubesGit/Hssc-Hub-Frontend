@@ -59,7 +59,7 @@ export class ActionComponent implements OnInit, OnDestroy {
     actions: any[] = [];
 
     recentTransactionsTableColumns: string[] = [
-
+        'No',
         'ActionTaken',
         'ActionType',
         'ActionStatus',

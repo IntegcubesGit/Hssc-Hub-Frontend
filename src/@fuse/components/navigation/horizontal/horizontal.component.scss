@@ -1,4 +1,4 @@
-/* Root navigation specific */
+
 fuse-horizontal-navigation {
     .fuse-horizontal-navigation-wrapper {
         display: flex;
@@ -72,7 +72,7 @@ fuse-horizontal-navigation {
 
 /* Menu panel specific */
 .fuse-horizontal-navigation-menu-panel {
-    background-color: #12344d!important;
+    background-color: var(--fuse-primary) !important;
     .fuse-horizontal-navigation-menu-item {
         height: auto;
         min-height: 0;
@@ -116,11 +116,11 @@ fuse-horizontal-navigation {
         .fuse-horizontal-navigation-item-active,
         .fuse-horizontal-navigation-item-active-forced {
             .fuse-horizontal-navigation-item-title {
-                @apply   text-red-700 #{'!important'};
+                @apply   text-green-300 #{'!important'};
             }
 
             .fuse-horizontal-navigation-item-subtitle {
-                @apply text-primary-400 #{'!important'};
+                @apply text-primary-200 #{'!important'};
 
                 .dark & {
                     @apply text-primary-600 #{'!important'};
@@ -128,7 +128,7 @@ fuse-horizontal-navigation {
             }
 
             .fuse-horizontal-navigation-item-icon {
-                @apply  text-red-900 #{'!important'};
+                @apply  text-green-300 #{'!important'};
             }
         }
     }

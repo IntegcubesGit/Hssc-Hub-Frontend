@@ -1,107 +1,126 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <!-- Header -->
     <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2"
-    >
-        <div class="min-w-0 flex-1">
+      class="bg-gray-50 flex flex-0 flex-col border-b p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
+      <div class="min-w-0 flex-1">
+        <div class="flex-auto px-1">
+          <div class="bg-card min-h-[88vh] my-2 flex flex-col overflow-hidden rounded shadow">
+            <div class="flex w-full items-center justify-between">
+              <div class="flex justify-start pt-4 px-4 ">
+                <span class="truncate text-lg text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
+                    Potential Loss Information
+                </span>
+              </div>
+              <div class="flex items-end my-2  mr-2">
+                <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" mat-flat-button
+                  (click)="onCancel()">
+                  <span class="my-auto  mx-0 sm:mx-1 text-md text-primary font-semibold tracking-tight hidden sm:block">Go Back</span>
+                  <mat-icon class="icon-size-4 prefix stroke-primary"
+                    [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                </button>
+                <button class="rounded-full" mat-flat-button [color]="'primary'" (click)="openComposeDialog(-1)">
+                  <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                  <span class="my-auto mx-0 sm:mx-1 text-md font-semibold tracking-tight hidden sm:block">Add New</span>
+                </button>
+              </div>
+            </div>
+            <div class="bg-white mx-2">
+                <table mat-table matSort [dataSource]="list" class="w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                    <!-- Potential Loss ID -->
+                    <ng-container matColumnDef="potentialLossId">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-3 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-l border-b border-gray-200">
+                        No.
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let involved; let i = index" 
+                        class="px-3 py-1 text-md text-gray-500 border-b border-l">
+                        {{ i + 1 }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Comments -->
+                    <ng-container matColumnDef="comments">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                        Comments
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let involved" 
+                        class="px-4 py-1 text-md text-blue-600 border-b">
+                        <a 
+                          (click)="openComposeDialog(involved.potentialLossId)" 
+                          class="underline hover:text-blue-800">
+                          {{ involved.comments }}
+                        </a>
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Severity -->
+                    <ng-container matColumnDef="severity">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                        Severity
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let involved" 
+                        class="px-4 py-1 text-md text-gray-500 border-b">
+                        {{ involved.severity }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Loss Amount -->
+                    <ng-container matColumnDef="lossAmount">
+                      <th 
+                        mat-header-cell 
+                        *matHeaderCellDef 
+                        mat-sort-header 
+                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-r border-b border-gray-200">
+                        Loss Amount
+                      </th>
+                      <td 
+                        mat-cell 
+                        *matCellDef="let involved" 
+                        class="px-4 py-1 text-md text-gray-500 border-b border-r">
+                        {{ involved.lossAmount }}
+                      </td>
+                    </ng-container>
+                  
+                    <!-- Header and Rows -->
+                    <tr 
+                      mat-header-row 
+                      *matHeaderRowDef="recentTransactionsTableColumns" 
+                      class="bg-slate-50 border h-8">
+                    </tr>
+                    <tr 
+                      mat-row 
+                      *matRowDef="let row; columns: recentTransactionsTableColumns;" 
+                      class="h-8 hover:bg-red-700">
+                    </tr>
+                  </table>
+                  
+                  
+
+            </div>
+            <div class="flex justify-end p-1 mr-4">
+              <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
+                <!-- <span class="my-auto mx-1">Total Involved Persons: {{ involvedPersons.length }}</span> -->
+              </div>
+            </div>
+          </div>
+        </div>
   
-            <!-- Title -->
-            <div class="mt-2">
-                <h2
-                    class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl"
-                >
-                Potential Loss Information
-                </h2>
-            </div>
-        </div>
-        <button
-            class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0"
-            mat-icon-button
-            (click)="toggleDrawer()"
-        >
-            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
-        </button>
+      </div>
     </div>
-
-    <div class="flex-auto pl-4  pr-4">
-
-      <div class="flex w-full items-center justify-between mt-2">
-        <div>
-            
-            <div class="text-secondary font-medium tracking-tight ml-3 hidden sm:flex">
-            Please Add Potential Loss against  Incident.
-            </div>
-        </div>
-        <div class="ml-6 flex items-center" >
-            <button class="" mat-stroked-button (click)="onCancel()">
-                <mat-icon
-                    class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:arrow-left'"
-                ></mat-icon>
-                <span class="ml-2">Back to list</span>
-            </button>
-            <button
-                class="ml-3"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="openComposeDialog(-1)"
-            >
-                <mat-icon
-                    class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:plus'"
-                ></mat-icon>
-                <span class="ml-2">Potential Loss</span>
-            </button>
-
-          
-        </div>
-    </div>
-
-      <div class="mt-4 mb-4 grid w-full grid-cols-1">
-      
-        <div class="bg-card flex flex-auto flex-col overflow-hidden  shadow " >
-
-            <div class="mx-6 overflow-x-auto">
-              <table mat-table matSort [dataSource]="list" class="w-full bg-transparent">
-
-                
-                <ng-container matColumnDef="potentialLossId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>No#</th>
-                    <td mat-cell *matCellDef="let involved; let i = index">{{ i + 1 }}</td>
-                </ng-container>
-
-
-      
-        <ng-container matColumnDef="comments">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Comments</th>
-            <td mat-cell *matCellDef="let involved">
-              <a  (click)="openComposeDialog(involved.potentialLossId)"
-              class="link"              
-              >{{ involved.comments }}
-          </a>
-            </td>
-        </ng-container>
-
- 
-                <ng-container matColumnDef="severity">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Severity</th>
-                    <td mat-cell *matCellDef="let involved">{{ involved.severity }}</td>
-                </ng-container>
-            
-                <ng-container matColumnDef="lossAmount">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Loss Amount</th>
-                    <td mat-cell *matCellDef="let involved">{{ involved.lossAmount }}</td>
-                </ng-container>
-            
-        
-                <!-- Header and Rows -->
-                <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
-            </table>
-            
-            </div>
-        </div>
-    </div>
-          
-    </div>
-</div>

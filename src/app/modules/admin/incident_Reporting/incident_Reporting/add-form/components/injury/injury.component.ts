@@ -63,7 +63,7 @@ export class InjuryComponent implements OnInit, OnDestroy {
     injuries:any[]=[];
 
     recentTransactionsTableColumns: string[] = [
-       
+        'srNo',
         'injCatId',
         'courseOfEvent',
         'injTypeId',
@@ -92,7 +92,7 @@ export class InjuryComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-       
+        this._fuseComponentsComponent.matDrawer.toggle(true);
         this.getAllInjuries();
       }
 
@@ -139,7 +139,7 @@ export class InjuryComponent implements OnInit, OnDestroy {
      */
     toggleDrawer(): void {
         // Toggle the drawer
-        this._fuseComponentsComponent.matDrawer.toggle();
+        
     }
 
  
