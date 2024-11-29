@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -30,6 +30,7 @@ import { FuseConfirmationService } from '../../../../../../@fuse/services/confir
 
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { AlertService } from 'app/layout/common/alert/alert.service';
 import {
     Observable,
     Subject,
@@ -39,8 +40,10 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { UserService } from '../user.service';
+import { UserListService } from '../user-list.service';
 import { Pagination, User } from '../user.type';
+import { matTabsAnimations } from '@angular/material/tabs';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
     selector: 'user-list',
@@ -49,18 +52,18 @@ import { Pagination, User } from '../user.type';
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 48px auto 100px 40px;
+                grid-template-columns: 20px 120px 120px 40px;
 
                 @screen sm {
-                    grid-template-columns: 48px auto 100px 72px;
+                    grid-template-columns: 48px 100px 100px 100px 72px;
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto 96px 96px 100px 72px;
+                    grid-template-columns: 48px 100px 100px 150px auto 100px 250px 250px 72px;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px 96px 72px;
+                    grid-template-columns: 48px 150px 150px 150px 150px 150px 200px auto 72px;
                 }
             }
         `,
@@ -87,6 +90,8 @@ import { Pagination, User } from '../user.type';
         MatRippleModule,
         AsyncPipe,
         MatMenuModule,
+        DatePipe,
+        MatTooltip
     ],
 })
 export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -105,10 +110,9 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
-
-        private _Service: UserService,
-
-        private _router: Router
+        private _Service: UserListService,
+        private _router: Router,
+        private _alertService: AlertService
     ) {}
 
     ngOnInit(): void {
@@ -208,30 +212,53 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
         this._router.navigate(['/user/user-info', id]);
     }
 
-    deleteUser(): void {
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete User',
-            message:
-                'Are you sure you want to remove this user? This action cannot be undone!',
+    openComposeDialog(userId: string): void {
+        const dialogRef = this._fuseConfirmationService.open({
+            title: 'Confirm User Inactivation',
+            message: 'Are you sure you want to inactivate this user?',
+            icon: {
+                show: true,
+                name: 'heroicons_outline:check-circle',
+                color: 'error',
+            },
             actions: {
                 confirm: {
-                    label: 'Delete',
+                    show: true,
+                    label: 'Yes, Inactivate',
+                    color: 'primary',
+                },
+                cancel: {
+                    show: true,
+                    label: 'No, Cancel',
                 },
             },
+            dismissible: true,
         });
 
-        // Subscribe to the confirmation dialog closed action
-        confirmation.afterClosed().subscribe((result) => {
-            // If the confirm button pressed...
-            if (result === 'confirmed') {
-                // Get the product object
-                // const product = this.selectedProductForm.getRawValue();
-                // Delete the product on the server
-                // this._inventoryService
-                //     .deleteProduct('56756756567567')
-                //     .subscribe(() => {
-                //     });
-            }
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.reviewUser(userId);
+            } 
+        });
+    }
+    reviewUser(id: string) {
+        this._Service.deleteUserById(id).subscribe({
+            next: (res) => {
+                if (res.isSucceeded) {
+                    this._alertService.triggerAlert(
+                        'success',
+                        'Success',
+                        'User Inactivated Successfully.'
+                    );
+                }
+            },
+            error: (err) => {
+                this._alertService.triggerAlert(
+                    'error',
+                    'Error',
+                    'An Error Occured, Please try later.'
+                );
+            },
         });
     }
 

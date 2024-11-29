@@ -29,23 +29,17 @@
                 />
             </mat-form-field>
             <!-- Add user button -->
-            <button
-                class="h-min-4 ml-4"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="create('-1')"
-            >
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">Add</span>
-            </button>
+            <button class="ml-2 rounded-full" mat-flat-button [color]="'primary'" (click)="create('-1')">
+                <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add User</span>
+              </button>
         </div>
     </div>
 
     <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
-        <!-- Products list -->
+    <div class="flex flex-auto overflow-auto">
         <div
-            class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"
+            class="flex flex-auto flex-col overflow-hidden lg:overflow-auto sm:mb-18 sm:overflow-y-auto"
         >
             @if (users$ | async; as users) {
                 @if (users.length > 0) {
@@ -60,19 +54,39 @@
                             <div [mat-sort-header]="'firstName'">
                                 First Name
                             </div>
-                            <div [mat-sort-header]="'lastName'">Last Name</div>
+                            <div
+                                [mat-sort-header]="'lastName'"
+                                class="hidden truncate sm:block"
+                            >
+                                Last Name
+                            </div>
 
                             <div [mat-sort-header]="'userName'">User Name</div>
 
-                            <div [mat-sort-header]="'email'" class="lg:block">
+                            <div
+                                [mat-sort-header]="'email'"
+                                class="hidden truncate md:block"
+                            >
                                 Email
                             </div>
 
                             <div
-                                class="lg:block"
+                                class="hidden truncate md:block"
                                 [mat-sort-header]="'createdBy'"
                             >
                                 Created By
+                            </div>
+                            <div
+                                class="hidden md:block whitespace-nowrap"
+                                [mat-sort-header]="'createdOn'"
+                            >
+                                Created On/ Time Zone
+                            </div>
+                            <div
+                                class="hidden lg:block whitespace-nowrap"
+                                [mat-sort-header]="'createdLocal'"
+                            >
+                                Reflect Your Time Zone
                             </div>
                             <div>Action</div>
                         </div>
@@ -91,31 +105,42 @@
                                             {{ $index + 1 }}
                                         </div>
                                     </div>
-                                    <div class="truncate">
+                                    <div class="truncate" title="First Name: {{ user.firstName }}">
                                         {{ user.firstName }}
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate sm:block">
                                         {{ user.lastName }}
                                     </div>
-                                    <div class="truncate">
-                                        <a
-                                            (click)="edit(user.id)"
-                                            class="link"
-                                        >
+                                    <div class="truncate" matTooltip="Click to view or Edit {{ user.userName }}">
+                                        <a (click)="edit(user.id)" class="link">
                                             {{ user.userName }}
                                         </a>
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate md:block text-left">
                                         {{ user.email }}
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate md:block text-left">
                                         {{ user.createdBy }}
                                     </div>
+                                    <div class="hidden truncate md:block text-left " matTooltip="{{user.createdOn| date: 'dd-MMM-yyyy hh:mm a'}} TimeZone {{ user.timezone }}">
+                                        {{
+                                            user.createdOn
+                                                | date: 'dd-MMM-yyyy hh:mm a'
+                                        }}
+                                        {{ user.timezone }}
+                                    </div>
+                                    <div class="hidden truncate lg:block text-left"  matTooltip="{{ user.createdLocal| date: 'dd-MMM-yyyy hh:mm a'}}">
+                                        {{
+                                            user.createdLocal
+                                                | date: 'dd-MMM-yyyy hh:mm a'
+                                        }}
+                                    </div>
+
                                     <div>
                                         <button
                                             mat-icon-button
                                             [matMenuTriggerFor]="userMenu"
-                                        >
+                                            matTooltip="Click to Edit or Inactivate">
                                             <mat-icon
                                                 class="icon-size-5"
                                                 [svgIcon]="
@@ -138,15 +163,20 @@
                                                     <span>Edit</span>
                                                 </span>
                                             </button>
-                                            <button mat-menu-item>
+                                            <button
+                                                mat-menu-item
+                                                (click)="
+                                                    openComposeDialog(user.id)
+                                                "
+                                            >
                                                 <span class="flex items-center">
                                                     <mat-icon
                                                         class="mr-3 icon-size-5"
                                                         [svgIcon]="
-                                                            'heroicons_solid:trash'
+                                                            'heroicons_solid:user-minus'
                                                         "
                                                     ></mat-icon>
-                                                    <span>Delete</span>
+                                                    <span>Inactivate User</span>
                                                 </span>
                                             </button>
                                         </mat-menu>
@@ -157,12 +187,12 @@
                     </div>
 
                     <mat-paginator
-                        class="z-10 h-18 border-b bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+                        class="z-10 h-11 border-b bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
                         [ngClass]="{ 'pointer-events-none': isLoading }"
                         [length]="pagination.length"
                         [pageIndex]="pagination.page"
                         [pageSize]="pagination.size"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        [pageSizeOptions]="[10, 25, 100]"
                         [showFirstLastButtons]="true"
                     ></mat-paginator>
                 } @else {

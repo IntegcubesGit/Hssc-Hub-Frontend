@@ -2,17 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],  
+  imports: [MatButton, MatCard, MatIcon, CommonModule],
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -24,23 +26,25 @@ export class AttachmentsComponent implements OnInit
   isDrawerOpen: boolean = false;
   caseId:string = null;
   minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
-  maxFileSizeLimit = 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  maxFileSizeLimit = 10 * 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  isRemarksEditable: boolean = false;
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
+    private _fuseConfirmationService: FuseConfirmationService,
     private caseService:Incident_ReportingService,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private router: Router,
-  ) 
+  )
   {}
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.caseId = this.route.parent?.snapshot.paramMap.get('id');
     this.getAllCaseFiles();
-    
+
   }
 
   onCancel() {
@@ -54,24 +58,24 @@ export class AttachmentsComponent implements OnInit
   formatSize(size: number): string {
     let formattedSize: string;
     let postfix: string;
-  
+
     if (size < 1024) {
       formattedSize = size.toFixed(2);
-      postfix = 'B'; 
+      postfix = 'B';
     } else if (size < 1024 * 1024) {
       formattedSize = (size / 1024).toFixed(2);
-      postfix = 'KB'; 
+      postfix = 'KB';
     } else if (size < 1024 * 1024 * 1024) {
       formattedSize = (size / (1024 * 1024)).toFixed(2);
-      postfix = 'MB'; 
+      postfix = 'MB';
     } else {
       formattedSize = (size / (1024 * 1024 * 1024)).toFixed(2);
-      postfix = 'GB'; 
+      postfix = 'GB';
     }
-  
+
     return `${formattedSize} ${postfix}`;
   }
-  
+
   openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void {
     this.selectedFile = file;
     this.isDrawerOpen = true;
@@ -94,13 +98,13 @@ export class AttachmentsComponent implements OnInit
       const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
-      
+
       if(file.size < this.minFileSizeLimit ) {
         this.fileMinLimitWarning(this.minFileSizeLimit);
         break;
       }
 
-      if(file.size > this.maxFileSizeLimit ) { 
+      if(file.size > this.maxFileSizeLimit ) {
       this.fileMaxLimitWarning(this.maxFileSizeLimit);
       break;
       }
@@ -117,17 +121,17 @@ export class AttachmentsComponent implements OnInit
   }
 
   onDragOver(event: DragEvent): void {
-    event.preventDefault(); 
+    event.preventDefault();
   }
-  
+
   onDrop(event: DragEvent): void {
-    event.preventDefault(); 
+    event.preventDefault();
     if (!event.dataTransfer?.files) return;
     const selectedFiles = event.dataTransfer.files;
-    const fakeEvent = { target: { files: selectedFiles } }; 
+    const fakeEvent = { target: { files: selectedFiles } };
     this.onFileSelected(fakeEvent);
   }
-  
+
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
@@ -150,16 +154,16 @@ export class AttachmentsComponent implements OnInit
     return 'insert_drive_file';
   }
 
-  uploadFile(file: File,remarks:string): void 
+  uploadFile(file: File,remarks:string): void
   {
     this.caseService.uploadCaseAttachment('cases',this.caseId,remarks,file).subscribe(
       {
-          next: (response) => 
+          next: (response) =>
             {
               this.alertService.triggerAlert('success', 'Success', 'File uploaded successfully.');
               this.getAllCaseFiles();
             },
-          error: (error) => 
+          error: (error) =>
             {
               this.alertService.triggerAlert('error', 'Operation Failed', 'File uploaded failed.');
               this.getAllCaseFiles();
@@ -185,6 +189,25 @@ export class AttachmentsComponent implements OnInit
   }
 
   deleteFile(fileName: string): void {
+    console.log('delete file', fileName);
+    const confirmation = this._fuseConfirmationService.open({
+      title: 'Delete file',
+      message:
+          'Are you sure you want to remove this file? This action cannot be undone.',
+      actions: {
+          confirm: {
+              label: 'Delete',
+          },
+      },
+  });
+  confirmation.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+          this.deleteFileHandler(fileName);
+      }
+  });
+  }
+
+  deleteFileHandler(fileName: string): void {
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
         this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
@@ -196,7 +219,7 @@ export class AttachmentsComponent implements OnInit
       }
     });
   }
-  
+
   getAllCaseFiles() {
     this.caseService.getAllCaseAttachments(this.caseId).subscribe({
       next: (response) => {
@@ -206,8 +229,8 @@ export class AttachmentsComponent implements OnInit
           type: this.getFileType(file.extension),
           icon: this.getFileIcon(this.getFileType(file.extension)),
           remarks: file.remarks,
-          uploadedBy: file.uploadedBy,
-          uploadedAt: file.uploadTime,
+          uploadedBy: file.createdBy,
+          uploadedAt: file.createdOn,
           fileSize: file.fileSize,
         }));
       },
@@ -215,19 +238,33 @@ export class AttachmentsComponent implements OnInit
         this.alertService.triggerAlert('error', 'File Access Failed', 'Failed to Fetch File Data.');
       }
     });
-  }  
+  }
 
   getFileClass(fileType: string): string {
     const fileClassMap: { [key: string]: string } = {
-      pdf: 'bg-red-500 text-black',
-      xlsm: 'bg-green-500 text-black',
-      docx: 'bg-blue-500 text-black',
-      csv: 'bg-purple-500 text-black',
-      powerpoint: 'bg-red-400 text-black',
-      txt: 'bg-gray-500 text-black',
-      jpg: 'bg-green-500 text-black',
-      png: 'bg-green-500 text-black',
-      mp4: 'bg-orange-500 text-black',
+      pdf: 'bg-red-500 text-white',          // PDF (Red)
+      xlsm: 'bg-green-500 text-white',       // Excel Macro (Green)
+      docx: 'bg-blue-500 text-white',        // Word Document (Blue)
+      csv: 'bg-purple-500 text-white',       // CSV (Purple)
+      xlsx: 'bg-green-800 text-white',       // Excel (Green)
+      powerpoint: 'bg-yellow-500 text-black',// PowerPoint (Yellow)
+      txt: 'bg-gray-500 text-white',         // Text File (Gray)
+      jpg: 'bg-pink-500 text-white',         // JPG Image (Pink)
+      png: 'bg-pink-500 text-white',         // PNG Image (Pink)
+      mp4: 'bg-orange-500 text-white',       // Video (Orange)
+      avi: 'bg-teal-500 text-white',         // AVI Video (Teal)
+      gif: 'bg-indigo-500 text-white',       // GIF Image (Indigo)
+      zip: 'bg-blue-800 text-white',         // ZIP Archive (Blue)
+      rar: 'bg-blue-700 text-white',         // RAR Archive (Blue)
+      html: 'bg-yellow-600 text-black',      // HTML File (Yellow)
+      css: 'bg-blue-300 text-black',         // CSS File (Blue)
+      js: 'bg-yellow-300 text-black',        // JavaScript File (Yellow)
+      json: 'bg-teal-700 text-white',        // JSON File (Teal)
+      xml: 'bg-gray-700 text-white',         // XML File (Gray)
+      markdown: 'bg-green-300 text-black',   // Markdown File (Green)
+      svg: 'bg-purple-600 text-white',       // SVG Image (Purple)
+      mp3: 'bg-purple-400 text-white',       // MP3 Audio (Purple)
+      wav: 'bg-blue-600 text-white',         // WAV Audio (Blue)
     };
     return fileClassMap[fileType] || 'bg-yellow-500 text-black';
   }
@@ -243,4 +280,14 @@ export class AttachmentsComponent implements OnInit
     this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
     this.getAllCaseFiles();
   }
+
+  toggleEditRemarks(): void {
+    this.isRemarksEditable = !this.isRemarksEditable;
+  }
+
+  saveRemarks(): void {
+    this.isRemarksEditable = false;
+    this.alertService.triggerAlert('warn', 'Operation Failed', `Failed to update remarks.`);
+  }
+
 }

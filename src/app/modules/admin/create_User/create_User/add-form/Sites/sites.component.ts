@@ -17,7 +17,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { UserService } from '../../user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { Observable, tap } from 'rxjs';
+import { UserListService } from '../../user-list.service';
 import { SiteCreation } from './Sites.class';
 import { SitesService } from './sites.service';
 import { UserRoles } from './sites.types';
@@ -43,6 +46,7 @@ import { UserRoles } from './sites.types';
     styles: [``],
 })
 export class SitesComponent implements OnInit {
+    userId: string | null = null;
     roles = new FormControl<UserRoles[]>([]);
     roleIds = new FormControl<Number[]>([]);
     rolesList: UserRoles[] = [];
@@ -51,21 +55,56 @@ export class SitesComponent implements OnInit {
     selectSingle: any[] = [];
     formData: any;
     rolesAndSites: any = {
-        sites: [] as number[], // Array of site IDs
-        roles: [] as number[], // Array of role IDs
+        sites: [] as number[],
+        roles: [] as number[],
     };
 
     constructor(
         private _siteService: SitesService,
-        private cdr: ChangeDetectorRef,
-        private _service: UserService
+        private _cdr: ChangeDetectorRef,
+        private _service: UserListService,
+        private _route: ActivatedRoute,
+        private _alertService: AlertService,
+        private _router: Router
     ) {}
 
     ngOnInit(): void {
-        this.GetSitesInfo();
+        this.userId = this._route.snapshot.paramMap.get('id');
         this.GetUserRoles();
+        this.GetSitesInfo().subscribe({
+            next: () => {
+                this.AssignSitesAndRoles();
+            },
+            error: (err) => {
+                console.error('Error fetching sites:', err);
+            },
+        });
+
         this._service.formData$.subscribe((data) => {
             this.formData = data;
+        });
+    }
+
+    AssignSitesAndRoles() {
+        this._service.getUserById$.subscribe({
+            next: (data) => {
+                const RoleList = this.rolesList.filter((role) =>
+                    data.roles.includes(role.id)
+                );
+                this.roles.setValue(RoleList);
+                this.roleIds.setValue(data.roles);
+
+                if (data.sites && Array.isArray(data.sites)) {
+                    this.selectSingle = data.sites;
+                    this.selectAll =
+                        this.selectSingle.length === this.sites.length;
+                } else {
+                    console.error('Sites data is invalid or empty from API.');
+                }
+            },
+            error: (err) => {
+                console.error('Error fetching user data:', err);
+            },
         });
     }
 
@@ -96,13 +135,16 @@ export class SitesComponent implements OnInit {
     }
 
     ////////////////////////----sites start here----\\\\\\\\\\\\\\\\\\\\\\
-    GetSitesInfo() {
-        this._siteService.getSites().subscribe((res) => {
-            this.sites = res;
-            this.selectSingle = [];
-            this.selectAll = false;
-            this.cdr.detectChanges();
-        });
+
+    GetSitesInfo(): Observable<any> {
+        return this._siteService.getSites().pipe(
+            tap((res) => {
+                this.sites = res;
+                this.selectSingle = [];
+                this.selectAll = false;
+                this._cdr.detectChanges();
+            })
+        );
     }
 
     onCheckboxChange(event: MatCheckboxChange, siteId: string): void {
@@ -127,19 +169,75 @@ export class SitesComponent implements OnInit {
 
     saveUserSiteInfo() {
         const payload = {
-            registerUserRequest: this.formData,
+            registerUserRequest: {
+                ...this.formData,
+                UserId: this.userId,
+            },
             sites: this.selectSingle,
             roles: this.roleIds.value,
         };
-
-        this._siteService.saveUserInfo(payload).subscribe({
-            next: (res) => {
-                console.log('Response from API:', res);
-            },
-            error: (err) => {
-                console.error('Error saving user site info:', err);
-            },
-        });
+        if (this.roleIds.value.length >= 1) {
+            if (this.selectSingle.length >= 1) {
+                if (this.userId == '-1') {
+                    this._siteService.saveUserInfo(payload).subscribe({
+                        next: (res) => {
+                            if (res.isSucceeded) {
+                                this._alertService.triggerAlert(
+                                    'success',
+                                    'Success',
+                                    'User Added Successfully.'
+                                );
+                                this._router.navigate(['user/users-list']);
+                            } else {
+                                this._alertService.triggerAlert(
+                                    'info',
+                                    'Duplicate',
+                                    res.message
+                                );
+                            }
+                        },
+                        error: (err) => {
+                            this._alertService.triggerAlert(
+                                'error',
+                                'Error',
+                                'An Error Occured, Please try later.'
+                            );
+                        },
+                    });
+                } else {
+                    this._siteService.updateUserInfo(payload).subscribe({
+                        next: (res) => {
+                            if (res.isSucceeded) {
+                                this._alertService.triggerAlert(
+                                    'success',
+                                    'Success',
+                                    'User Updated Successfully.'
+                                );
+                                this._router.navigate(['user/users-list']);
+                            } else {
+                                this._alertService.triggerAlert(
+                                    'info',
+                                    'Duplicate',
+                                    res.message
+                                );
+                            }
+                        },
+                    });
+                }
+            } else {
+                this._alertService.triggerAlert(
+                    'info',
+                    'No Sites Selected',
+                    'Please select at least one site to proceed.'
+                );
+            }
+        } else {
+            this._alertService.triggerAlert(
+                'info',
+                'No Roles Selected',
+                'Please select at least one role to proceed.'
+            );
+        }
     }
 
     navigateUserBack(): void {

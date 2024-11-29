@@ -1,0 +1,38 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="flex w-full max-w-screen-xl flex-col px-2 sm:px-8">
+            <div
+                class="my-4 flex min-w-0 flex-auto flex-col sm:my-4 sm:flex-row sm:items-center"
+            >
+                <!-- Avatar and name -->
+                <div class="flex min-w-0 flex-auto items-center">
+                    <div class="h-12 w-12 flex-0 overflow-hidden rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" id="User" class="w-full h-full" fill="#042f2e">
+                            <path d="M14.5 2A12.514 12.514 0 0 0 2 14.5 12.521 12.521 0 0 0 14.5 27a12.5 12.5 0 0 0 0-25Zm7.603 19.713a8.48 8.48 0 0 0-15.199.008A10.367 10.367 0 0 1 4 14.5a10.5 10.5 0 0 1 21 0 10.368 10.368 0 0 1-2.897 7.213ZM14.5 7a4.5 4.5 0 1 0 4.5 4.5A4.5 4.5 0 0 0 14.5 7Z" />
+                        </svg>  
+                    </div>
+                    <div class="ml-4 flex min-w-0 flex-col">
+                        <div
+                            class="truncate text-lg font-semibold text-primary-900 leading-7 tracking-tight md:text-xl md:leading-snug"
+                        >
+                            Welcome back, {{ user?.name }}
+                        </div>
+                        <div class="flex items-center">
+                            <mat-icon
+                                class="icon-size-4"
+                                [svgIcon]="'heroicons_solid:bell'"
+                            ></mat-icon>
+                            <div
+                                class="text-secondary ml-1.5 truncate leading-6 text-sm"
+                            >
+                                Welcome to HSSE Hub
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

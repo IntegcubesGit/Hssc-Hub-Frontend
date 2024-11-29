@@ -15,7 +15,7 @@ import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsGeneralInfoComponent } from './General-Information/General-Info.component';
-import { UserService } from '../user.service';
+import { UserListService } from '../user-list.service';
 
 @Component({
     selector: 'add-user',
@@ -46,7 +46,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _service:UserService,
+        private _service:UserListService,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------

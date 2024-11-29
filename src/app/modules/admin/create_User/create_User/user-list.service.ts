@@ -6,9 +6,10 @@ import { environment } from '../../../../../environment/environment';
 import { Pagination, User } from './user.type';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserListService {
     private readonly getUsersURL = `${environment.apiUrl}User/getAllUsers`;
-    private readonly getUserId = `${environment.apiUrl}User/getUserById`;
+    private readonly getUserWithId = `${environment.apiUrl}User/getUserById`;
+    private readonly deleteUser = `${environment.apiUrl}LogInSignUp/DeleteUser`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
 
@@ -18,6 +19,8 @@ export class UserService {
 
     private _selectedPanel: BehaviorSubject<string> =
         new BehaviorSubject<string>('generalInfo');
+
+    private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     private _formData = new BehaviorSubject<any>(null);
 
@@ -58,7 +61,7 @@ export class UserService {
 
     getUsers(
         page: number = 0,
-        size: number = 5,
+        size: number = 10,
         sort: string = 'name',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
@@ -84,7 +87,30 @@ export class UserService {
             );
     }
 
-    // getUserById(id: string): Observable<any> {
-    //     return this._httpClient.get<any>(`${this.getUserId}`, id);
-    //   }
+    getUserById(id: string): Observable<any> {
+        return this._httpClient
+            .get<any>(`${this.getUserWithId}?userId=${id}`)
+            .pipe(
+                tap((user) => {
+                    this.userSubject.next(user);
+                })
+            );
+    }
+
+    get getUserById$(): Observable<any> {
+        return this.userSubject.asObservable();
+    }
+
+    deleteUserById(userId: string): Observable<any> {
+        return this._httpClient
+            .delete<any>(`${this.deleteUser}?userId=${userId}`)
+            .pipe(
+                tap(() => {
+                    const updatedUsers = this._users.value.filter(
+                        (user) => user.id !== Number(userId)
+                    );
+                    this._users.next(updatedUsers);
+                })
+            );
+    }
 }

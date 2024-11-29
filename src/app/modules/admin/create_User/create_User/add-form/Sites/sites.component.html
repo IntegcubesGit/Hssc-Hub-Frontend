@@ -43,6 +43,7 @@
 <div class="my-6 border-t"></div>
 <!--  Sites Checkboxes -->
 <strong>Sites Access</strong>
+<p>(Total Sites: {{ selectSingle.length }})</p>
 <div class="checkbox-container">
     @if (sites.length > 0) {
         <div class="site-checkbox-grid">
@@ -84,6 +85,6 @@
         [color]="'primary'"
         (click)="saveUserSiteInfo()"
     >
-        Save
+        {{ userId === '-1' ? 'Save' : 'Update' }}
     </button>
 </div>

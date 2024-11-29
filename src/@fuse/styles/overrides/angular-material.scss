@@ -89,9 +89,7 @@
 .mat-mdc-icon-button,
 .mat-mdc-fab,
 .mat-mdc-mini-fab {
-    height: 40px;
-    min-height: 40px;
-    max-height: 40px;
+    max-height: 32px;
     line-height: 1 !important;
 
     /* Large button */
@@ -110,7 +108,7 @@
 }
 
 .mat-datepicker-input{
-    padding-bottom: 5px !important;
+    margin-bottom: 4px !important;
 }
 
 /* Icon buttons */
@@ -118,8 +116,9 @@
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    width: 40px !important;
-    padding: 0 0 5px 0 !important;
+    width: 30px !important;
+    padding: 0 0 0 0 !important;
+    margin: 1px 0 !important;
 
     svg,
     img {
@@ -193,6 +192,7 @@
         'colors.gray[400]'
     ) !important;
     --mat-mdc-button-ripple-color: rgba(0, 0, 0, 0.1) !important;
+   
 
     .dark & {
         --mat-mdc-button-persistent-ripple-color: theme(
@@ -207,6 +207,7 @@
 
     .mat-ripple-element {
         @apply bg-black/10 #{'!important'};
+        width: 80% !important;
     }
 }
 
@@ -353,6 +354,9 @@
 
         /* Select */
         .mat-mdc-select {
+            .mat-mdc-select-trigger{
+                margin-bottom: 1px !important;
+            }
             /* Placeholder color */
             .mat-mdc-select-placeholder {
                 @apply text-warn #{'!important'};
@@ -579,14 +583,14 @@
 
                 /* Textarea */
                 textarea.mat-mdc-input-element {
-                    margin: 12px 0;
+                    margin: 10px 0;
                     padding: 0 6px 0 0;
                     height: 24px;
                 }
 
                 /* Chips */
                 .mat-mdc-standard-chip {
-                    background-color: #c2410c ;
+                    background-color: var(--fuse-primary) !important;
                     border-radius: 2px;
                     .mat-icon {
                         color: white ;
@@ -736,7 +740,7 @@
                 }
 
                 .mat-mdc-form-field-infix {
-                    min-height: 32px;
+                    min-height: 31px;
                     font-size: 0.8rem !important;
 
                     /* Textarea */
@@ -970,6 +974,8 @@
 /*  @ Inputs
 /* -------------------------------------------------------------------------- */
 .mat-mdc-input-element {
+    align-items: center;
+    margin-bottom: 1px;
     &::placeholder {
         transition: none !important;
         @apply text-hint #{'!important'};
@@ -1056,8 +1062,8 @@
         /* Page size select */
         .mat-mdc-paginator-page-size {
             align-items: center;
-            min-height: 40px;
-            margin: 8px;
+            min-height: 16px;
+            margin: 0px 8px 12px 8px;
 
             .mat-mdc-paginator-page-size-label {
                 display: none;
@@ -1070,12 +1076,20 @@
 
             .mat-mdc-paginator-page-size-select {
                 margin: 0;
-
+                background: #ffffff;
+                border-radius: 2px;
+                
                 .mat-mdc-text-field-wrapper {
-                    padding: 0 10px;
+                    padding: 0 5px;
+                    min-height: 14px;
 
                     .mat-form-field-flex {
-                        min-height: 32px;
+                        min-height: 14px;
+                        
+                    }
+                    .mat-mdc-form-field-infix {
+                        padding: 2px 0;
+                        min-height: 8px;
                     }
                 }
             }
@@ -1083,7 +1097,7 @@
 
         /* Range actions */
         .mat-mdc-paginator-range-actions {
-            margin: 8px 0;
+            margin: 0 0 8px 0;
 
             .mat-mdc-paginator-range-label {
                 margin-right: 16px;
@@ -1108,9 +1122,11 @@
             position: relative;
             display: flex;
             max-width: none;
+            align-items: center;
 
             .mat-mdc-select-value-text {
                 display: inline-flex;
+                
 
                 > * {
                     overflow: hidden;
@@ -1300,4 +1316,8 @@ textarea.mat-mdc-input-element {
         background-color: var(--fuse-text-secondary) !important;
         color: var(--fuse-bg-default) !important;
     }
+}
+
+.mat-form-field-required-marker {
+    color: purple !important;
 }
