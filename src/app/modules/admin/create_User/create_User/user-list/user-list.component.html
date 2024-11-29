@@ -43,7 +43,6 @@
 
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
-        <!-- Products list -->
         <div
             class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"
         >
@@ -60,19 +59,39 @@
                             <div [mat-sort-header]="'firstName'">
                                 First Name
                             </div>
-                            <div [mat-sort-header]="'lastName'">Last Name</div>
+                            <div
+                                [mat-sort-header]="'lastName'"
+                                class="hidden truncate sm:block"
+                            >
+                                Last Name
+                            </div>
 
                             <div [mat-sort-header]="'userName'">User Name</div>
 
-                            <div [mat-sort-header]="'email'" class="lg:block">
+                            <div
+                                [mat-sort-header]="'email'"
+                                class="hidden truncate md:block"
+                            >
                                 Email
                             </div>
 
                             <div
-                                class="lg:block"
+                                class="hidden truncate md:block"
                                 [mat-sort-header]="'createdBy'"
                             >
                                 Created By
+                            </div>
+                            <div
+                                class="hidden md:block"
+                                [mat-sort-header]="'createdOn'"
+                            >
+                                Created On/ Time Zone
+                            </div>
+                            <div
+                                class="hidden lg:block"
+                                [mat-sort-header]="'createdLocal'"
+                            >
+                                Reflect Your Time Zone
                             </div>
                             <div>Action</div>
                         </div>
@@ -94,7 +113,7 @@
                                     <div class="truncate">
                                         {{ user.firstName }}
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate sm:block">
                                         {{ user.lastName }}
                                     </div>
                                     <div class="truncate">
@@ -102,12 +121,26 @@
                                             {{ user.userName }}
                                         </a>
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate md:block">
                                         {{ user.email }}
                                     </div>
-                                    <div class="truncate">
+                                    <div class="hidden truncate md:block">
                                         {{ user.createdBy }}
                                     </div>
+                                    <div class="hidden truncate md:block">
+                                        {{
+                                            user.createdOn
+                                                | date: 'dd-MMM-yyyy HH:mm a'
+                                        }}
+                                        {{ user.timezone }}
+                                    </div>
+                                    <div class="hidden truncate lg:block">
+                                        {{
+                                            user.createdLocal
+                                                | date: 'dd-MMM-yyyy HH:mm a'
+                                        }}
+                                    </div>
+
                                     <div>
                                         <button
                                             mat-icon-button
@@ -135,15 +168,20 @@
                                                     <span>Edit</span>
                                                 </span>
                                             </button>
-                                            <button mat-menu-item>
+                                            <button
+                                                mat-menu-item
+                                                (click)="
+                                                    openComposeDialog(user.id)
+                                                "
+                                            >
                                                 <span class="flex items-center">
                                                     <mat-icon
                                                         class="mr-3 icon-size-5"
                                                         [svgIcon]="
-                                                            'heroicons_solid:trash'
+                                                            'heroicons_solid:user-minus'
                                                         "
                                                     ></mat-icon>
-                                                    <span>Delete</span>
+                                                    <span>Inactivate User</span>
                                                 </span>
                                             </button>
                                         </mat-menu>
