@@ -124,7 +124,6 @@ export class CommentsComponent implements OnInit, OnDestroy {
         this._service.getCaseCommentById(caseCommentId).subscribe({
             next: (response) => 
             {
-                debugger
                 setTimeout(() => {
                     this.composeForm.patchValue(response);
                 });

@@ -50,7 +50,6 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // Subscribe to route parameters
     this.route.params.subscribe(params => {
       const id = params['id'];
-      console.log('AddFormComponent ID:', id);
       this.initializeMenuData(id);
     });
   }
@@ -59,7 +58,10 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.menuData = [
       {
         id: 'fuse-components.components',
-        title: '',
+        mainTitle: 'Incident Reporting',
+        mainSubtitle: 'Incident Details Overview',
+        mainIcon: 'heroicons_outline:exclamation-triangle',
+        isSubmenu: true,
         type: 'group',
         children: [
           {
@@ -67,12 +69,14 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'General Information',
             type: 'basic',
             link: `/case/information/${id}/general-information`,
+            icon: 'mat_outline:info',
           },
           {
             id: 'fuse-components.components.drawer',
             title: 'Injury',
             type: 'basic',
             link: `/case/information/${id}/injury`,
+            icon: 'mat_outline:personal_injury',
             disabled: id == -1
           },
           {
@@ -80,6 +84,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Involved Person',
             type: 'basic',
             link: `/case/information/${id}/involvedPerson`,
+            icon: 'mat_outline:people',
             disabled: id == -1
           },
           {
@@ -87,6 +92,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Potential Loss',
             type: 'basic',
             link: `/case/information/${id}/potentialLoss`,
+            icon: 'mat_outline:health_and_safety',
             disabled: id == -1
           },
           {
@@ -94,6 +100,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Root Causes',
             type: 'basic',
             link:  `/case/information/${id}/rootCauses`,
+            icon: 'mat_outline:report_problem',
             disabled: id == -1
           },
           {
@@ -101,6 +108,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Actions',
             type: 'basic',
             link: `/case/information/${id}/caseActions`,
+            icon: 'mat_outline:medical_services',
             disabled: id == -1
           },
           {
@@ -108,63 +116,26 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
             title: 'Attachments',
             type: 'basic',
             link: `/case/information/${id}/attachments`,
+            icon: 'mat_outline:cloud_upload',
           },
           {
             id: 'Immediate-Cause.components.comments',
             title: 'Comments',
             type: 'basic',
             link: `/case/information/${id}/comments`,
+            icon: 'mat_outline:comment',
           },
           {
             id: 'Immediate-Cause.components.signatures',
             title: 'Signatures',
             type: 'basic',
             link: `/case/information/${id}/signatures`,
+            icon: 'mat_outline:gesture',
           }
 
 
         ],
       },
-      // {
-      //   id: 'Immediate-Cause.components',
-      //   title: ' ',
-      //   type: '',
-      //   children: [
-      //     {
-      //       id: 'Immediate-Cause.components.Root-Causes',
-      //       title: 'Root Causes',
-      //       type: 'basic',
-      //       link:  `/case/information/${id}/rootCauses`,
-      //       disabled: id == -1
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.Case-Actions',
-      //       title: 'Actions',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/caseActions`,
-      //       disabled: id == -1
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.attachments',
-      //       title: 'Attachments',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/attachments`,
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.comments',
-      //       title: 'Comments',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/comments`,
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.signatures',
-      //       title: 'Signatures',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/signatures`,
-      //     }
-
-      //   ],
-      // }
     ];
   }
 

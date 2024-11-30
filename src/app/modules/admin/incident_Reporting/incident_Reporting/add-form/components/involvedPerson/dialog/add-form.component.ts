@@ -72,7 +72,6 @@ export class AddformComponent implements OnInit {
         this._service.getCaseinvolvedpersnsById(id).subscribe({
             next: (caseData) => {
                 setTimeout(() => {
-                    debugger
                     this.composeForm.patchValue(caseData);
                 });
             }
@@ -96,7 +95,6 @@ export class AddformComponent implements OnInit {
     }
 
     updateData(): void {
-        debugger
         this._service.updateinvolvedpersns(this.composeForm.value).subscribe({
             next: (response) => {
                 this.matDialogRef.close(true);

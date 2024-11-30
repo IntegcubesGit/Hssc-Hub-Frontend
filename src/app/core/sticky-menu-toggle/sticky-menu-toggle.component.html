@@ -1,0 +1,19 @@
+<section>
+    <button
+        [matTooltip]="'Toggle Menu'"
+        class="fixed bottom-4 right-4 z-50 items-center justify-center w-10 h-10 rounded-full mb-10 sticky-menu-toggle hidden transition-colors duration-75"
+        (click)="toggleDrawer()">
+        <div class="absolute z-10 top-0 left-0 w-full h-full rounded-full bg-primary"></div>
+        <div class="relative z-20">
+            <mat-icon class="text-white my-2">menu</mat-icon>
+        </div>
+    </button>
+</section>
+
+<style>
+    @media (max-width: 960px) {
+        .sticky-menu-toggle {
+            display: inline-flex !important;
+        }
+    }
+</style>

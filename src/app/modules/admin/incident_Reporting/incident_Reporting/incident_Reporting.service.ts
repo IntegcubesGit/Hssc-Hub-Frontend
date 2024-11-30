@@ -87,7 +87,7 @@ export class Incident_ReportingService {
    */
   getProducts(
     page: number = 0,
-    size: number = 10,
+    size: number = 25,
     sort: string = 'name',
     order: 'asc' | 'desc' | '' = 'asc',
     search: string = ''
