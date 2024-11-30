@@ -5,7 +5,7 @@
             [subscriptSizing]="'dynamic'"
         >
             <span
-                class="py-2 text-lg font-semibold text-gray-600"
+                class="py-3 text-xl font-semibold text-gray-600"
                 matTextPrefix=""
                 >Roles</span
             >
@@ -78,11 +78,11 @@
 
 <!-- Actions -->
 <div class="flex items-center justify-end">
-    <button mat-stroked-button type="button" (click)="navigateUserBack()">
+    <button class="rounded-full bg-transparent ring-1 ring-primary mr-2 text-primary"  mat-stroked-button type="button" (click)="navigateUserBack()">
         Back
     </button>
     <button
-        class="ml-4"
+        class="ml-4 rounded-full"
         mat-flat-button
         type="button"
         [color]="'primary'"
