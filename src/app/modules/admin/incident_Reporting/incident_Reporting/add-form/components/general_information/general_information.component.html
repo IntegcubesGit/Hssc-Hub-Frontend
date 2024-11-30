@@ -1,14 +1,14 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <!-- Header -->
-  <div
-    class="bg-gray-50 flex flex-0 flex-col border-b p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
+  <div class="bg-gray-50 flex flex-0 flex-col p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
     <div class="min-w-0 flex-1">
       <div class="flex-auto px-1">
-        
+
         <form [formGroup]="caseForm">
           <div class="bg-card min-h-[88vh] mt-2 flex flex-col overflow-hidden rounded shadow">
             <div class="p-4">
-              <span class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
+              <span
+                class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
                 Incident General Information
               </span>
               <div class="flex flex-col md:flex-row md:space-x-4">
@@ -218,21 +218,19 @@
                 <div class="flex flex-col w-full">
                   <div class="my-2 flex items-center justify-between ">
                     <mat-checkbox formControlName="isAuthorityNotified" class="my-0 pt-1 justify-start"
-                      [color]="'primary'">Authority
-                      Notified?</mat-checkbox>
+                      [color]="'primary'">Authority Notified?</mat-checkbox>
                   </div>
-                  <div class="my-2 flex items-end justify-end">
+                  <div class="mt-2 flex items-end justify-end">
                     <div class="flex items-end ml-auto">
-                      <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" type="button" mat-button (click)="onCancel()">Cancel</button>
-                      <button class="rounded-full" mat-flat-button [color]="'primary'" (click)="onSubmit()"> {{ buttonText }}</button>
+                      <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" type="button" mat-button
+                        (click)="onCancel()">Cancel</button>
+                      <button class="rounded-full" mat-flat-button [color]="'primary'" (click)="onSubmit()"> {{
+                        buttonText }}</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="mt-4 mb-8 flex items-center justify-end">
-
           </div>
         </form>
       </div>

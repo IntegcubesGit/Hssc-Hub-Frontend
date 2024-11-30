@@ -1,175 +1,127 @@
 <div class="flex min-w-0 flex-auto flex-col">
-    <!-- Header -->
-    <div
-      class="bg-gray-50 flex flex-0 flex-col border-b p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
-      <div class="min-w-0 flex-1">
-        <div class="flex-auto px-1">
-          <div class="bg-card min-h-[88vh] my-2 flex flex-col overflow-hidden rounded shadow">
-            <div class="flex w-full items-center justify-between">
-              <div class="flex justify-start pt-4 px-4 ">
-                <span class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
-                    Root Causes Information
-                </span>
-              </div>
-              <div class="flex items-end my-2  mr-2"> 
-                <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" mat-flat-button
-                  (click)="onCancel()">
-                  <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md text-primary font-semibold tracking-tight">Go Back</span>
-                  <mat-icon class="icon-size-4 prefix stroke-primary"
-                    [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
-                </button>
-                <button class="rounded-full" mat-flat-button [color]="'primary'" (click)="openComposeDialog(-1)">
-                  <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                  <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add New</span>
-                </button>
-              </div>
+  <!-- Header -->
+  <div class="bg-gray-50 flex flex-0 flex-col p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
+    <div class="min-w-0 flex-1">
+      <div class="flex-auto px-1">
+        <div class="bg-card min-h-[88vh] my-2 flex flex-col overflow-hidden rounded shadow">
+          <div class="flex w-full items-center justify-between">
+            <div class="flex justify-start pt-4 px-4 ">
+              <span
+                class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
+                Root Causes Information
+              </span>
             </div>
-            <div class="bg-white mx-2">
-                <table mat-table matSort [dataSource]="list" class="w-full bg-white border border-gray-200 shadow-md rounded-lg">
-                    <!-- No. Column -->
-                    <ng-container matColumnDef="caseRootCauseId">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-3 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-l border-b border-gray-200">
-                        No.
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element; let i = index" 
-                        class="px-3 py-1 text-md text-gray-500 border-b border-l">
-                        {{ i + 1 }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Internal/External Column -->
-                    <ng-container matColumnDef="internalExternal">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
-                        Cause Type
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-blue-600 border-b">
-                        <a 
-                          (click)="openComposeDialog(element.caseRootCauseId)" 
-                          class="underline hover:text-blue-800">
-                          {{ element.internalExternal }}
-                        </a>
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Analysis Methodology Column -->
-                    <ng-container matColumnDef="analysisMethodology">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
-                        Analysis Methodology
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-gray-500 border-b">
-                        {{ element.analysisMethodology }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Details Column -->
-                    <ng-container matColumnDef="details">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
-                        Details
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-gray-500 border-b">
-                        {{ element.details }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Most Probable Cause Column -->
-                    <ng-container matColumnDef="mostProbableCause">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
-                        Most Probable Cause
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-gray-500 border-b">
-                        {{ element.mostProbableCause }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Cause Description Column -->
-                    <ng-container matColumnDef="causeDescription">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
-                        Cause Description
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-gray-500 border-b">
-                        {{ element.causeDescription }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Lesson Learnt Column -->
-                    <ng-container matColumnDef="lessonLearnt">
-                      <th 
-                        mat-header-cell 
-                        *matHeaderCellDef 
-                        mat-sort-header 
-                        class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-r border-b border-gray-200">
-                        Lesson Learnt
-                      </th>
-                      <td 
-                        mat-cell 
-                        *matCellDef="let element" 
-                        class="px-4 py-1 text-md text-gray-500 border-b border-r">
-                        {{ element.lessonLearnt }}
-                      </td>
-                    </ng-container>
-                  
-                    <!-- Header and Rows -->
-                    <tr 
-                      mat-header-row 
-                      *matHeaderRowDef="recentTransactionsTableColumns" 
-                      class="bg-slate-50 border h-8">
-                    </tr>
-                    <tr 
-                      mat-row 
-                      *matRowDef="let row; columns: recentTransactionsTableColumns;" 
-                      class="h-8 hover:bg-red-700">
-                    </tr>
-                  </table>                  
+            <div class="flex items-end my-2  mr-2">
+              <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" mat-flat-button (click)="onCancel()">
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md text-primary font-semibold tracking-tight">Go
+                  Back</span>
+                <mat-icon class="icon-size-4 prefix stroke-primary"
+                  [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+              </button>
+              <button class="rounded-full" mat-flat-button [color]="'primary'" (click)="openComposeDialog(-1)">
+                <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add New</span>
+              </button>
             </div>
-            <div class="flex justify-end p-1 mr-4">
-              <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
-                <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Root Causes:</span>
+          </div>
+          <div class="bg-white mx-2">
+            <table mat-table matSort [dataSource]="list"
+              class="w-full bg-white border border-gray-200 shadow-md rounded-lg">
+              <!-- No. Column -->
+              <ng-container matColumnDef="caseRootCauseId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-3 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-l border-b border-gray-200">
+                  No.
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index"
+                  class="px-3 py-1 text-md text-gray-500 border-b border-l">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Internal/External Column -->
+              <ng-container matColumnDef="internalExternal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                  Cause Type
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-blue-600 border-b">
+                  <a (click)="openComposeDialog(element.caseRootCauseId)" class="underline hover:text-blue-800">
+                    {{ element.internalExternal }}
+                  </a>
+                </td>
+              </ng-container>
+
+              <!-- Analysis Methodology Column -->
+              <ng-container matColumnDef="analysisMethodology">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                  Analysis Methodology
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-gray-500 border-b">
+                  {{ element.analysisMethodology }}
+                </td>
+              </ng-container>
+
+              <!-- Details Column -->
+              <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                  Details
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-gray-500 border-b">
+                  {{ element.details }}
+                </td>
+              </ng-container>
+
+              <!-- Most Probable Cause Column -->
+              <ng-container matColumnDef="mostProbableCause">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                  Most Probable Cause
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-gray-500 border-b">
+                  {{ element.mostProbableCause }}
+                </td>
+              </ng-container>
+
+              <!-- Cause Description Column -->
+              <ng-container matColumnDef="causeDescription">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-b border-gray-200">
+                  Cause Description
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-gray-500 border-b">
+                  {{ element.causeDescription }}
+                </td>
+              </ng-container>
+
+              <!-- Lesson Learnt Column -->
+              <ng-container matColumnDef="lessonLearnt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  class="px-4 py-0 text-left text-md font-semibold text-gray-700 bg-slate-50 border-t border-r border-b border-gray-200">
+                  Lesson Learnt
+                </th>
+                <td mat-cell *matCellDef="let element" class="px-4 py-1 text-md text-gray-500 border-b border-r">
+                  {{ element.lessonLearnt }}
+                </td>
+              </ng-container>
+
+              <!-- Header and Rows -->
+              <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns" class="bg-slate-50 border h-8">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;" class="h-8 hover:bg-red-700">
+              </tr>
+            </table>
+          </div>
+          <div class="flex justify-end p-1 mr-4">
+            <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
+              <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Root Causes:</span>
                 <span class="my-auto mx-0 sm:mx-1 hidden sm:block">{{ rootCauses.length }}</span> -->
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <app-sticky-menu-toggle></app-sticky-menu-toggle>
     </div>
+    <app-sticky-menu-toggle></app-sticky-menu-toggle>
+  </div>
