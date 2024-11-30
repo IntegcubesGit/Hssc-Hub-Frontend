@@ -6,8 +6,13 @@ import {
 
 export interface FuseNavigationItem {
     id?: string;
+    mainIcon?: string;
+    mainTitle?: string;
+    mainSubtitle?: string;
+    icon?: string;
     title?: string;
     subtitle?: string;
+    isSubmenu?: boolean;
     type: 'aside' | 'basic' | 'collapsable' | 'divider' | 'group' | 'spacer';
     hidden?: (item: FuseNavigationItem) => boolean;
     active?: boolean;
@@ -29,7 +34,6 @@ export interface FuseNavigationItem {
         icon?: string;
         wrapper?: string;
     };
-    icon?: string;
     badge?: {
         title?: string;
         classes?: string;

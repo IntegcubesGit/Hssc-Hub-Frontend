@@ -50,7 +50,6 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // Subscribe to route parameters
     this.route.params.subscribe(params => {
       const id = params['id'];
-      console.log('AddFormComponent ID:', id);
       this.initializeMenuData(id);
     });
   }
@@ -59,7 +58,10 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.menuData = [
       {
         id: 'fuse-components.components',
-        title: '',
+        mainTitle: 'Incident Reporting',
+        mainSubtitle: 'Incident Details Overview',
+        mainIcon: 'mat_outline:priority_high',
+        isSubmenu: true,
         type: 'group',
         children: [
           {
@@ -134,46 +136,6 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         ],
       },
-      // {
-      //   id: 'Immediate-Cause.components',
-      //   title: ' ',
-      //   type: '',
-      //   children: [
-      //     {
-      //       id: 'Immediate-Cause.components.Root-Causes',
-      //       title: 'Root Causes',
-      //       type: 'basic',
-      //       link:  `/case/information/${id}/rootCauses`,
-      //       disabled: id == -1
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.Case-Actions',
-      //       title: 'Actions',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/caseActions`,
-      //       disabled: id == -1
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.attachments',
-      //       title: 'Attachments',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/attachments`,
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.comments',
-      //       title: 'Comments',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/comments`,
-      //     },
-      //     {
-      //       id: 'Immediate-Cause.components.signatures',
-      //       title: 'Signatures',
-      //       type: 'basic',
-      //       link: `/case/information/${id}/signatures`,
-      //     }
-
-      //   ],
-      // }
     ];
   }
 

@@ -94,7 +94,6 @@ export class PotentialLossComponent implements OnInit, OnDestroy {
         this.caseId = this.route.parent?.snapshot.paramMap.get('id');
         this._service.getAllPotentialLoss(this.caseId).subscribe({
             next: (response) => {
-                debugger
                 this.list = response;
            
             },
@@ -106,7 +105,6 @@ export class PotentialLossComponent implements OnInit, OnDestroy {
 
 
       openComposeDialog(id): void {
-        debugger
             const dialogRef = this.dialog.open(AddformComponent, {
            data : {
                 id: cloneDeep(id),

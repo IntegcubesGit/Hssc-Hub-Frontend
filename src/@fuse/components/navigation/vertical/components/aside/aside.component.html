@@ -23,17 +23,22 @@
 
         <!-- Title & Subtitle -->
         <div class="fuse-vertical-navigation-item-title-wrapper">
-            <div class="fuse-vertical-navigation-item-title">
-                <span [ngClass]="item.classes?.title">
-                    {{ item.title }}
-                </span>
-            </div>
-            @if (item.subtitle) {
-                <div class="fuse-vertical-navigation-item-subtitle">
-                    <span [ngClass]="item.classes?.subtitle">
-                        {{ item.subtitle }}
+            
+            @if (item.isSubmenu != true) {
+                <div class="fuse-vertical-navigation-item-title">
+                    <span [ngClass]="item.classes?.title">
+                        {{ item.title }}
                     </span>
+    
+                    
                 </div>
+                @if (item.subtitle) {
+                    <div class="fuse-vertical-navigation-item-subtitle">
+                        <span [ngClass]="item.classes?.subtitle">
+                            {{ item.subtitle }}
+                        </span>
+                    </div>
+                }
             }
         </div>
 
