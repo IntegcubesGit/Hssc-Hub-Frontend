@@ -60,7 +60,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
         id: 'fuse-components.components',
         mainTitle: 'Incident Reporting',
         mainSubtitle: 'Incident Details Overview',
-        mainIcon: 'mat_outline:priority_high',
+        mainIcon: 'heroicons_outline:exclamation-triangle',
         isSubmenu: true,
         type: 'group',
         children: [
