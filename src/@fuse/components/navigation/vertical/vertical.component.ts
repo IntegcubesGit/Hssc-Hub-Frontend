@@ -106,6 +106,7 @@ export class FuseVerticalNavigationComponent
     @Input() opened: boolean = true;
     @Input() position: FuseVerticalNavigationPosition = 'left';
     @Input() transparentOverlay: boolean = false;
+    @Input() isSubmenu: boolean = false;
     @Output()
     readonly appearanceChanged: EventEmitter<FuseVerticalNavigationAppearance> =
         new EventEmitter<FuseVerticalNavigationAppearance>();
@@ -148,6 +149,7 @@ export class FuseVerticalNavigationComponent
         this._handleOverlayClick = (): void => {
             this.close();
         };
+        
     }
 
     // -----------------------------------------------------------------------------------------------------

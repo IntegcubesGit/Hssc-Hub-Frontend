@@ -58,6 +58,7 @@ export class FuseVerticalNavigationAsideItemComponent
     @Input() name: string;
     @Input() skipChildren: boolean;
 
+
     active: boolean = false;
     private _fuseVerticalNavigationComponent: FuseVerticalNavigationComponent;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -111,6 +112,8 @@ export class FuseVerticalNavigationAsideItemComponent
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+           
     }
 
     /**

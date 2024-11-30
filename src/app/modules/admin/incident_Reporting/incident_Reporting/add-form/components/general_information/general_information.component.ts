@@ -19,6 +19,7 @@ import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { Case } from '../../../incident_Reporting.types';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { FuseAlertService } from '@fuse/components/alert';
+import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
   selector: 'general_information',
@@ -45,8 +46,9 @@ import { FuseAlertService } from '@fuse/components/alert';
     MatRadioModule,
     MatButtonModule,
     MatDatepickerModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    StickyMenuToggleComponent
+],
 })
 export class GeneralInformationComponent implements OnInit, OnDestroy {
 

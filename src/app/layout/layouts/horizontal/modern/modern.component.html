@@ -4,7 +4,7 @@
 <!-- Navigation -->
 @if (isScreenSmall) {
     <fuse-vertical-navigation
-        class="dark bg-gray-900 print:hidden"
+        class="dark bg-primary-950 print:hidden"
         [mode]="'over'"
         [name]="'mainNavigation'"
         [navigation]="navigation.default"
@@ -43,10 +43,12 @@
                         class="hidden w-24 dark:flex"
                         src="images/logo/logo-text-on-dark.svg"
                     /> -->
-                    <h2 class="text-white font-bold text-xl">HSSE</h2>
+      
 
                 </div>
-                <img class="flex w-8 lg:hidden" src="images/logo/logo.svg" />
+                <!-- <img class="flex w-8 lg:hidden" src="images/logo/logo.svg" /> -->
+                <h2 class="text-white font-bold text-xl">HSSE</h2>
+
             </div>
             <!-- Horizontal navigation -->
             <fuse-horizontal-navigation
@@ -61,7 +63,7 @@
                 mat-icon-button
                 (click)="toggleNavigation('mainNavigation')"
             >
-                <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+                <mat-icon class="text-white" [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
             </button>
         }
         <!-- Components -->

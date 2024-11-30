@@ -19,6 +19,7 @@ import { AddFormComponent } from "../../add-form.component";
 import { Incident_ReportingService } from "../../../incident_Reporting.service";
 import { DatePipe } from "@angular/common";
 import { FuseConfirmationService } from "@fuse/services/confirmation/confirmation.service";
+import { StickyMenuToggleComponent } from "app/core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
     selector: 'app-signature',
@@ -43,6 +44,7 @@ import { FuseConfirmationService } from "@fuse/services/confirmation/confirmatio
         MatDatepickerModule,
         MatTableModule,
         DatePipe,
+        StickyMenuToggleComponent
          
     ],
 })

@@ -83,6 +83,7 @@ export const appRoutes: Route[] = [
             {path: 'case', loadChildren: () => import('app/modules/admin/incident_Reporting/incident_Reporting.routes')},
             {path: 'observations', loadChildren: () => import('app/modules/admin/observations/observations.routes')},
             {path: 'user', loadChildren: () => import('app/modules/admin/create_User/create_User.routes')},
+            {path: 'roles', loadChildren: () => import('app/modules/admin/roles-setting/roles-setting.routes')},
 
         ]
     }
