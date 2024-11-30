@@ -21,11 +21,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-
 import { cloneDeep } from 'lodash';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { AddformComponent } from './dialog/add-form.component';
+import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
 
 
 @Component({
@@ -51,6 +51,7 @@ import { AddformComponent } from './dialog/add-form.component';
         MatDatepickerModule,
         MatTableModule,
         DatePipe,
+        StickyMenuToggleComponent,
       
        
     ],

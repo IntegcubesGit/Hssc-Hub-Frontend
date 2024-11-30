@@ -10,11 +10,12 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
 
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],
+  imports: [MatButton, MatCard, MatIcon, CommonModule, StickyMenuToggleComponent],
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -86,9 +87,7 @@ export class AttachmentsComponent implements OnInit
     this.selectedFile = null;
   }
 
-  toggleDrawer(): void {
-    this._fuseComponentsComponent.matDrawer.toggle();
-  }
+  
 
   onFileSelected(event: any): void {
     const selectedFiles = event.target.files;
