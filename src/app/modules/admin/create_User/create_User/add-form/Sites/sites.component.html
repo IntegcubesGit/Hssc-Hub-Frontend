@@ -57,7 +57,10 @@
                     Select All
                 </mat-checkbox>
             </div>
-            @for (site of sites; track trackBySiteId; let idx = $index) {
+            @for (
+                site of sites;
+                track trackByFn($index, site);
+            ) {
                 <mat-checkbox
                     class="mb-2 mt-4 w-40 pt-1"
                     [color]="'primary'"

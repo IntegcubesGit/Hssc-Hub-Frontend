@@ -73,7 +73,9 @@ export class SitesComponent implements OnInit {
         this.GetUserRoles();
         this.GetSitesInfo().subscribe({
             next: () => {
-                this.AssignSitesAndRoles();
+                if (this.userId !== '-1') {
+                    this.AssignSitesAndRoles();
+                }
             },
             error: (err) => {
                 console.error('Error fetching sites:', err);
@@ -88,18 +90,24 @@ export class SitesComponent implements OnInit {
     AssignSitesAndRoles() {
         this._service.getUserById$.subscribe({
             next: (data) => {
-                const RoleList = this.rolesList.filter((role) =>
-                    data.roles.includes(role.id)
-                );
-                this.roles.setValue(RoleList);
-                this.roleIds.setValue(data.roles);
+                if (data) {
+                    const RoleList = this.rolesList.filter((role) =>
+                        data?.roles?.includes(role.id)
+                    );
+                    this.roles.setValue(RoleList);
+                    this.roleIds.setValue(data.roles);
 
-                if (data.sites && Array.isArray(data.sites)) {
-                    this.selectSingle = data.sites;
-                    this.selectAll =
-                        this.selectSingle.length === this.sites.length;
+                    if (data.sites && Array.isArray(data.sites)) {
+                        this.selectSingle = data.sites;
+                        this.selectAll =
+                            this.selectSingle.length === this.sites.length;
+                    } else {
+                        console.error(
+                            'Sites data is invalid or empty from API.'
+                        );
+                    }
                 } else {
-                    console.error('Sites data is invalid or empty from API.');
+                    console.error('User data is null or undefined.');
                 }
             },
             error: (err) => {
@@ -244,7 +252,13 @@ export class SitesComponent implements OnInit {
         this._service.pannelvalue('generalInfo');
     }
 
-    trackBySiteId(index: number, site: SiteCreation): number {
-        return site.siteId;
+    /**
+     * Track by function for ngFor loops
+     *
+     * @param index
+     * @param site
+     */
+    trackByFn(index: number, site: any): any {
+        return site.id || index;
     }
 }

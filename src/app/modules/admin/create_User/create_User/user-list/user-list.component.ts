@@ -225,7 +225,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
                 confirm: {
                     show: true,
                     label: 'Yes, Inactivate',
-                    color: 'primary',
+                    color: 'warn',
                 },
                 cancel: {
                     show: true,
@@ -236,9 +236,13 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
+            if (result === 'confirmed') {
                 this.reviewUser(userId);
-            } 
+            }
+            else
+            {
+                console.log('Inactivation canceled');
+            }
         });
     }
     reviewUser(id: string) {
