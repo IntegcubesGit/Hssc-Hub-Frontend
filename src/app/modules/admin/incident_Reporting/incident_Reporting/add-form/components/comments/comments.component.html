@@ -96,19 +96,23 @@
         </div>
         }
         @empty{
-        <li>There are no items.</li>}
+          <div class="flex items-center justify-center max-h-20">
+            <div class="text-secondary text-lg">No comments found. Add a new comment to proceed.</div>
+          </div>
+      }
     </div>
 </div>
               </div>
               <div class="flex justify-end p-1 mr-4">
-                <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
-                  <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Root Causes:</span>
-                  <span class="my-auto mx-0 sm:mx-1 hidden sm:block">{{ rootCauses.length }}</span> -->
-                </div>
+                @if (comments.length > 0) {
+                  <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
+                    <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Comments: {{ comments.length }}</span>
+                  </div>
+                }
               </div>
             </div>
           </div>
-    
+          <app-sticky-menu-toggle></app-sticky-menu-toggle>
         </div>
       </div>
     </div>
