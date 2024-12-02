@@ -2,8 +2,8 @@
   <!-- Right drawer above content -->
   <div class="relative w-full">
     <fuse-drawer [name]="'rightDrawer'" [opened]="drawerOpened" [position]="'right'" [mode]="drawerMode"
-      class="fixed top-0 right-0 z-51 mt-10 bg-white shadow-xl transform transition-transform"
-      [class.translate-x-full]="!drawerOpened" style="width: 350px; height: 100vh; overflow-y: auto;">
+      class="fixed top-0 right-0 z-51 mt-10 bg-white shadow-xl transform transition-transform overflow-y-auto w-[350px] h-screen"
+      [class.translate-x-full]="!drawerOpened">
       <div class="mx-auto my-4">
         <div class="py-2">
           <div class="flex justify-between items-center my-5 sticky top-0 bg-white z-10">
