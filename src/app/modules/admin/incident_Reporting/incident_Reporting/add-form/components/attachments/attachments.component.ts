@@ -7,15 +7,15 @@ import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
-
+import { FuseDrawerComponent } from "../../../../../../../../@fuse/components/drawer/drawer.component";
+import { MatTooltip } from '@angular/material/tooltip';
 @Component({
   selector: 'app-attachments',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule, StickyMenuToggleComponent],
+  imports: [MatButton, MatCard, MatIcon, CommonModule, StickyMenuToggleComponent, FuseDrawerComponent, MatTooltip],
   templateUrl: './attachments.component.html',
   styles: [],
   providers: [DatePipe],
@@ -29,6 +29,8 @@ export class AttachmentsComponent implements OnInit
   minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
   maxFileSizeLimit = 10 * 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
   isRemarksEditable: boolean = false;
+  drawerMode = 'side';
+  drawerOpened = false;
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
@@ -37,7 +39,6 @@ export class AttachmentsComponent implements OnInit
     private alertService: AlertService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private dialog: MatDialog,
     private router: Router,
   )
   {}
@@ -47,6 +48,19 @@ export class AttachmentsComponent implements OnInit
     this.getAllCaseFiles();
 
   }
+
+
+  /**
+ * Drawer opened changed
+ *
+ * @param opened
+ */
+drawerOpenedChanged(opened: boolean, file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void
+{
+    this.drawerOpened = opened;
+    this.selectedFile = file;
+}
+
 
   onCancel() {
     this.router.navigate(['/case/incident_Reporting']);
@@ -76,18 +90,6 @@ export class AttachmentsComponent implements OnInit
 
     return `${formattedSize} ${postfix}`;
   }
-
-  openDrawer(file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void {
-    this.selectedFile = file;
-    this.isDrawerOpen = true;
-  }
-
-  closeDrawer() {
-    this.isDrawerOpen = false;
-    this.selectedFile = null;
-  }
-
-  
 
   onFileSelected(event: any): void {
     const selectedFiles = event.target.files;
@@ -210,7 +212,7 @@ export class AttachmentsComponent implements OnInit
     this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
       next: (response) => {
         this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
-        this.closeDrawer();
+        this.drawerOpened = false;
         this.getAllCaseFiles();
       },
       error: (error) => {

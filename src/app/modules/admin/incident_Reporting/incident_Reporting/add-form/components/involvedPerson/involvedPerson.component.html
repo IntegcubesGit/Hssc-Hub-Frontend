@@ -25,6 +25,12 @@
             </div>
           </div>
           <div class="bg-white mx-2">
+            @if (involvedlist.length === 0) {
+              <div class="flex items-center justify-center max-h-20">
+                <div class="text-secondary text-lg">No records found. Add a new record to proceed.</div>
+              </div>
+            }
+            @else {            
             <table mat-table matSort [dataSource]="involvedlist"
               class="max-w-full bg-white border border-gray-200 drop-shadow-md rounded-lg">
 
@@ -70,12 +76,14 @@
               <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;" class="h-8">
               </tr>
             </table>
-
+          }
           </div>
           <div class="flex justify-end p-1 mr-4">
             <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
-              <!-- <span class="my-auto mx-1">Total Involved Persons: {{ involvedPersons.length }}</span> -->
-            </div>
+                @if (involvedlist.length > 0) {
+                <span class="my-auto mx-1">Total Records: {{ involvedlist.length }}</span>
+              }
+              </div>
           </div>
         </div>
       </div>

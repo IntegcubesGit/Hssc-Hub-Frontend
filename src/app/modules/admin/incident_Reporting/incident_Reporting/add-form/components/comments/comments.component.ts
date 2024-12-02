@@ -21,6 +21,7 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 import { AlertService } from 'app/layout/common/alert/alert.service';
+import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
     selector: 'comments',
@@ -29,30 +30,30 @@ import { AlertService } from 'app/layout/common/alert/alert.service';
     providers: [DatePipe],
     standalone: true,
     imports: [
-        FuseCardComponent,
-        MatIconModule,
-        MatButtonModule,
-        FuseHighlightComponent,
-        MatIconModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatDividerModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatTableModule,
-        DatePipe,
-        MatMenuModule,
-        FormsModule,
-        ReactiveFormsModule,
-        JsonPipe,
-        MatCardModule
-
-    ],
+    FuseCardComponent,
+    MatIconModule,
+    MatButtonModule,
+    FuseHighlightComponent,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatTableModule,
+    DatePipe,
+    MatMenuModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JsonPipe,
+    MatCardModule,
+    StickyMenuToggleComponent
+],
 })
 export class CommentsComponent implements OnInit, OnDestroy {
     @ViewChild('recentTransactionsTable', { read: MatSort })
