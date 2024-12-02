@@ -21,6 +21,12 @@
             </div>
           </div>
           <div class="bg-white mx-2">
+            @if (list.length === 0) {
+              <div class="flex items-center justify-center max-h-20">
+                <div class="text-secondary text-lg">No records found.</div>
+              </div>
+            }
+            @else {
             <table mat-table matSort [dataSource]="list"
               class="max-w-full bg-white border border-gray-200 drop-shadow-md rounded-lg">
 
@@ -75,12 +81,13 @@
               </tr>
               <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;" class="h-8 "></tr>
             </table>
-
+          }
           </div>
           <div class="flex justify-end p-1 mr-4">
             <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
-              <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total</span>
-                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight">{{ injuries.length }}</span> -->
+             @if (list.length > 0) {
+              <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Records: {{ list.length }}</span>
+              }
             </div>
           </div>
         </div>
