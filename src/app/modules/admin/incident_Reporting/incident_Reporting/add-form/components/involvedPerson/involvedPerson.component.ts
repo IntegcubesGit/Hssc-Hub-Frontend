@@ -35,8 +35,6 @@ import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-me
     imports: [
         MatIconModule,
         MatButtonModule,
-        FuseHighlightComponent,
-        FuseAlertComponent,
         MatIconModule,
         FormsModule,
         MatFormFieldModule,
