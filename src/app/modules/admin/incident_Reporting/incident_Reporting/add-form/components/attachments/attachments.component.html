@@ -1,6 +1,101 @@
-<div class="flex items-center w-full justify-center">
-  <div class="flex min-w-0 flex-auto flex-col">
-    <!-- Header -->
+<div class="relative flex overflow-hidden min-h- min-w-full">
+  <!-- Right drawer above content -->
+  <div class="relative w-full">
+    <fuse-drawer [name]="'rightDrawer'" [opened]="drawerOpened" [position]="'right'" [mode]="drawerMode"
+      class="fixed top-0 right-0 z-51 mt-10 bg-white shadow-xl transform transition-transform"
+      [class.translate-x-full]="!drawerOpened" style="width: 350px; height: 100vh; overflow-y: auto;">
+      <div class="mx-auto my-4">
+        <div class="py-2">
+          <div class="flex justify-between items-center my-5 sticky top-0 bg-white z-10">
+            <h2 class="text-xl font-bold text-black">File Details</h2>
+            <button class="fuse-alert-dismiss-button" [matTooltip]="'Close File Details'" mat-icon-button
+              (click)="drawerOpenedChanged(false, null)">
+              <mat-icon class="text-xl p-1">close</mat-icon>
+            </button>
+          </div>
+          @if (selectedFile) {
+          <div>
+            <!-- File Preview -->
+            <div class="flex flex-auto flex-col rounded-md p-15 m-2 items-center justify-center border-2 bg-gray-100">
+              <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
+            </div>
+
+            <p class="text-center text-lg truncate w-50 mx-auto" matTooltip="{{selectedFile.fileName}}">
+              <strong>{{ selectedFile.fileName }}</strong>
+            </p>
+            <!-- File Information Section -->
+            <div class="mt-3 text-lg font-semibold text-center">Details</div>
+            <div class="mt-3 mb-6 flex flex-col divide-y border-b border-t font-medium">
+              <div class="flex items-center justify-between py-2">
+                <div class="text-secondary text-sm">Type</div>
+                <div class="rounded px-1.5 text-sm font-semibold leading-5 w-max"
+                  [ngClass]="getFileClass(selectedFile.type)">
+                  .{{ selectedFile.type }}
+                </div>
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <div class="text-secondary text-sm">Upload By</div>
+                <div class="text-sm">{{ selectedFile.uploadedBy }}</div>
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <div class="text-secondary text-sm">Upload On</div>
+                <div class="text-sm">{{selectedFile.uploadedAt | date:'dd-MMM-yyyy h:mm a' }}</div>
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <div class="text-secondary text-sm">Size</div>
+                <div class="text-sm">{{ formatSize(selectedFile.fileSize) }}</div>
+              </div>
+            </div>
+
+            <!-- Remarks Section -->
+            <div class="mt-8 flex items-center justify-between">
+              <div class="text-md font-semibold">Remarks</div>
+              <div>
+                @if(isRemarksEditable) {
+                <button mat-icon-button class="mx-1 fuse-alert-dismiss-button" (click)="saveRemarks()">
+                  <mat-icon class="icon-size-4">save</mat-icon>
+                </button>
+                <button type="button" mat-icon-button class="mx-1 fuse-alert-dismiss-button" (click)="toggleEditRemarks()">
+                  <mat-icon class="icon-size-4" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
+                </button>
+                } @else {
+                <button type="button" mat-icon-button class="mx-1 fuse-alert-dismiss-button" type="button"
+                  (click)="toggleEditRemarks()">
+                  <mat-icon class="icon-size-4" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
+                </button>
+                }
+              </div>
+            </div>
+            <div class="mt-1 flex border-y h-32">
+              <div class="py-2">
+                @if (selectedFile.remarks) {
+                <div class="text-sm">
+                  {{ selectedFile.remarks }}
+                </div>
+                } @else {
+                <div class="text-secondary italic text-sm">
+                  Be the first to add comments.
+                </div>
+                }
+              </div>
+            </div>
+
+            <!-- Actions Section -->
+            <div class="mt-4 grid w-full grid-cols-2 gap-4 mx-auto">
+              <button class="flex-auto rounded-full" mat-flat-button [color]="'primary'"
+                (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">
+                Download
+              </button>
+              <button class="flex-auto rounded-full bg-transparent ring-1 ring-primary" type="button" mat-stroked-button
+                (click)="deleteFile(selectedFile.completeFileName)">
+                Delete
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </fuse-drawer>
     <div class="bg-gray-50 flex flex-0 flex-col p-1 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between">
       <div class="min-w-0 flex-1">
         <div class="flex-auto px-1">
@@ -12,7 +107,7 @@
                   Case Attachments
                 </span>
               </div>
-              <div class="flex items-end my-2  mr-2">
+              <div class="flex items-end my-2 mr-2">
                 <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" mat-flat-button
                   (click)="onCancel()">
                   <span
@@ -37,7 +132,7 @@
                         (dragover)="onDragOver($event)" (drop)="onDrop($event)">
                         <div>
                           <span class="mb-2 block text-xl font-semibold text-black">
-                            Upload Files
+                            Click Button to Select File
                           </span>
                           <span
                             class="inline-flex cursor-pointer bg-primary rounded-full py-2 px-7 text-base font-medium text-white">
@@ -46,17 +141,16 @@
                         </div>
                       </label>
                     </div>
-
-
                     <!-- Display Files -->
                     @if (files.length > 0) {
                     <label class="mb-5 block text-xl font-bold text-black">Already Uploaded</label>
-                    <div class="flex flex-wrap overflow-y-scroll max-h-38">
+                    <div class="flex flex-wrap overflow-y-auto max-h-38 justify-center">
                       <mat-card *ngFor="let file of files"
                         class="m-2 flex h-36 w-36 cursor-pointer flex-col rounded-sm px-1 py-1 shadow border-gray-400 bg-gray-100"
-                        (click)="openDrawer(file)">
+                        (click)="drawerOpenedChanged(true, file);">
                         <div class="flex items-end justify-end">
-                          <button type="button" mat-icon-button (click)="deleteFile(file.completeFileName)">
+                          <button type="button" class="fuse-alert-dismiss-button" mat-icon-button
+                            (click)="deleteFile(file.completeFileName)">
                             <mat-icon class="icon-size-4">close</mat-icon>
                           </button>
                         </div>
@@ -82,112 +176,18 @@
                       <div class="text-secondary text-lg">No files uploaded previously.</div>
                     </div>
                     }
-
                   </div>
                 </form>
               </div>
             </div>
             <div class="flex justify-end p-1 mr-4">
               <div class="my-2 text-md text-right text-gray-400 font-light tracking-tight uppercase sm:flex">
-                <!-- <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Root Causes:</span>
-                <span class="my-auto mx-0 sm:mx-1 hidden sm:block">{{ rootCauses.length }}</span> -->
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block">Total Files:</span>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block">{{ files.length }}</span>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
-  </div>
-  <app-sticky-menu-toggle></app-sticky-menu-toggle>
-  <!-- Right Drawer for File Details -->
-  @if (isDrawerOpen) {
-  <div class="min-h-screen absolute bg-white shadow-lg z-50 transition-transform transform translate-x-full ease-in-out duration-300 opacity-0
-      flex flex-auto flex-col p-4 md:pt-6 lg:pt-6 md:px-5 lg:px-5 md:pb-2 lg:pb-2 w-80 top-0 right-0" [ngClass]="{
-        'translate-x-0 opacity-100 basis-2/5': isDrawerOpen,
-        'translate-x-full opacity-0 w-0': !isDrawerOpen
-      }">
-    <div class="py-2 px-4">
-      <div class="flex justify-between items-center mb-3 py-3">
-        <h2 class="text-xl font-bold text-black">File Details</h2>
-        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" (click)="closeDrawer()">
-          <mat-icon class="text-xl">close</mat-icon>
-        </button>
-      </div>
-      @if (selectedFile) {
-      <div>
-        <div class="flex flex-auto flex-col rounded-md p-10 m-2 items-center justify-center border-2 bg-gray-100">
-          <mat-icon class="text-hint opacity-50 icon-size-18">{{ selectedFile.icon }}</mat-icon>
-        </div>
-
-        <p class="text-center text-lg"><strong>{{ selectedFile.fileName }}</strong></p>
-
-        <!-- File Information Section -->
-        <div class="mt-3 text-md font-semibold text-center">Details</div>
-        <div class="mt-3 flex flex-col divide-y border-b border-t font-medium">
-          <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Type</div>
-            <div class="rounded px-1.5 text-sm font-semibold leading-5 w-max"
-              [ngClass]="getFileClass(selectedFile.type)">
-              .{{ selectedFile.type }}
-            </div>
-          </div>
-          <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Upload By</div>
-            <div class="text-sm">{{ selectedFile.uploadedBy }}</div>
-          </div>
-          <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Upload On</div>
-            <div class="text-sm">{{selectedFile.uploadedAt | date:'dd-MMM-yyyy h:mm a' }}</div>
-          </div>
-          <div class="flex items-center justify-between py-1">
-            <div class="text-secondary text-sm">Size</div>
-            <div class="text-sm">{{ formatSize(selectedFile.fileSize) }}</div>
-          </div>
-        </div>
-
-        <!-- Remarks Section -->
-        <div class="mt-8 flex items-center justify-between">
-          <div class="text-md font-semibold">Remarks</div>
-          <div>
-            @if(isRemarksEditable) {
-            <button mat-icon-button class="mx-1" (click)="saveRemarks()">
-              <mat-icon class="icon-size-4">save</mat-icon>
-            </button>
-            <button mat-icon-button class="mx-1" (click)="toggleEditRemarks()" class="mx-1">
-              <mat-icon class="icon-size-4" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
-            </button>
-            } @else {
-            <button mat-icon-button type="button" (click)="toggleEditRemarks()" class="mx-1">
-              <mat-icon class="icon-size-4" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
-            </button>
-            }
-          </div>
-        </div>
-        <div class="mt-2 flex border-t h-24">
-          <div class="py-2">
-            @if (selectedFile.remarks) {
-            <div class="text-sm">
-              {{ selectedFile.remarks }}
-            </div>
-            } @else {
-            <div class="text-secondary italic text-sm">
-              Be the first to add comments.
-            </div>
-            }
-          </div>
-        </div>
-
-        <!-- Actions Section -->
-        <div class="mt-4 grid w-full grid-cols-2 gap-4 ">
-          <button class="flex-auto rounded-full" mat-flat-button [color]="'primary'"
-            (click)="downloadFile(selectedFile.completeFileName, selectedFile.fileName, selectedFile.type)">Download</button>
-          <button class="flex-auto rounded-full bg-transparent ring-1 ring-primary mr-2" type="button"
-            mat-stroked-button (click)="deleteFile(selectedFile.completeFileName)">Delete</button>
-        </div>
-      </div>
-      }
-    </div>
-  </div>
-  }
-</div>
+    <app-sticky-menu-toggle></app-sticky-menu-toggle>
