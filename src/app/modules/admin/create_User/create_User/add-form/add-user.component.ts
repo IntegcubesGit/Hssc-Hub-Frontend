@@ -16,7 +16,6 @@ import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsGeneralInfoComponent } from './General-Information/General-Info.component';
 import { UserListService } from '../user-list.service';
-import { StickyMenuToggleComponent } from "../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
     selector: 'add-user',
@@ -31,7 +30,6 @@ import { StickyMenuToggleComponent } from "../../../../../core/sticky-menu-toggl
     NgClass,
     SettingsGeneralInfoComponent,
     SitesComponent,
-    StickyMenuToggleComponent
 ],
 })
 export class AddUserComponent implements OnInit, OnDestroy {
