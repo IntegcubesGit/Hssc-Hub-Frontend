@@ -21,4 +21,4 @@ export default [
         path: 'user-info/:id',
         component: AddUserComponent,
     },
-] as Routes;
+] as Routes; 

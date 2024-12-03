@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 4200
 
 # Development command with polling for hot reload
-CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "2000"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "1000"]

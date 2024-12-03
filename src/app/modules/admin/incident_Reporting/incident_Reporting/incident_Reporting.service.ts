@@ -88,7 +88,7 @@ export class Incident_ReportingService {
   getProducts(
     page: number = 0,
     size: number = 25,
-    sort: string = 'name',
+    sort: string = 'case',
     order: 'asc' | 'desc' | '' = 'asc',
     search: string = ''
   ): Observable<{

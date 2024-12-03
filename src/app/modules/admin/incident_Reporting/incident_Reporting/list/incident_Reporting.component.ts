@@ -157,10 +157,14 @@ export class Incident_ReportingListComponent
                 switchMap((query) => {
 
                     this.isLoading = true;
+                    if (this._paginator) 
+                    {
+                        this._paginator.pageIndex = 0;
+                    }
                     return this._Service.getProducts(
                         0,
-                        10,
-                        'name',
+                        25,
+                        'case',
                         'asc',
                         query
                     );
@@ -172,41 +176,26 @@ export class Incident_ReportingListComponent
             .subscribe();
     }
 
-    /**
-     * After view init
-     */
+    
     ngAfterViewInit(): void {
-        if (this._sort && this._paginator) {
-            // Set the initial sort
-            this._sort.sort({
-                id: 'name',
-                start: 'asc',
-                disableClear: true,
-            });
-
+        if (this._sort && this._paginator) 
+        {
+            
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
-            // If the user changes the sort order...
-            this._sort.sortChange
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe(() => {
-                    // Reset back to the first page
-                    this._paginator.pageIndex = 0;
-
-
-                });
-
+            // Listen for both pagination and sorting changes
             merge(this._sort.sortChange, this._paginator.page)
                 .pipe(
                     switchMap(() => {
-
                         this.isLoading = true;
+                        // Call the service with the current page, page size, sort, and search parameters
                         return this._Service.getProducts(
                             this._paginator.pageIndex,
                             this._paginator.pageSize,
-                            this._sort.active,
-                            this._sort.direction
+                            this._sort.active || 'case', // Default sorting field if none selected
+                            this._sort.direction || 'asc',      // Default sorting order if none selected
+                            this.searchInputControl.value
                         );
                     }),
                     map(() => {
