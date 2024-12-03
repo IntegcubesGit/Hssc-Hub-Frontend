@@ -54,6 +54,7 @@ import { Case, Pagination } from '../incident_Reporting.types';
 import { Incident_ReportingService } from '../incident_Reporting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -102,6 +103,7 @@ import { MatMenuModule } from '@angular/material/menu';
         AsyncPipe,
         DatePipe,
         MatMenuModule,
+        MatTooltipModule
     ],
 })
 export class Incident_ReportingListComponent
