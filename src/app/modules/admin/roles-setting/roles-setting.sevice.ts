@@ -8,16 +8,45 @@ import { AppRole, Pagination } from './roles-setting.types';
 export class ListSettingService {
     constructor(private _httpClient: HttpClient) {}
 
-    private readonly getUserRolesURL = `${environment.apiUrl}User/GetUserRoles`;
-    private readonly getMenuUrl = `${environment.apiUrl}Menu/GetMenu`
+    private readonly getUserRolesURL = `${environment.apiUrl}Roles/getRoles`;
+    private readonly getMenuUrl = `${environment.apiUrl}Roles/GetMenu`
+    private readonly saveRoles = `${environment.apiUrl}Roles/SaveRole`
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
     private _roles: BehaviorSubject<AppRole[] | null> = new BehaviorSubject<
         AppRole[] | null
     >(null);
 
-    getRoles() {
-        return this._httpClient.get<any>(this.getUserRolesURL).pipe(tap());
+    // getRoles() {
+    //     return this._httpClient.get<any>(this.getUserRolesURL).pipe(tap());
+    // }
+
+    getRoles(
+        page: number = 0,
+        size: number = 25,
+        sort: string = 'name',
+        order: 'asc' | 'desc' | '' = 'asc',
+        search: string = ''
+    ): Observable<{ pagination: Pagination; roles: AppRole[] }> {
+        return this._httpClient
+            .get<{
+                pagination: Pagination;
+                roles: AppRole[];
+            }>(this.getUserRolesURL, {
+                params: {
+                    page: '' + page,
+                    size: '' + size,
+                    sort,
+                    order,
+                    search,
+                },
+            })
+            .pipe(
+                tap((response) => {
+                    this._pagination.next(response.pagination);
+                    this._roles.next(response.roles);
+                })
+            );
     }
 
     getMenu(){
@@ -31,4 +60,12 @@ export class ListSettingService {
     get roles$(): Observable<AppRole[] | null> {
         return this._roles.asObservable();
     }
+
+    saveRolesData(roleData, selectSingle): Observable<any>{
+        const data = { roleData, menuIds: selectSingle };
+        return this._httpClient.post(`${this.saveRoles}`, data);
+    }
+
+
 }
+

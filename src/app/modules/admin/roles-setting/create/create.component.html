@@ -5,10 +5,10 @@
     >
         <div class="min-w-0 flex-1">
             <div class="flex-auto px-1">
-                <form [formGroup]="rolesForm">
-                    <div
-                        class="bg-card mt-2 flex min-h-[88vh] flex-col overflow-hidden rounded shadow"
-                    >
+                <div
+                    class="bg-card mt-2 flex min-h-[88vh] flex-col overflow-hidden rounded shadow"
+                >
+                    <form [formGroup]="rolesForm">
                         <div class="p-4">
                             <span
                                 class="mb-2 truncate text-xl font-bold leading-7 tracking-tight text-primary sm:leading-10 md:text-xl"
@@ -36,36 +36,85 @@
                         </div>
                         <strong>Menus</strong>
                         <p>(Total Menus: {{ selectSingle.length }})</p>
-
-                        @if (menus.length > 0) {
-                            <!-- <div> -->
-                            <mat-checkbox
-                                [color]="'primary'"
-                                [(ngModel)]="selectAll"
-                                (change)="toggleAllSites($event)"
-                            >
-                                Select All
-                            </mat-checkbox>
-                            <!-- </div> -->
-                            @for (
-                                menu of menus;
-                                track trackByFn($index, menu)
-                            ) {
-                                <mat-checkbox
-                                    [color]="'primary'"
-                                    [checked]="
-                                        selectSingle.includes(menu.menuId)
-                                    "
-                                    (change)="
-                                        onCheckboxChange($event, menu.menuId)
-                                    "
-                                >
-                                    {{ menu.title }}
-                                </mat-checkbox>
-                            }
-                        }
+                    </form>
+                    @if (menus.length > 0) {
+                        <!-- <div> -->
+                        <mat-checkbox
+                            [color]="'primary'"
+                            [(ngModel)]="selectAll"
+                            (change)="toggleAllMenus($event)"
+                        >
+                            Select All
+                        </mat-checkbox>
+                        <!-- </div> -->
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex flex-col">
+                                @for (
+                                    menu of menus;
+                                    track trackByFn($index, menu)
+                                ) {
+                                    <mat-checkbox
+                                        [color]="'primary'"
+                                        [checked]="
+                                            selectSingle.includes(menu.menuId)
+                                        "
+                                        (change)="
+                                            onCheckboxChange(
+                                                $event,
+                                                menu.menuId
+                                            )
+                                        "
+                                        class="font-medium"
+                                    >
+                                        {{ menu.title }}
+                                    </mat-checkbox>
+                                    <div class="ml-6 mt-2">
+                                        @if (menu.children?.length > 0) {
+                                            @for (
+                                                child of menu.children;
+                                                track trackByFn($index, child)
+                                            ) {
+                                                <div class="flex flex-col">
+                                                    <mat-checkbox
+                                                        [color]="'primary'"
+                                                        [checked]="
+                                                            selectSingle.includes(
+                                                                child.menuId
+                                                            )
+                                                        "
+                                                        (change)="
+                                                            onCheckboxChange(
+                                                                $event,
+                                                                child.menuId
+                                                            )
+                                                        "
+                                                        class="text-sm"
+                                                    >
+                                                        {{ child.title }}
+                                                    </mat-checkbox>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="flex items-center justify-end">
+                        <button class="rounded-full bg-transparent ring-1 ring-primary mr-2 text-primary"  mat-stroked-button type="button" (click)="navigateUserBack()">
+                            Back
+                        </button>
+                        <button
+                            class="ml-4 rounded-full"
+                            mat-flat-button
+                            type="button"
+                            [color]="'primary'"
+                            (click)="saveMenuInfo()"
+                        >
+                            {{ userId === '-1' ? 'Save' : 'Update' }}
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
