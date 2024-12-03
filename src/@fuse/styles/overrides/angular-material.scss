@@ -1026,7 +1026,9 @@
     min-width: 144px !important;
 
     .mat-mdc-menu-content {
+        padding: 0 0;
         .mat-mdc-menu-item {
+            min-height: 32px;
             .mat-mdc-menu-item-text {
                 display: flex;
                 align-items: center;

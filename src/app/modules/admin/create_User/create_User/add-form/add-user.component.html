@@ -4,7 +4,7 @@
     <mat-drawer-container class="flex-auto sm:h-full">
         <!-- Drawer -->
         <mat-drawer
-            class="dark:bg-gray-900 sm:w-80"
+            class="sm:w-80 bg-gray-50"
             [autoFocus]="false"
             [mode]="drawerMode"
             [opened]="drawerOpened"
@@ -73,7 +73,7 @@
         <!-- Drawer content -->
         <mat-drawer-content class="flex flex-col">
             <!-- Main -->
-            <div class="flex-auto px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12">
+            <div class="flex-auto px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12 bg-white">
                 <!-- Panel header -->
                 <div class="flex items-center">
                     <!-- Drawer toggle -->
@@ -101,6 +101,7 @@
                         <!-- General Information -->
                         @case ('generalInfo') {
                             <settings-generalInfo></settings-generalInfo>
+                            
                         }
                         <!-- Sites -->
                         @case ('sites') {

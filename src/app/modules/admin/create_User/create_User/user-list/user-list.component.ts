@@ -52,20 +52,27 @@ import { MatTooltip } from '@angular/material/tooltip';
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 20px 120px 120px 40px;
+    display: grid;
+    grid-template-columns: 20px 120px 120px 40px; /* Default */
+    gap: 8px;
 
-                @screen sm {
-                    grid-template-columns: 48px 100px 100px 100px 72px;
-                }
+    @screen sm {
+        grid-template-columns: 48px 100px 100px 100px 72px;
+    }
 
-                @screen md {
-                    grid-template-columns: 48px 100px 100px 150px auto 100px 250px 250px 72px;
-                }
+    @screen md {
+        grid-template-columns: 48px 100px 100px 150px auto 100px 250px 250px 72px;
+    }
 
-                @screen lg {
-                    grid-template-columns: 48px 150px 150px 150px 150px 150px 200px auto 72px;
-                }
-            }
+    @screen lg {
+        grid-template-columns: 48px 150px 150px 150px 150px 150px 200px auto 72px;
+    }
+
+    @screen xl {
+        grid-template-columns: 48px 150px 150px 200px 200px 200px 300px auto 72px;
+    }
+}
+
         `,
     ],
     encapsulation: ViewEncapsulation.None,
@@ -113,7 +120,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
         private _Service: UserListService,
         private _router: Router,
         private _alertService: AlertService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this._Service.pagination$
@@ -239,8 +246,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
             if (result === 'confirmed') {
                 this.reviewUser(userId);
             }
-            else
-            {
+            else {
                 console.log('Inactivation canceled');
             }
         });

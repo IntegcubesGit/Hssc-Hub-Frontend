@@ -24,13 +24,13 @@ import { UserListService } from '../user-list.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatSidenavModule,
-        MatButtonModule,
-        MatIconModule,
-        NgClass,
-        SettingsGeneralInfoComponent,
-        SitesComponent
-    ],
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    NgClass,
+    SettingsGeneralInfoComponent,
+    SitesComponent,
+],
 })
 export class AddUserComponent implements OnInit, OnDestroy {
     @ViewChild('drawer') drawer: MatDrawer;

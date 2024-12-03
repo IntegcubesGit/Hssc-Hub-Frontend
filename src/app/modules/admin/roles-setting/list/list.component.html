@@ -53,7 +53,7 @@
                         >
                             <div>No</div>
                             <div
-                                class="hidden md:block"
+                                class="md:block"
                                 [mat-sort-header]="'roleName'"
                             >
                                 Role Name
@@ -95,7 +95,7 @@
                                             {{ role.name }}
                                         </a>
                                     </div>
-                                    <div class="hidden truncate lg:block">
+                                    <div class="truncate lg:block">
                                         {{ role.createdBy }}
                                     </div>
 
@@ -108,15 +108,13 @@
                                         }}
                                     </div>
 
-                                    <div class="hidden lg:block">
+                                    <div class="lg:block">
                                         {{ role.timezone }}
                                     </div>
                                 </div>
                             }
                         }
                     </div>
-                    <button (click)="goToTest()">Go to Test Component</button>
-                    <router-outlet></router-outlet>
 
                     <mat-paginator
                         class="xs:h-15 overflow-none z-10 h-11 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
