@@ -11,13 +11,13 @@
         <!-- Actions -->
         <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
             <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
-                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 h-[30px]" [subscriptSizing]="'dynamic'">
+                <mat-icon class="icon-size-4 mb-1" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
                 <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
                     [placeholder]="'Search incidents'" />
             </mat-form-field>
             <!-- Add incident button -->
-            <button class="ml-2 rounded-full" mat-flat-button [color]="'primary'" (click)="create('-1')">
+            <button class="ml-2 rounded-full h-[30px]" mat-flat-button [color]="'primary'" (click)="create('-1')">
                 <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
                 <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add Incident</span>
               </button>
@@ -66,8 +66,7 @@
                 track trackByFn($index, case)
                 ) {
                 <div
-                class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8 cursor-pointer hover:bg-gray-50"
-                [matTooltip]="'Click to add or view incident details'">
+                class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8 cursor-pointer hover:bg-gray-50">
                     <div class="flex items-center">
                         <div class="overflow-hidden">
                             {{$index+1}}
@@ -145,7 +144,7 @@
             
             } @else {
                 <div class="flex items-center justify-center max-h-20">
-                    <div class="text-secondary text-lg">No records found. Add a new record to proceed.</div>
+                    <div class="text-secondary text-lg"> <div class="text-center"><mat-icon class="icon-size-10 text-gray-500">search_off</mat-icon></div> No records found. Add a new record to proceed.</div>
                   </div>
             }
             }
