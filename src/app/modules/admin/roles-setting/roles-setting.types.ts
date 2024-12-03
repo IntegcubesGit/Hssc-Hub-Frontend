@@ -8,7 +8,7 @@ export interface AppRole {
     deletedBy?: number | null;
     deletedOn?: Date | null;
     createdOn: Date;
-    createdBy: number;
+    createdBy: string;
     modifiedOn?: Date | null;
     modifiedBy?: number | null;
     timezone: string;
