@@ -16,6 +16,7 @@ import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsGeneralInfoComponent } from './General-Information/General-Info.component';
 import { UserListService } from '../user-list.service';
+import { StickyMenuToggleComponent } from "../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
     selector: 'add-user',
@@ -24,13 +25,14 @@ import { UserListService } from '../user-list.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatSidenavModule,
-        MatButtonModule,
-        MatIconModule,
-        NgClass,
-        SettingsGeneralInfoComponent,
-        SitesComponent
-    ],
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    NgClass,
+    SettingsGeneralInfoComponent,
+    SitesComponent,
+    StickyMenuToggleComponent
+],
 })
 export class AddUserComponent implements OnInit, OnDestroy {
     @ViewChild('drawer') drawer: MatDrawer;
