@@ -127,10 +127,6 @@ export class ListComponent implements OnInit {
             .subscribe();
     }
 
-    goToTest() {
-        this._router.navigate(['list/test']);
-    }
-
     create(id: string): void {
         //this._router.navigate(['roles/create', id]);
         this._router.navigate(['test'], { relativeTo: this._activatedRoute });
