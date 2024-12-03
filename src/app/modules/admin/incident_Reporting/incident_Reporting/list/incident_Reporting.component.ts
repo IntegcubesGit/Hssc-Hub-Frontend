@@ -155,7 +155,6 @@ export class Incident_ReportingListComponent
                 takeUntil(this._unsubscribeAll),
                 debounceTime(300),
                 switchMap((query) => {
-
                     this.isLoading = true;
                     if (this._paginator) 
                     {
@@ -184,7 +183,14 @@ export class Incident_ReportingListComponent
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
-            // Listen for both pagination and sorting changes
+            // If the user changes the sort order...
+            this._sort.sortChange
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(() => {
+                    // Reset back to the first page
+                    this._paginator.pageIndex = 0;
+                });
+
             merge(this._sort.sortChange, this._paginator.page)
                 .pipe(
                     switchMap(() => {
@@ -204,6 +210,7 @@ export class Incident_ReportingListComponent
                 )
                 .subscribe();
         }
+        
     }
 
     /**
@@ -216,10 +223,7 @@ export class Incident_ReportingListComponent
     }
 
 
-
-
     create(id: string): void {
-
         this._router.navigate(['/case/information', id]);
     }
 

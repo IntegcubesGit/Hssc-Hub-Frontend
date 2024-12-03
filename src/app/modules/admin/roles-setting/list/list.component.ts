@@ -1,15 +1,32 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, DatePipe } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnInit,
+} from '@angular/core';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormControl,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+    Observable,
+    Subject,
+    debounceTime,
+    map,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 import { ListSettingService } from '../roles-setting.sevice';
-import { AppRole } from '../roles-setting.types';
+import { AppRole, Pagination } from '../roles-setting.types';
 
 @Component({
     selector: 'app-user-roles',
@@ -23,6 +40,8 @@ import { AppRole } from '../roles-setting.types';
         MatButtonModule,
         MatSortModule,
         CommonModule,
+        DatePipe,
+        MatPaginatorModule,
     ],
     templateUrl: './list.component.html',
     styleUrl: './list.component.scss',
@@ -51,27 +70,77 @@ import { AppRole } from '../roles-setting.types';
 export class ListComponent implements OnInit {
     roles$: Observable<AppRole[] | null>;
     userRoles: AppRole[] = [];
+    isLoading: boolean = false;
+    //pagination: Pagination;
+    searchInputControl: UntypedFormControl = new UntypedFormControl();
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    pagination: Pagination = {
+        length: 0,
+        size: 25,
+        page: 0,
+        lastPage: 0,
+        startIndex: 0,
+        endIndex: 0,
+    };
 
     constructor(
         private _router: Router,
         private _service: ListSettingService,
         private _cdr: ChangeDetectorRef,
+        private _activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
-        this.GetUserRoles();
+        this._service.pagination$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: Pagination | null) => {
+                if (pagination) {
+                    this.pagination = pagination;
+                    this._cdr.markForCheck();
+                }
+            });
+
+        this.roles$ = this._service.roles$;
+
+        this._service.roles$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((roles) => {
+                this.userRoles = roles;
+                this._cdr.detectChanges();
+            });
+
+        // Initial roles fetch
+        this._service.getRoles().subscribe();
+
+        this.searchInputControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                debounceTime(300),
+                switchMap((query) => {
+                    this.isLoading = true;
+                    return this._service.getRoles(0, 10, 'name', 'asc', query);
+                }),
+                map(() => {
+                    this.isLoading = false;
+                })
+            )
+            .subscribe();
     }
 
-    GetUserRoles() {
-        this._service.getRoles().subscribe((res) => {
-            debugger;
-            this.userRoles = res;
-            this._cdr.detectChanges();
-        });
+    goToTest() {
+        this._router.navigate(['list/test']);
     }
-
 
     create(id: string): void {
+        //this._router.navigate(['roles/create', id]);
+        this._router.navigate(['test'], { relativeTo: this._activatedRoute });
+    }
+
+    edit(id: string): void {
+        if (!id) {
+            console.error('User ID is missing');
+            return;
+        }
         this._router.navigate(['roles/create', id]);
     }
 

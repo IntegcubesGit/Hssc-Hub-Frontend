@@ -2,7 +2,6 @@ import { Routes } from "@angular/router";
 import { ListComponent } from "./list/list.component";
 import { CreateComponent } from "./create/create.component";
 
-
 export default [
     {
         path: '',
@@ -12,7 +11,6 @@ export default [
     {
         path: 'list',
         component: ListComponent,
-
     },
     {
         path: 'create/:id',
