@@ -37,71 +37,71 @@
                         <strong>Menus</strong>
                         <p>(Total Menus: {{ selectSingle.length }})</p>
                     </form>
-                    <div id="tree-begins-here">
+                    @if (menus.length > 0) {
+                        <!-- <div> -->
                         <mat-checkbox
                             [color]="'primary'"
                             [(ngModel)]="selectAll"
-                            (change)="toggleSelectAll()"
+                            (change)="toggleAllMenus($event)"
                         >
                             Select All
                         </mat-checkbox>
-
-                        <mat-tree
-                            [dataSource]="dataSource"
-                            [treeControl]="treeControl"
-                        >
-                            <!-- This is the tree node template for leaf nodes -->
-                            <mat-tree-node
-                                *matTreeNodeDef="let node"
-                                matTreeNodePadding
-                            >
-                                <!-- use a disabled button to provide padding for tree leaf -->
-                                <button mat-icon-button disabled></button>
-                                <mat-checkbox
-                                    value=""
-                                    color="primary"
-                                    [checked]="node.checked"
-                                    (change)="onNodeCheckboxChange(node, $event)"
-                                >
-                                    {{ node.name }}
-                                </mat-checkbox>
-                            </mat-tree-node>
-                            <!-- This is the tree node template for expandable nodes -->
-                            <mat-tree-node
-                                *matTreeNodeDef="let node; when: hasChild"
-                                matTreeNodePadding
-                                matTreeNodeToggle
-                                [cdkTreeNodeTypeaheadLabel]="node.title"
-                            >
-                                <button
-                                    mat-icon-button
-                                    matTreeNodeToggle
-                                    [attr.aria-label]="'Toggle ' + node.title"
-                                >
-                                    <mat-icon class="mat-icon-rtl-mirror">
-                                        {{
-                                            treeControl.isExpanded(node)
-                                                ? 'expand_more'
-                                                : 'chevron_right'
-                                        }}
-                                    </mat-icon>
-                                </button>
-                                <mat-checkbox value="" color="primary"
-                                [checked]="node.checked"
-                                (change)="onNodeCheckboxChange(node, $event)"
-                                >
-                                    {{ node.name }}
-                                </mat-checkbox>
-                            </mat-tree-node>
-                        </mat-tree>
-                    </div>
+                        <!-- </div> -->
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex flex-col">
+                                @for (
+                                    menu of menus;
+                                    track trackByFn($index, menu)
+                                ) {
+                                    <mat-checkbox
+                                        [color]="'primary'"
+                                        [checked]="
+                                            selectSingle.includes(menu.menuId)
+                                        "
+                                        (change)="
+                                            onCheckboxChange(
+                                                $event,
+                                                menu.menuId
+                                            )
+                                        "
+                                        class="font-medium"
+                                    >
+                                        {{ menu.title }}
+                                    </mat-checkbox>
+                                    <div class="ml-6 mt-2">
+                                        @if (menu.children?.length > 0) {
+                                            @for (
+                                                child of menu.children;
+                                                track trackByFn($index, child)
+                                            ) {
+                                                <div class="flex flex-col">
+                                                    <mat-checkbox
+                                                        [color]="'primary'"
+                                                        [checked]="
+                                                            selectSingle.includes(
+                                                                child.menuId
+                                                            )
+                                                        "
+                                                        (change)="
+                                                            onCheckboxChange(
+                                                                $event,
+                                                                child.menuId
+                                                            )
+                                                        "
+                                                        class="text-sm"
+                                                    >
+                                                        {{ child.title }}
+                                                    </mat-checkbox>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                     <div class="flex items-center justify-end">
-                        <button
-                            class="mr-2 rounded-full bg-transparent text-primary ring-1 ring-primary"
-                            mat-stroked-button
-                            type="button"
-                            (click)="navigateUserBack()"
-                        >
+                        <button class="rounded-full bg-transparent ring-1 ring-primary mr-2 text-primary"  mat-stroked-button type="button" (click)="navigateUserBack()">
                             Back
                         </button>
                         <button
