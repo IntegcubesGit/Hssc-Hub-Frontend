@@ -123,7 +123,7 @@
                                     <span>Delete</span>
                                 </span>
                             </button>
-                            <button mat-menu-item (click)="openComposeDialog(case.caseId)">
+                            <button mat-menu-item (click)="openComposeDialog(case.caseId)" [disabled]="case.caseStatusId === 3">
                                 <span class="flex items-center">
                                     <mat-icon class="mr-3 icon-size-5"
                                         [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>

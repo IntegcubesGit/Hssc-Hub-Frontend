@@ -304,7 +304,7 @@ export class Incident_ReportingListComponent
             } 
             else 
             {
-                console.log('Deletion canceled');
+                console.log(' canceled');
             }
         });
     };
