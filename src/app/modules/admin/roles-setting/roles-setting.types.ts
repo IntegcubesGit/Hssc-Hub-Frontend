@@ -30,16 +30,7 @@ export interface MenuDTO {
     subtitle: string;
     type: string;
     icon: string;
-    // link: string;
+    link: string;
     children: MenuDTO[];
-    parentId: number;
 }
 
-export interface FlatNode {
-    expandable: boolean;
-    name: string;
-    level: number;
-    parentId: number;
-    id: any;
-    checked: boolean;
-}

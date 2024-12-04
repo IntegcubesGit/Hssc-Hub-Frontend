@@ -1,4 +1,3 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import {
     FormsModule,
@@ -17,15 +16,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {
-    MatTreeFlatDataSource,
-    MatTreeFlattener,
-    MatTreeModule,
-} from '@angular/material/tree';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { ListSettingService } from '../roles-setting.sevice';
-import { FlatNode, MenuDTO } from '../roles-setting.types';
+import { MenuDTO } from '../roles-setting.types';
 
 @Component({
     selector: 'app-user-roles',
@@ -40,7 +34,6 @@ import { FlatNode, MenuDTO } from '../roles-setting.types';
         MatNativeDateModule,
         MatCheckboxModule,
         MatButtonModule,
-        MatTreeModule,
     ],
     templateUrl: './create.component.html',
 })
@@ -48,7 +41,6 @@ export class CreateComponent {
     rolesForm: UntypedFormGroup;
     userId: string | null = null;
     menus: MenuDTO[] = [];
-    TREE_DATA: MenuDTO[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
 
@@ -73,150 +65,10 @@ export class CreateComponent {
         this.getUserMenus();
     }
 
-    private _transformer = (node: MenuDTO, level: number) => {
-        return {
-            expandable: !!node.children && node.children.length > 0,
-            name: node.title,
-            level: level,
-            parentId: node.parentId,
-            checked: false,
-            id: node.menuId,
-        };
-    };
-
-    treeControl = new FlatTreeControl<FlatNode>(
-        (node) => node.level,
-        (node) => node.expandable
-    );
-
-    treeFlattener = new MatTreeFlattener(
-        this._transformer,
-        (node) => node.level,
-        (node) => node.expandable,
-        (node) => node.children
-    );
-
-    dataSource = new MatTreeFlatDataSource(
-        this.treeControl,
-        this.treeFlattener
-    );
-
-    hasChild = (_: number, node: FlatNode) => node.expandable;
-
-    findByParentId(parentId: number): boolean {
-        const children = this.treeControl.dataNodes.filter(
-            (node) => node.parentId === parentId
-        );
-        return children.length > 0 && children.every((child) => child.checked);
-    }
-
-    onNodeCheckboxChange(node: FlatNode, event: MatCheckboxChange): void {
-        node.checked = event.checked;
-        if(event.checked){
-            this.setParentTruthy(node.parentId);
-            this.setDecendantsTruthy(node.id);
-        }
-        if(!event.checked){
-            this.setParentFalsy(node.parentId);
-            this.setDecendantsFalsy(node.id);
-        }
-    }
-
-    setParentTruthy(parentId: number) {
-        const children = this.treeControl.dataNodes.filter(
-            (n) => n.parentId === parentId
-        );
-
-        const allChildrenChecked = children.every(
-            (child) => child.checked === true
-        );
-
-        if (allChildrenChecked) {
-            const parentNode = this.treeControl.dataNodes.find(
-                (n) => n.id === parentId
-            );
-            if (parentNode) {
-                parentNode.checked = true;
-            }
-        }
-    }
-
-    setParentFalsy(parentId: number) {
-        const children = this.treeControl.dataNodes.filter(
-            (n) => n.parentId === parentId
-        );
-
-        const anyChildUnchecked = children.some(
-            (child) => child.checked === false
-        );
-
-        if (anyChildUnchecked) {
-            const parentNode = this.treeControl.dataNodes.find(
-                (n) => n.id === parentId
-            );
-            if (parentNode) {
-                parentNode.checked = false;
-            }
-        }
-
-    }
-
-    setDecendantsTruthy(parentId: number) {
-        const parentNode = this.treeControl.dataNodes.find(
-            (n) => n.id === parentId
-        );
-        if (parentNode.checked === true) {
-            const children = this.treeControl.dataNodes.filter(
-                (n) => n.parentId === parentId
-
-            );
-            children.forEach(
-                (child) => {
-                    child.checked = true
-                    this.setDecendantsTruthy(child.id)
-                }
-            )
-        }
-
-    }
-
-    setDecendantsFalsy(parentId: number) {
-        const parentNode = this.treeControl.dataNodes.find(
-            (n) => n.id === parentId
-        );
-        if (parentNode.checked === false) {
-            const children = this.treeControl.dataNodes.filter(
-                (n) => n.parentId === parentId
-
-            );
-            children.forEach(
-                (child) => {
-                    child.checked = false
-                    this.setDecendantsFalsy(child.id)
-                }
-            )
-        }
-    }
-
-    toggleSelectAll(){
-        if(this.selectAll){
-            this.treeControl.dataNodes.forEach(
-                (node) => node.checked = true
-            )
-        }
-        else if(!this.selectAll){
-            this.treeControl.dataNodes.forEach(
-                (node) => node.checked = false
-            )
-        }
-    }
-
     getUserMenus() {
         this._service.getMenu().subscribe({
             next: (res) => {
                 this.menus = res;
-                this.TREE_DATA = res;
-                this.dataSource.data = this.TREE_DATA;
             },
             error: (err) => {
                 console.log('an error occured while fetching menus', err);
@@ -224,11 +76,86 @@ export class CreateComponent {
         });
     }
 
+    onCheckboxChange(event: MatCheckboxChange, menuId: number): void {
+        const isChecked = event.checked;
+        const selectedMenu =
+            this.menus.find((menu) => menu.menuId === menuId) ||
+            this.menus
+                .flatMap((menu) => menu.children || [])
+                .find((child) => child.menuId === menuId);
+
+        if (isChecked) {
+            if (!this.selectSingle.includes(menuId)) {
+                this.selectSingle.push(menuId);
+            }
+
+            if (selectedMenu?.children?.length) {
+                selectedMenu.children.forEach((child) => {
+                    if (!this.selectSingle.includes(child.menuId)) {
+                        this.selectSingle.push(child.menuId);
+                    }
+                });
+            }
+            this.updateParentState(menuId);
+        } else {
+            this.selectSingle = this.selectSingle.filter((id) => id !== menuId);
+
+            if (selectedMenu?.children?.length) {
+                this.selectSingle = this.selectSingle.filter(
+                    (id) =>
+                        !selectedMenu.children.some(
+                            (child) => child.menuId === id
+                        )
+                );
+            }
+
+            this.updateParentState(menuId);
+        }
+
+        this.selectAll =
+            this.selectSingle.length ===
+            this.menus.reduce(
+                (acc, menu) => acc + 1 + (menu.children?.length || 0),
+                0
+            );
+    }
+
+    toggleAllMenus(): void {
+        if (this.selectAll) {
+            this.selectSingle = this.menus.flatMap((menu) => [
+                menu.menuId,
+                ...(menu.children?.map((child) => child.menuId) || []),
+            ]);
+        } else {
+            this.selectSingle = [];
+        }
+    }
+
+    private updateParentState(childId: number): void {
+        const parentMenu = this.menus.find((menu) =>
+            menu.children?.some((child) => child.menuId === childId)
+        );
+
+        if (parentMenu) {
+            const allChildrenSelected = parentMenu.children!.every((child) =>
+                this.selectSingle.includes(child.menuId)
+            );
+
+            if (allChildrenSelected) {
+                if (!this.selectSingle.includes(parentMenu.menuId)) {
+                    this.selectSingle.push(parentMenu.menuId);
+                }
+            } else {
+                this.selectSingle = this.selectSingle.filter(
+                    (id) => id !== parentMenu.menuId
+                );
+            }
+        }
+    }
+
     saveMenuInfo(): void {
         const roleData = this.rolesForm.value.roleName;
-        const checkedNodes = this.treeControl.dataNodes.filter(node => node.checked); // Filter checked nodes
-        console.log('Checked Nodes:', checkedNodes);
-        this._service.saveRolesData(roleData, checkedNodes).subscribe({
+        this._service.saveRolesData(roleData, this.selectSingle).subscribe({
             next: (res) => {
                 if (res.isSucceeded) {
                     this._alertService.triggerAlert(
@@ -255,7 +182,8 @@ export class CreateComponent {
         this._router.navigate(['roles/list']);
     }
 
-    onSubmit(): void {}
+    onSubmit(): void {
+    }
 
     /**
      * Track by function for ngFor loops
