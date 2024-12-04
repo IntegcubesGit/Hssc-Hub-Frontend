@@ -61,8 +61,11 @@ export class ListSettingService {
         return this._roles.asObservable();
     }
 
-    saveRolesData(roleData, selectSingle): Observable<any>{
-        const data = { roleData, menuIds: selectSingle };
+    saveRolesData(roleData,  selectedNodes): Observable<any>{
+        const menuIds = selectedNodes
+        .filter(node => node.checked) // Only include checked nodes
+        .map(node => node.id);
+        const data = { roleData, menuIds };
         return this._httpClient.post(`${this.saveRoles}`, data);
     }
 
