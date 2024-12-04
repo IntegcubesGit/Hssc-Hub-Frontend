@@ -1,6 +1,11 @@
 <!-- Loading bar -->
-<fuse-loading-bar></fuse-loading-bar>
+ @if(!isScreenSmall) {
 
+<fuse-loading-bar
+[isHeaderShowing] = "true">
+    
+</fuse-loading-bar>
+ }
 <!-- Navigation -->
 @if (isScreenSmall) {
     <fuse-vertical-navigation
