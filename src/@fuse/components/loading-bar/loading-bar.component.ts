@@ -28,6 +28,7 @@ export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy {
     private _fuseLoadingService = inject(FuseLoadingService);
     private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
     @Input() autoMode: boolean = true;
+    @Input() isHeaderShowing: boolean = false;
     mode: 'determinate' | 'indeterminate';
     progress: number = 0;
     show: boolean = false;
