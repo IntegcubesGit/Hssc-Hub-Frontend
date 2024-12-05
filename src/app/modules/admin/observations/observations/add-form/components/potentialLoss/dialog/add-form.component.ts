@@ -66,7 +66,6 @@ export class AddformComponent implements OnInit {
     loadCaseData(id: string) {
         this._service.getPotentialLossById(id).subscribe({
             next: (caseData) => {
-                debugger
                 setTimeout(() => {
 
                     this.composeForm.patchValue(caseData);

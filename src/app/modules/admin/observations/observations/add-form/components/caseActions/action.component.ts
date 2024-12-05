@@ -23,6 +23,7 @@ import { cloneDeep } from 'lodash';
 import { Incident_ReportingService } from '../../../observations.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { AddformComponent } from './dialog/add-form.component';
+import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 
 @Component({
@@ -31,25 +32,25 @@ import { AddformComponent } from './dialog/add-form.component';
     styles: [''],
     standalone: true,
     imports: [
-        MatIconModule,
-        MatButtonModule,
-        FuseHighlightComponent,
-        FuseAlertComponent,
-        MatIconModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatDividerModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatTableModule,
-        DatePipe,
-
-    ],
+    MatIconModule,
+    MatButtonModule,
+    FuseHighlightComponent,
+    FuseAlertComponent,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatTableModule,
+    DatePipe,
+    StickyMenuToggleComponent
+],
 })
 export class ActionComponent implements OnInit, OnDestroy {
     @ViewChild('recentTransactionsTable', { read: MatSort })
@@ -59,7 +60,7 @@ export class ActionComponent implements OnInit, OnDestroy {
     actions: any[] = [];
 
     recentTransactionsTableColumns: string[] = [
-
+        'No',
         'ActionTaken',
         'ActionType',
         'ActionStatus',

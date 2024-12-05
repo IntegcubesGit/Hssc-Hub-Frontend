@@ -3,30 +3,30 @@
 
     <!-- Header -->
     <div
-        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
+        class="relative flex flex-0 flex-col px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <!-- Loader -->
 
         <!-- Title -->
-        <div class="text-xl font-extrabold tracking-tight">Observations Reporting</div>
+        <div class="text-xl font-extrabold tracking-tight">Observations</div>
         <!-- Actions -->
         <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
             <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
-                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 h-[30px]" [subscriptSizing]="'dynamic'">
+                <mat-icon class="icon-size-4 mb-1" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
                 <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
-                    [placeholder]="'Search products'" />
+                    [placeholder]="'Search incidents'" />
             </mat-form-field>
-            <!-- Add product button -->
-            <button class="ml-4 h-min-4" mat-flat-button [color]="'primary'" (click)="create('-1')">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">Add</span>
-            </button>
+            <!-- Add incident button -->
+            <button class="ml-2 rounded-full h-[30px]" mat-flat-button [color]="'primary'" (click)="create('-1')">
+                <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add Incident</span>
+              </button>
         </div>
     </div>
 
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
-        <!-- Products list -->
+        <!-- incidents list -->
         <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
             @if (cases$ | async; as cases) {
             @if (cases.length > 0) {
@@ -37,7 +37,6 @@
                     <div>No</div>
                     <div class="hidden md:block" [mat-sort-header]="'caseNumber'">
                         Case No
-
                     </div>
                     <div [mat-sort-header]="'case'">Case</div>
 
@@ -66,8 +65,8 @@
                 case of cases;
                 track trackByFn($index, case)
                 ) {
-                <div class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8">
-
+                <div
+                class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8 cursor-pointer hover:bg-gray-50">
                     <div class="flex items-center">
                         <div class="overflow-hidden">
                             {{$index+1}}
@@ -75,9 +74,10 @@
                     </div>
 
 
-                    <!-- SKU -->
                     <div class="hidden truncate md:block">
-                        {{ case.caseNumber }}
+                        <a (click)="create(case.caseId)" class="link" >
+                            {{ case.caseNumber }}
+                        </a>
                     </div>
 
                     <!-- Name -->
@@ -123,6 +123,14 @@
                                     <span>Delete</span>
                                 </span>
                             </button>
+                            <button mat-menu-item (click)="openComposeDialog(case.caseId)" [disabled]="case.caseStatusId === 3">
+                                <span class="flex items-center">
+                                    <mat-icon class="mr-3 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>
+                                    <span>Review</span>
+                                </span>
+                            </button>
+
                         </mat-menu>
 
 
@@ -133,17 +141,20 @@
                 }
             </div>
 
-            <mat-paginator
-                class="z-10 border-b h-11 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
-                [ngClass]="{ 'pointer-events-none': isLoading }" [length]="pagination.length"
-                [pageIndex]="pagination.page" [pageSize]="pagination.size" [pageSizeOptions]="[5, 10, 25, 100]"
-                [showFirstLastButtons]="true"></mat-paginator>
+            
             } @else {
-            <div class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16">
-                There are no cases!
-            </div>
+                <div class="flex items-center justify-center max-h-20">
+                    <div class="text-secondary text-lg"> <div class="text-center"><mat-icon class="icon-size-10 text-gray-500">search_off</mat-icon></div> No records found. Add a new record to proceed.</div>
+                  </div>
             }
             }
+            <mat-paginator
+                class="z-10  h-11 xs:h-15 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t overflow-none"
+                [ngClass]="{ 'pointer-events-none': isLoading }" [length]="pagination.length"
+                [pageIndex]="pagination.page" [pageSize]="pagination.size" [pageSizeOptions]="[25, 50, 100]"
+                [showFirstLastButtons]="true"
+                >
+            </mat-paginator>
 
         </div>
     </div>
