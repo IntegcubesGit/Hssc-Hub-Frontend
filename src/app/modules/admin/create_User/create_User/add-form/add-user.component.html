@@ -1,79 +1,24 @@
-<div
-    class="flex w-full min-w-0 flex-col sm:absolute sm:inset-0 sm:overflow-hidden"
->
-    <mat-drawer-container class="flex-auto sm:h-full">
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
+    <mat-drawer-container class="h-full flex-auto bg-gray-50">
         <!-- Drawer -->
-        <mat-drawer
-            class="sm:w-80 bg-gray-50"
+            <mat-drawer
+            class="flex w-60 min-w-60 md:border-none bg-gray-50"
             [autoFocus]="false"
             [mode]="drawerMode"
             [opened]="drawerOpened"
-            #drawer
-        >
-            <!-- Header -->
-            <div class="m-8 mr-6 flex items-center justify-between sm:my-10">
-                <!-- Title -->
-                <div
-                    class="text-2xl font-extrabold leading-none tracking-tight"
-                >
-                   User Configuration
-                </div>
-                <!-- Close button -->
-                <div class="lg:hidden">
-                    <button mat-icon-button (click)="drawer.close()">
-                        <mat-icon
-                            [svgIcon]="'heroicons_outline:x-mark'"
-                        ></mat-icon>
-                    </button>
-                </div>
-            </div>
-            <!-- Panel links -->
-            <div class="flex flex-col divide-y border-b border-t">
-                @for (panel of panels; track trackByFn($index, panel)) {
-                    <div
-                        class="flex cursor-pointer px-8 py-5"
-                        [ngClass]="{
-                            'dark:hover:bg-hover hover:bg-gray-100':
-                                !selectedPanel || selectedPanel !== panel.id,
-                            'bg-primary-50 dark:bg-hover':
-                                selectedPanel && selectedPanel === panel.id,
-                        }"
-                        (click)="goToPanel(panel.id)"
-                    >
-                        <mat-icon
-                            [ngClass]="{
-                                'text-hint':
-                                    !selectedPanel ||
-                                    selectedPanel !== panel.id,
-                                'text-primary dark:text-primary-500':
-                                    selectedPanel && selectedPanel === panel.id,
-                            }"
-                            [svgIcon]="panel.icon"
-                        ></mat-icon>
-                        <div class="ml-3">
-                            <div
-                                class="font-medium leading-6"
-                                [ngClass]="{
-                                    'text-primary dark:text-primary-500':
-                                        selectedPanel &&
-                                        selectedPanel === panel.id,
-                                }"
-                            >
-                                {{ panel.title }}
-                            </div>
-                            <div class="text-secondary mt-0.5">
-                                {{ panel.description }}
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+            #matDrawer>
+            <fuse-vertical-navigation
+                [navigation]="navigation"
+                [inner]="true"
+                [mode]="'side'"
+                [name]="'docs-core-features-navigation'"
+                [opened]="true">
+            </fuse-vertical-navigation>
         </mat-drawer>
-
         <!-- Drawer content -->
-        <mat-drawer-content class="flex flex-col">
+        <mat-drawer-content class="flex flex-col bg-gray-50">
             <!-- Main -->
-            <div class="flex-auto px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12 bg-white">
+            <div class="flex-auto m-2 rounded shadow px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12 bg-white">
                 <!-- Panel header -->
                 <div class="flex items-center">
                     <!-- Drawer toggle -->
