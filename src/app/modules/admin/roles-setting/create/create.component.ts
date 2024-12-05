@@ -120,6 +120,7 @@ export class CreateComponent {
             this.setParentFalsy(node.parentId);
             this.setDecendantsFalsy(node.id);
         }
+        this.updateSelectAllState();
     }
 
     setParentTruthy(parentId: number) {
@@ -208,6 +209,19 @@ export class CreateComponent {
             this.treeControl.dataNodes.forEach(
                 (node) => node.checked = false
             )
+        }
+    }
+
+    updateSelectAllState(): void {
+        const allNodesChecked = this.treeControl.dataNodes.every((node) => node.checked);
+        const anyNodeChecked = this.treeControl.dataNodes.some((node) => node.checked);
+
+        if (allNodesChecked) {
+            this.selectAll = true;
+        } else if (!anyNodeChecked) {
+            this.selectAll = false;
+        } else {
+            this.selectAll = false;
         }
     }
 
