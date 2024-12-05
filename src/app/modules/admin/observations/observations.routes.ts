@@ -16,11 +16,11 @@ import { SignatureComponent } from './observations/add-form/components/signature
 export default [
   {
     path: '',
-    redirectTo: 'observation-reporting',
+    redirectTo: 'observation-list',
     pathMatch: 'full',
   },
   {
-    path: 'observation-reporting',
+    path: 'observation-list',
     component: observationsListComponent,
     resolve: {
       products: () => inject(Incident_ReportingService).getProducts(),
@@ -42,7 +42,7 @@ export default [
       [
         {
           path: '',
-          redirectTo: 'general-information',
+          redirectTo: 'general-information1',
           pathMatch: 'full',
         },
         { path: 'general-information', component: GeneralInformationComponent },

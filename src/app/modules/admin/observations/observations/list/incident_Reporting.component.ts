@@ -51,7 +51,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
-    selector: 'incident_Reporting-list',
+    selector: 'observation-list',
     templateUrl: './incident_Reporting.component.html',
     styles: [
         /* language=SCSS */
