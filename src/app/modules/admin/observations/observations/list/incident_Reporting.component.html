@@ -14,19 +14,19 @@
             <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64 h-[30px]" [subscriptSizing]="'dynamic'">
                 <mat-icon class="icon-size-4 mb-1" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
                 <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
-                    [placeholder]="'Search incidents'" />
+                    [placeholder]="'Search Observations'" />
             </mat-form-field>
-            <!-- Add incident button -->
+            <!-- Add Observation button -->
             <button class="ml-2 rounded-full h-[30px]" mat-flat-button [color]="'primary'" (click)="create('-1')">
                 <mat-icon class="icon-size-4 stroke-white" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add Incident</span>
+                <span class="my-auto mx-0 sm:mx-1 hidden sm:block text-md font-semibold tracking-tight ">Add Observation</span>
               </button>
         </div>
     </div>
 
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
-        <!-- incidents list -->
+        <!-- Observations list -->
         <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
             @if (cases$ | async; as cases) {
             @if (cases.length > 0) {
