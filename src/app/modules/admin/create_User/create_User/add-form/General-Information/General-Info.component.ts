@@ -64,7 +64,11 @@ export class SettingsGeneralInfoComponent implements OnInit {
      * On init
      */
     ngOnInit(): void {
-        this.userId = this.route.snapshot.paramMap.get('id');
+
+        this.route.parent?.params.subscribe(params => {
+            this.userId = params['id'];
+            this.loadUserData(this.userId);
+        });
         // Create the form
         this.accountForm = this._formBuilder.group(
             {
@@ -89,10 +93,6 @@ export class SettingsGeneralInfoComponent implements OnInit {
         if (savedData) {
             this.accountForm.patchValue(savedData);
         }
-
-        if (this.userId !== '-1') {
-            this.loadUserData(this.userId);
-        }
     }
 
     validatePassword: ValidatorFn = (
@@ -116,7 +116,7 @@ export class SettingsGeneralInfoComponent implements OnInit {
 
     navigateUserNext(): void {
         this._service.setFormData(this.accountForm.value);
-        this._service.pannelvalue('sites');
+        this._router.navigate([`user/user-info/${this.userId}/sites-info`]);
     }
 
     navigateUserBack(): void {
