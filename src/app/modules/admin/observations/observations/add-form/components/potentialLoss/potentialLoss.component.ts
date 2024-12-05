@@ -24,6 +24,7 @@ import { cloneDeep } from 'lodash';
 import { Incident_ReportingService } from '../../../observations.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { AddformComponent } from './dialog/add-form.component';
+import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
 
 
 @Component({
@@ -48,6 +49,7 @@ import { AddformComponent } from './dialog/add-form.component';
         MatButtonModule,
         MatDatepickerModule,
         MatTableModule,
+        StickyMenuToggleComponent
     ],
 })
 export class PotentialLossComponent implements OnInit, OnDestroy {
@@ -92,7 +94,6 @@ export class PotentialLossComponent implements OnInit, OnDestroy {
         this.caseId = this.route.parent?.snapshot.paramMap.get('id');
         this._service.getAllPotentialLoss(this.caseId).subscribe({
             next: (response) => {
-                debugger
                 this.list = response;
            
             },
@@ -104,7 +105,6 @@ export class PotentialLossComponent implements OnInit, OnDestroy {
 
 
       openComposeDialog(id): void {
-        debugger
             const dialogRef = this.dialog.open(AddformComponent, {
            data : {
                 id: cloneDeep(id),
