@@ -130,6 +130,7 @@ export class CreateComponent {
             );
             if (parentNode) {
                 parentNode.checked = true;
+                this.setParentTruthy(parentNode.parentId);
             }
         }
     }
@@ -149,6 +150,7 @@ export class CreateComponent {
             );
             if (parentNode) {
                 parentNode.checked = false;
+                this.setParentFalsy(parentNode.parentId);
             }
         }
 
