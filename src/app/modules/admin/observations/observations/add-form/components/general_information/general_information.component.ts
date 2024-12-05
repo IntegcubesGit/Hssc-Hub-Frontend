@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FuseAlertComponent, FuseAlertService } from '@fuse/components/alert';
-import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { AddFormComponent } from '../../add-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +16,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
 import { CommonService } from 'app/modules/common.service';
 import { Incident_ReportingService } from '../../../observations.service';
-import { AlertService } from 'app/core/alert/alert.service';
 import { Case } from '../../../observations.types';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseAlertService } from '@fuse/components/alert';
+import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
+
 @Component({
   selector: 'general_information',
   templateUrl: './general_information.component.html',
@@ -34,8 +35,6 @@ import { Case } from '../../../observations.types';
   imports: [
     MatIconModule,
     MatButtonModule,
-    FuseHighlightComponent,
-    FuseAlertComponent,
     MatIconModule,
     FormsModule,
     MatFormFieldModule,
@@ -47,8 +46,9 @@ import { Case } from '../../../observations.types';
     MatRadioModule,
     MatButtonModule,
     MatDatepickerModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    StickyMenuToggleComponent
+],
 })
 export class GeneralInformationComponent implements OnInit, OnDestroy {
 
@@ -59,6 +59,8 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   connectedCases: Case[] = [];
   departments: Department[] = [];
   businessUnits: BusinessUnit[] = [];
+  sites: any[] = [];
+
   caseStatuses: CaseStatus[] = [];
   action: string = "Saved";
   buttonText = 'Save';
@@ -70,7 +72,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     private router: Router,
     private _commonService: CommonService,
     private _service: Incident_ReportingService,
-    private _alertService: AlertService
+    private alertService: AlertService
   ) {
 
     this.createForm();
@@ -95,7 +97,9 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
       totalLoss: ['', Validators.required],
       immediateActionTaken: [''],
       comments: [''],
-      connectedCaseId:['']
+      connectedCaseId: [''],
+      siteId:[''],
+      businessUnitId:['']
     });
   }
 
@@ -104,6 +108,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     this._commonService.caseCategories$.subscribe(data => this.caseCategories = data);
     this._commonService.departments$.subscribe(data => this.departments = data);
     this._commonService.businessUnits$.subscribe(data => this.businessUnits = data);
+    this._commonService.caseSites$.subscribe(data => this.sites = data);
     this._commonService.caseStatuses$.subscribe(data => this.caseStatuses = data);
     this._commonService.cases$.subscribe(data => this.connectedCases = data);
 
@@ -136,7 +141,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
         next: (response) => {
           const caseId = BigInt(response.caseId);
           this.router.navigate(['/case/information/', caseId, 'general-information']);
-          this._alertService.showSuccess("Case General Information Saved Successfully");
+          this.alertService.triggerAlert('success', 'Success', 'Case General Information Saved Successfully');
         }
       });
     }
@@ -145,7 +150,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   updateData(): void {
     if (this.caseForm.valid) {
       this._service.updateCase(this.caseForm.value).subscribe(response => {
-        this._alertService.showSuccess("Case General Information updated Successfully");
+        this.alertService.triggerAlert('success', 'Success', 'Case General Information Updated Successfully');
       });
     }
   }
