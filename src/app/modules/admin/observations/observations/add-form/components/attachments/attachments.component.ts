@@ -13,7 +13,7 @@ import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-me
 import { FuseDrawerComponent } from "../../../../../../../../@fuse/components/drawer/drawer.component";
 import { MatTooltip } from '@angular/material/tooltip';
 @Component({
-  selector: 'app-attachments',
+  selector: 'app-attachments-2',
   standalone: true,
   imports: [MatButton, MatCard, MatIcon, CommonModule, StickyMenuToggleComponent, FuseDrawerComponent, MatTooltip],
   templateUrl: './attachments.component.html',

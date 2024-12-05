@@ -19,7 +19,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @Component({
-    selector: 'actions-compose',
+    selector: 'actions-compose-2',
     templateUrl: './add-form.component.html',
     standalone: true,
     imports: [
@@ -62,7 +62,9 @@ export class AddformComponent
             deadline: ['', Validators.required],
             completedOn: ['', Validators.required],
             description: [''],
-            actionTaken: ['', Validators.required]
+            actionTaken: ['', Validators.required],
+            actionPriority: ['', Validators.required],
+            responsibleUser: ['', Validators.required],
         });
 
         if (this._data.id !== -1) {

@@ -19,10 +19,10 @@ import { Incident_ReportingService } from '../../../observations.service';
 import { Case } from '../../../observations.types';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { FuseAlertService } from '@fuse/components/alert';
-import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
+// import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
-  selector: 'general_information',
+  selector: 'general_information_observation',
   templateUrl: './general_information.component.html',
   styles: [
     `
@@ -47,7 +47,7 @@ import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu
     MatButtonModule,
     MatDatepickerModule,
     ReactiveFormsModule,
-    StickyMenuToggleComponent
+
 ],
 })
 export class GeneralInformationComponent implements OnInit, OnDestroy {
@@ -91,15 +91,19 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
       riskCategoryId: ['', Validators.required],
       categoryId: ['', Validators.required],
       statusId: ['', Validators.required],
-      technologyType: [''],
-      workPlace: [''],
+      technologyType: ['', Validators.required],
+      workPlace: ['', Validators.required],
       isAuthorityNotified: [false],
       totalLoss: ['', Validators.required],
       immediateActionTaken: [''],
       comments: [''],
       connectedCaseId: [''],
-      siteId:[''],
-      businessUnitId:['']
+      siteId:['', Validators.required],
+      businessUnitId:['', Validators.required],
+      PotentialCause:[''],
+      HowRevealed:[''],
+      ReportedByCompany:[''],
+      ResponsibleDepartmentId:['', Validators.required],
     });
   }
 

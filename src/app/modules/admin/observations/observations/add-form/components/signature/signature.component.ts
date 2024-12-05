@@ -22,7 +22,7 @@ import { FuseConfirmationService } from "@fuse/services/confirmation/confirmatio
 import { StickyMenuToggleComponent } from "app/core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
-    selector: 'app-signature',
+    selector: 'app-signature-2',
     templateUrl: './signature.component.html',
     styles: [''],
     standalone: true,

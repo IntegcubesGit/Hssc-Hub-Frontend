@@ -27,7 +27,7 @@ import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu
 
 
 @Component({
-    selector: 'action',
+    selector: 'action-2',
     templateUrl: './action.component.html',
     styles: [''],
     standalone: true,
@@ -61,6 +61,7 @@ export class ActionComponent implements OnInit, OnDestroy {
 
     recentTransactionsTableColumns: string[] = [
         'No',
+        'ActionPriority',
         'ActionTaken',
         'ActionType',
         'ActionStatus',

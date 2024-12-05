@@ -24,11 +24,11 @@ import { cloneDeep } from 'lodash';
 import { Incident_ReportingService } from '../../../observations.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { AddformComponent } from './dialog/add-form.component';
-import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
+// import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
 
 
 @Component({
-    selector: 'app-potentialLoss',
+    selector: 'app-potentialLoss-2',
     templateUrl: './potentialLoss.component.html',
     styles: [''],
     standalone: true,
@@ -49,7 +49,6 @@ import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-me
         MatButtonModule,
         MatDatepickerModule,
         MatTableModule,
-        StickyMenuToggleComponent
     ],
 })
 export class PotentialLossComponent implements OnInit, OnDestroy {
