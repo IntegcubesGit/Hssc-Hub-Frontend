@@ -1,0 +1,69 @@
+<div>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Create Role</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="roleForm">
+                <mat-form-field>
+                    <input matInput placeholder="Role Name" formControlName="roleName">
+                </mat-form-field>
+
+                <mat-checkbox 
+                    [(ngModel)]="allMenusChecked" 
+                    (change)="onAllMenusToggle()"
+                    [indeterminate]="someMenusChecked"
+                    formControlName="allMenus"
+                >
+                    Select All Menus
+                </mat-checkbox>
+
+                <div class="menu-tree">
+                    @for (parentMenu of menuData; track parentMenu.menuId) {
+                        <div class="menu-parent">
+                            <mat-checkbox 
+                                [(ngModel)]="parentMenu.checked"
+                                (change)="onParentMenuToggle(parentMenu)"
+                                [indeterminate]="isParentIndeterminate(parentMenu)"
+                                [formControlName]="'menu_' + parentMenu.menuId"
+                            >
+                                {{ parentMenu.title }}
+                            </mat-checkbox>
+
+                            @if (parentMenu.children && parentMenu.children.length) {
+                                <div class="menu-children" style="margin-left: 20px;">
+                                    @for (childMenu of parentMenu.children; track childMenu.menuId) {
+                                        <mat-checkbox 
+                                            [(ngModel)]="childMenu.checked"
+                                            (change)="onChildMenuToggle(parentMenu, childMenu)"
+                                            [formControlName]="'menu_' + childMenu.menuId"
+                                        >
+                                            {{ childMenu.title }}
+                                        </mat-checkbox>
+
+                                        @if (childMenu.children && childMenu.children.length) {
+                                            <div class="menu-grandchildren" style="margin-left: 40px;">
+                                                @for (grandchildMenu of childMenu.children; track grandchildMenu.menuId) {
+                                                    <mat-checkbox 
+                                                        [(ngModel)]="grandchildMenu.checked"
+                                                        (change)="onChildMenuToggle(childMenu, grandchildMenu)"
+                                                        [formControlName]="'menu_' + grandchildMenu.menuId"
+                                                    >
+                                                        {{ grandchildMenu.title }}
+                                                    </mat-checkbox>
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="onSubmit()">Create Role</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
