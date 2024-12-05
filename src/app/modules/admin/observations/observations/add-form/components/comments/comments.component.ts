@@ -24,7 +24,7 @@ import { AlertService } from 'app/layout/common/alert/alert.service';
 import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
-    selector: 'comments',
+    selector: 'comments-2',
     templateUrl: './comments.component.html',
     styles: [''],
     providers: [DatePipe],

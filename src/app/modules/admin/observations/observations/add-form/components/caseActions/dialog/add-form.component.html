@@ -9,7 +9,7 @@
     <!-- Compose form -->
     <form class="flex flex-auto flex-col overflow-y-auto p-6 sm:p-8" [formGroup]="composeForm">
         <div class="flex flex-col md:flex-row md:space-x-4">
-            <!-- Injury Category -->
+            <!-- Status Category -->
             <div class="flex flex-col w-full">
                 <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Action
                     Status</span>
@@ -29,6 +29,24 @@
                 </mat-form-field>
             </div>
 
+            <!-- Priority -->
+            <div class="flex flex-col w-full">
+                <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Priority</span>
+                <mat-form-field class="fuse-mat-dense flex-auto">
+                    <mat-select formControlName="actionPriority">
+                        @for (
+                            dept of departments;
+                            track dept
+                            ) {
+                            <mat-option [value]="
+                                dept.departmentId
+                            ">
+                                {{ dept.title }}
+                            </mat-option>
+                            }
+                    </mat-select>
+                </mat-form-field>
+            </div>
             <!-- Injury Type -->
             <div class="flex flex-col w-full">
                 <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Action
@@ -55,9 +73,28 @@
             <!-- Injury Type -->
             <div class="flex flex-col w-full">
                 <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Responsible
-                    Department</span>
+                    User</span>
                 <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-select formControlName="responsibleDeptId">
+                        @for (
+                        dept of departments;
+                        track dept
+                        ) {
+                        <mat-option [value]="
+                            dept.departmentId
+                        ">
+                            {{ dept.title }}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="flex flex-col w-full">
+                <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Responsible
+                    Dept.</span>
+                <mat-form-field class="fuse-mat-dense flex-auto">
+                    <mat-select formControlName="responsibleUser">
                         @for (
                         dept of departments;
                         track dept

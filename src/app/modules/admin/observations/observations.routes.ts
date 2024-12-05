@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 
-import { observationsListComponent } from './observations/list/incident_Reporting.component';
+import { observationsListComponent } from './observations/list/observation_list.component';
 import { Incident_ReportingService } from './observations/observations.service';
 import { AddFormComponent } from './observations/add-form/add-form.component';
 import { GeneralInformationComponent } from './observations/add-form/components/general_information/general_information.component';
@@ -16,11 +16,11 @@ import { SignatureComponent } from './observations/add-form/components/signature
 export default [
   {
     path: '',
-    redirectTo: 'observation-list',
+    redirectTo: 'observations',
     pathMatch: 'full',
   },
   {
-    path: 'observation-list',
+    path: 'observations',
     component: observationsListComponent,
     resolve: {
       products: () => inject(Incident_ReportingService).getProducts(),
@@ -42,10 +42,10 @@ export default [
       [
         {
           path: '',
-          redirectTo: 'general-information1',
+          redirectTo: 'general_information_observation',
           pathMatch: 'full',
         },
-        { path: 'general-information', component: GeneralInformationComponent },
+        { path: 'general_information_observation', component: GeneralInformationComponent },
         { path: 'potentialLoss', component: PotentialLossComponent },
         { path: 'caseActions', component: ActionComponent },
         { path: 'comments', component: CommentsComponent },

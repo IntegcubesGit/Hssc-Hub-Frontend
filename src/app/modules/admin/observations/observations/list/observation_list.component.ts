@@ -52,7 +52,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'observation-list',
-    templateUrl: './incident_Reporting.component.html',
+    templateUrl: './observation_list.component.html',
     styles: [
         /* language=SCSS */
         `
@@ -219,7 +219,7 @@ export class observationsListComponent
 
 
     create(id: string): void {
-        this._router.navigate(['/case/information', id]);
+        this._router.navigate(['/observations/information', id]);
     }
 
 

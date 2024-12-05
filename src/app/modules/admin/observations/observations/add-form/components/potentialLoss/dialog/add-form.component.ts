@@ -16,7 +16,7 @@ import { CommonService } from 'app/modules/common.service';
 import { Incident_ReportingService } from '../../../../observations.service';
 
 @Component({
-    selector: 'involved-compose',
+    selector: 'involved-compose-2',
     templateUrl: './add-form.component.html',
     standalone: true,
     imports: [
