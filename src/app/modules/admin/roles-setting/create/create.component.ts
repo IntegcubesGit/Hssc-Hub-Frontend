@@ -65,6 +65,158 @@ export class CreateComponent {
         this.getUserMenus();
     }
 
+    private _transformer = (node: MenuDTO, level: number) => {
+        return {
+            expandable: !!node.children && node.children.length > 0,
+            name: node.title,
+            level: level,
+            parentId: node.parentId,
+            checked: false,
+            id: node.menuId,
+        };
+    };
+
+    treeControl = new FlatTreeControl<FlatNode>(
+        (node) => node.level,
+        (node) => node.expandable
+    );
+
+    treeFlattener = new MatTreeFlattener(
+        this._transformer,
+        (node) => node.level,
+        (node) => node.expandable,
+        (node) => node.children
+    );
+
+    dataSource = new MatTreeFlatDataSource(
+        this.treeControl,
+        this.treeFlattener
+    );
+
+    hasChild = (_: number, node: FlatNode) => node.expandable;
+
+    findByParentId(parentId: number): boolean {
+        const children = this.treeControl.dataNodes.filter(
+            (node) => node.parentId === parentId
+        );
+        return children.length > 0 && children.every((child) => child.checked);
+    }
+
+    onNodeCheckboxChange(node: FlatNode, event: MatCheckboxChange): void {
+        node.checked = event.checked;
+        if(event.checked){
+            this.setParentTruthy(node.parentId);
+            this.setDecendantsTruthy(node.id);
+        }
+        if(!event.checked){
+            this.setParentFalsy(node.parentId);
+            this.setDecendantsFalsy(node.id);
+        }
+        this.updateSelectAllState();
+    }
+
+    setParentTruthy(parentId: number) {
+        const children = this.treeControl.dataNodes.filter(
+            (n) => n.parentId === parentId
+        );
+
+        const allChildrenChecked = children.every(
+            (child) => child.checked === true
+        );
+
+        if (allChildrenChecked) {
+            const parentNode = this.treeControl.dataNodes.find(
+                (n) => n.id === parentId
+            );
+            if (parentNode) {
+                parentNode.checked = true;
+            }
+        }
+    }
+
+    setParentFalsy(parentId: number) {
+        const children = this.treeControl.dataNodes.filter(
+            (n) => n.parentId === parentId
+        );
+
+        const anyChildUnchecked = children.some(
+            (child) => child.checked === false
+        );
+
+        if (anyChildUnchecked) {
+            const parentNode = this.treeControl.dataNodes.find(
+                (n) => n.id === parentId
+            );
+            if (parentNode) {
+                parentNode.checked = false;
+            }
+        }
+
+    }
+
+    setDecendantsTruthy(parentId: number) {
+        const parentNode = this.treeControl.dataNodes.find(
+            (n) => n.id === parentId
+        );
+        if (parentNode.checked === true) {
+            const children = this.treeControl.dataNodes.filter(
+                (n) => n.parentId === parentId
+
+            );
+            children.forEach(
+                (child) => {
+                    child.checked = true
+                    this.setDecendantsTruthy(child.id)
+                }
+            )
+        }
+
+    }
+
+    setDecendantsFalsy(parentId: number) {
+        const parentNode = this.treeControl.dataNodes.find(
+            (n) => n.id === parentId
+        );
+        if (parentNode.checked === false) {
+            const children = this.treeControl.dataNodes.filter(
+                (n) => n.parentId === parentId
+
+            );
+            children.forEach(
+                (child) => {
+                    child.checked = false
+                    this.setDecendantsFalsy(child.id)
+                }
+            )
+        }
+    }
+
+    toggleSelectAll(){
+        if(this.selectAll){
+            this.treeControl.dataNodes.forEach(
+                (node) => node.checked = true
+            )
+        }
+        else if(!this.selectAll){
+            this.treeControl.dataNodes.forEach(
+                (node) => node.checked = false
+            )
+        }
+    }
+
+    updateSelectAllState(): void {
+        const allNodesChecked = this.treeControl.dataNodes.every((node) => node.checked);
+        const anyNodeChecked = this.treeControl.dataNodes.some((node) => node.checked);
+
+        if (allNodesChecked) {
+            this.selectAll = true;
+        } else if (!anyNodeChecked) {
+            this.selectAll = false;
+        } else {
+            this.selectAll = false;
+        }
+    }
+
     getUserMenus() {
         this._service.getMenu().subscribe({
             next: (res) => {
