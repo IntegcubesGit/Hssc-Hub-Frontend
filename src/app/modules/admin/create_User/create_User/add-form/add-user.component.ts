@@ -16,6 +16,11 @@ import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsGeneralInfoComponent } from './General-Information/General-Info.component';
 import { UserListService } from '../user-list.service';
+import { FuseDrawerComponent } from '../../../../../../@fuse/components/drawer/drawer.component';
+import { StickyMenuToggleComponent } from "../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
+import { FuseNavigationItem, FuseVerticalNavigationComponent } from '../../../../../../@fuse/components/navigation';
+
+
 
 @Component({
     selector: 'add-user',
@@ -30,6 +35,9 @@ import { UserListService } from '../user-list.service';
     NgClass,
     SettingsGeneralInfoComponent,
     SitesComponent,
+    FuseDrawerComponent,
+    StickyMenuToggleComponent,
+    FuseVerticalNavigationComponent
 ],
 })
 export class AddUserComponent implements OnInit, OnDestroy {
@@ -39,6 +47,30 @@ export class AddUserComponent implements OnInit, OnDestroy {
     panels: any[] = [];
     selectedPanel: string = 'generalInfo';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    navigation:  FuseNavigationItem[]  = [
+        {
+          id: 'fuse-components.components',
+          mainTitle: 'User Configuration',
+          mainSubtitle: 'User Configuration Overview',
+          mainIcon: 'heroicons_outline:user',
+          isSubmenu: true,
+          type: 'group',
+          children: [
+            {
+                id: 'generalInfo',
+                icon: 'heroicons_outline:user-circle',
+                title: 'General Information',
+                type: 'basic',
+            },
+            {
+                id: 'sites',
+                icon: 'heroicons_outline:credit-card',
+                title: 'Roles and Sites Access',
+                type: 'basic',
+            },
+        ]
+        },
+      ];
 
     /**
      * Constructor
