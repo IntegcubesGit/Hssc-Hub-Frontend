@@ -1,0 +1,104 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-2"
+    >
+        <div class="min-w-0 flex-1">
+  
+            <!-- Title -->
+            <div class="mt-2">
+                <h2
+                    class="truncate text-xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-xl"
+                >
+                Involved Person Information
+                </h2>
+            </div>
+        </div>
+        <button
+            class="order-first -ml-3 mb-2 sm:order-last sm:mb-0 sm:ml-0"
+            mat-icon-button
+            (click)="toggleDrawer()"
+        >
+            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex-auto pl-4  pr-4">
+
+      <div class="flex w-full items-center justify-between mt-2">
+        <div>
+            
+            <div class="text-secondary font-medium tracking-tight ml-3 hidden sm:flex">
+            Please Add Involved Persons against  Incident.
+            </div>
+        </div>
+        <div class="ml-6 flex items-center" >
+            <button class="" mat-stroked-button (click)="onCancel()">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:arrow-left'"
+                ></mat-icon>
+                <span class="ml-2">Back to list</span>
+            </button>
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="openComposeDialog(-1)"
+            >
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:plus'"
+                ></mat-icon>
+                <span class="ml-2">Involved Person</span>
+            </button>
+
+          
+        </div>
+    </div>
+
+      <div class="mt-4 mb-4 grid w-full grid-cols-1">
+      
+        <div class="bg-card flex flex-auto flex-col overflow-hidden  shadow " >
+
+            <div class="mx-6 overflow-x-auto">
+              <table mat-table matSort [dataSource]="involvedlist" class="w-full bg-transparent">
+
+                
+                <ng-container matColumnDef="caseInvolvedPersonId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+                    <td mat-cell *matCellDef="let involved; let i = index">{{ i + 1 }}</td>
+                </ng-container>
+
+
+        <!-- Person Name -->
+        <ng-container matColumnDef="personName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Person Name</th>
+            <td mat-cell *matCellDef="let involved">
+              <a  (click)="openComposeDialog(involved.caseInvolvedPersonId)"
+              class="link"              
+              >{{ involved.personName }}
+          </a>
+            </td>
+        </ng-container>
+
+                <!-- Injury Category ID -->
+                <ng-container matColumnDef="involvedAs">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Involved As</th>
+                    <td mat-cell *matCellDef="let involved">{{ involved.involvedAs }}</td>
+                </ng-container>
+            
+        
+            
+        
+                <!-- Header and Rows -->
+                <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
+            </table>
+            
+            </div>
+        </div>
+    </div>
+          
+    </div>
+</div>

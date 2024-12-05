@@ -1,0 +1,150 @@
+<div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden">
+
+
+    <!-- Header -->
+    <div
+        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
+        <!-- Loader -->
+
+        <!-- Title -->
+        <div class="text-xl font-extrabold tracking-tight">Observations Reporting</div>
+        <!-- Actions -->
+        <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+            <!-- Search -->
+            <mat-form-field class="fuse-mat-dense fuse-mat-rounded min-w-64" [subscriptSizing]="'dynamic'">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                <input matInput [formControl]="searchInputControl" [autocomplete]="'off'"
+                    [placeholder]="'Search products'" />
+            </mat-form-field>
+            <!-- Add product button -->
+            <button class="ml-4 h-min-4" mat-flat-button [color]="'primary'" (click)="create('-1')">
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Products list -->
+        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
+            @if (cases$ | async; as cases) {
+            @if (cases.length > 0) {
+            <div class="grid">
+                <!-- Header -->
+                <div class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
+                    matSort matSortDisableClear>
+                    <div>No</div>
+                    <div class="hidden md:block" [mat-sort-header]="'caseNumber'">
+                        Case No
+
+                    </div>
+                    <div [mat-sort-header]="'case'">Case</div>
+
+                    <div [mat-sort-header]="'description'" class="hidden lg:block">Description</div>
+                    <div [mat-sort-header]="'category'">
+                        Category
+                    </div>
+                    <div class="hidden md:block" [mat-sort-header]="'department'">
+                        Department
+
+                    </div>
+                    <div class="hidden lg:block" [mat-sort-header]="'WorkPlace'">
+                        Work Place
+                    </div>
+
+
+                    <div class="hidden md:block" [mat-sort-header]="'caseDate'">Case Date
+                    </div>
+
+
+                    <div>Action</div>
+                </div>
+                <!-- Rows -->
+                @if (cases$ | async; as cases) {
+                @for (
+                case of cases;
+                track trackByFn($index, case)
+                ) {
+                <div class="inventory-grid grid text-md items-center gap-2 border-b px-4 md:px-8">
+
+                    <div class="flex items-center">
+                        <div class="overflow-hidden">
+                            {{$index+1}}
+                        </div>
+                    </div>
+
+
+                    <!-- SKU -->
+                    <div class="hidden truncate md:block">
+                        {{ case.caseNumber }}
+                    </div>
+
+                    <!-- Name -->
+                    <div class="truncate">
+                        {{ case.case }}
+                    </div>
+
+                    <div class="truncate hidden lg:block">
+                        {{ case.description }}
+                    </div>
+
+                    <div>
+                        {{
+                        case.caseCategory
+                        }}
+                    </div>
+
+                    <div class="hidden md:block"> {{case.department}} </div>
+                    <div class="hidden lg:block"> {{case.workPlace}} </div>
+
+                    <div class="hidden  md:block">
+
+                        {{ case.caseDate| date:'mediumDate'}}
+                    </div>
+
+                    <div>
+
+
+                        <button mat-icon-button [matMenuTriggerFor]="budgetMenu">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_mini:ellipsis-horizontal'"></mat-icon>
+                        </button>
+                        <mat-menu #budgetMenu="matMenu">
+
+                            <button mat-menu-item (click)="create(case.caseId)">
+                                <span class="flex items-center">
+                                    <mat-icon class="mr-3 icon-size-5" [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
+                                    <span>Edit</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item>
+                                <span class="flex items-center">
+                                    <mat-icon class="mr-3 icon-size-5" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                    <span>Delete</span>
+                                </span>
+                            </button>
+                        </mat-menu>
+
+
+
+                    </div>
+                </div>
+                }
+                }
+            </div>
+
+            <mat-paginator
+                class="z-10 border-b h-11 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+                [ngClass]="{ 'pointer-events-none': isLoading }" [length]="pagination.length"
+                [pageIndex]="pagination.page" [pageSize]="pagination.size" [pageSizeOptions]="[5, 10, 25, 100]"
+                [showFirstLastButtons]="true"></mat-paginator>
+            } @else {
+            <div class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16">
+                There are no cases!
+            </div>
+            }
+            }
+
+        </div>
+    </div>
+</div>
