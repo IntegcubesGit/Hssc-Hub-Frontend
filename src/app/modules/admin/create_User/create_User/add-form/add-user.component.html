@@ -1,5 +1,5 @@
 <div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
-    <mat-drawer-container class="h-full flex-auto bg-gray-50">
+    <mat-drawer-container class="h-full flex-auto ">
         <!-- Drawer -->
             <mat-drawer
             class="flex w-60 min-w-60 md:border-none bg-gray-50"
@@ -8,7 +8,7 @@
             [opened]="drawerOpened"
             #matDrawer>
             <fuse-vertical-navigation
-                [navigation]="navigation"
+                [navigation]="menuData"
                 [inner]="true"
                 [mode]="'side'"
                 [name]="'docs-core-features-navigation'"
@@ -16,45 +16,10 @@
             </fuse-vertical-navigation>
         </mat-drawer>
         <!-- Drawer content -->
+
         <mat-drawer-content class="flex flex-col bg-gray-50">
             <!-- Main -->
-            <div class="flex-auto m-2 rounded shadow px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12 bg-white">
-                <!-- Panel header -->
-                <div class="flex items-center">
-                    <!-- Drawer toggle -->
-                    <button
-                        class="-ml-2 lg:hidden"
-                        mat-icon-button
-                        (click)="drawer.toggle()"
-                    >
-                        <mat-icon
-                            [svgIcon]="'heroicons_outline:bars-3'"
-                        ></mat-icon>
-                    </button>
-
-                    <!-- Panel title -->
-                    <div
-                        class="ml-2 text-3xl font-bold leading-none tracking-tight lg:ml-0"
-                    >
-                        {{ getPanelInfo(selectedPanel).title }}
-                    </div>
-                </div>
-
-                <!-- Load settings panel -->
-                <div class="mt-8">
-                    @switch (selectedPanel) {
-                        <!-- General Information -->
-                        @case ('generalInfo') {
-                            <settings-generalInfo></settings-generalInfo>
-                            
-                        }
-                        <!-- Sites -->
-                        @case ('sites') {
-                            <app-sites></app-sites>
-                        }
-                    }
-                </div>
-            </div>
+            <router-outlet></router-outlet>
         </mat-drawer-content>
     </mat-drawer-container>
 </div>

@@ -1,4 +1,29 @@
-<div class="w-full max-w-full">
+
+
+
+<div class="flex-auto m-2 rounded shadow px-6 pb-12 pt-9 md:p-8 md:pb-12 lg:p-12 bg-white">
+    <!-- Panel header -->
+    <div class="flex items-center">
+        <!-- Drawer toggle -->
+        <button
+            class="-ml-2 lg:hidden"
+            mat-icon-button
+
+        >
+            <mat-icon
+                [svgIcon]="'heroicons_outline:bars-3'"
+            ></mat-icon>
+        </button>
+
+        <!-- Panel title -->
+        <div class="ml-2 text-3xl font-bold leading-none tracking-tight lg:ml-0">
+            General Information
+        </div>
+    </div>
+
+    <!-- Load settings panel -->
+    <div class="mt-8">
+        <div class="w-full max-w-full">
     <!-- Form -->
     <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
         <!-- Section -->
@@ -155,4 +180,6 @@
             </button>
         </div>
     </form>
+</div>
+    </div>
 </div>
