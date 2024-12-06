@@ -52,10 +52,10 @@ export class Incident_ReportingService {
   private readonly getCaseCommentByIdURL = `${environment.apiUrl}Cases/IncidentReporting_GetCaseCommentById/`;
   private readonly saveOrUpdateCaseComment = `${environment.apiUrl}Cases/IncidentReporting_CreateOrUpdateCaseComment/`;
 
-  private readonly getAllCaseAttachmentsURL = `${environment.apiUrl}CaseFile/GetAllCaseFiles/`;
-  private readonly uploadCaseAttachmentsURL = `${environment.apiUrl}CaseFile/uploadCaseFile/`;
-  private readonly downloadCaseAttachmentsURL = `${environment.apiUrl}CaseFile/downloadCaseFile/`;
-  private readonly deleteCaseAttachmentsURL = `${environment.apiUrl}CaseFile/deleteCaseFile/`;
+  private readonly getAllCaseAttachmentsURL = `${environment.apiUrl}File/GetAllCaseFiles/`;
+  private readonly uploadCaseAttachmentsURL = `${environment.apiUrl}File/uploadCaseFile/`;
+  private readonly downloadCaseAttachmentsURL = `${environment.apiUrl}File/downloadCaseFile/`;
+  private readonly deleteCaseAttachmentsURL = `${environment.apiUrl}File/deleteCaseFile/`;
 
   private readonly getCaseSignaturesListURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCaseSignatures/`;
   private readonly reviewCaseURL = `${environment.apiUrl}Cases/IncidentReporting_ReviewIncidentCase/`;
