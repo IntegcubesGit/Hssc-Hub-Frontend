@@ -76,7 +76,7 @@ export class CreateComponent {
     }
 
     expandAll() {
-        this.treeControl.dataNodes.forEach((node) => {
+        this.treeControl?.dataNodes?.forEach((node) => {
             this.treeControl.expand(node);
         });
     }
@@ -112,10 +112,10 @@ export class CreateComponent {
     hasChild = (_: number, node: FlatNode) => node.expandable;
 
     findByParentId(parentId: number): boolean {
-        const children = this.treeControl.dataNodes.filter(
+        const children = this.treeControl?.dataNodes?.filter(
             (node) => node.parentId === parentId
         );
-        return children.length > 0 && children.every((child) => child.checked);
+        return children.length > 0 && children?.every((child) => child.checked);
     }
 
     onNodeCheckboxChange(node: FlatNode, event: MatCheckboxChange): void {
@@ -132,16 +132,16 @@ export class CreateComponent {
     }
 
     setParentTruthy(parentId: number) {
-        const children = this.treeControl.dataNodes.filter(
+        const children = this.treeControl?.dataNodes?.filter(
             (n) => n.parentId === parentId
         );
 
-        const allChildrenChecked = children.every(
+        const allChildrenChecked = children?.every(
             (child) => child.checked === true
         );
 
         if (allChildrenChecked) {
-            const parentNode = this.treeControl.dataNodes.find(
+            const parentNode = this.treeControl?.dataNodes?.find(
                 (n) => n.id === parentId
             );
             if (parentNode) {
@@ -152,16 +152,16 @@ export class CreateComponent {
     }
 
     setParentFalsy(parentId: number) {
-        const children = this.treeControl.dataNodes.filter(
+        const children = this.treeControl?.dataNodes?.filter(
             (n) => n.parentId === parentId
         );
 
-        const anyChildUnchecked = children.some(
+        const anyChildUnchecked = children?.some(
             (child) => child.checked === false
         );
 
         if (anyChildUnchecked) {
-            const parentNode = this.treeControl.dataNodes.find(
+            const parentNode = this.treeControl?.dataNodes?.find(
                 (n) => n.id === parentId
             );
             if (parentNode) {
@@ -172,11 +172,11 @@ export class CreateComponent {
     }
 
     setDecendantsTruthy(parentId: number) {
-        const parentNode = this.treeControl.dataNodes.find(
+        const parentNode = this.treeControl?.dataNodes?.find(
             (n) => n.id === parentId
         );
         if (parentNode.checked === true) {
-            const children = this.treeControl.dataNodes.filter(
+            const children = this.treeControl?.dataNodes?.filter(
                 (n) => n.parentId === parentId
             );
             children.forEach((child) => {
@@ -187,11 +187,11 @@ export class CreateComponent {
     }
 
     setDecendantsFalsy(parentId: number) {
-        const parentNode = this.treeControl.dataNodes.find(
+        const parentNode = this.treeControl?.dataNodes?.find(
             (n) => n.id === parentId
         );
         if (parentNode.checked === false) {
-            const children = this.treeControl.dataNodes.filter(
+            const children = this.treeControl?.dataNodes?.filter(
                 (n) => n.parentId === parentId
             );
             children.forEach((child) => {
@@ -204,20 +204,20 @@ export class CreateComponent {
     toggleSelectAll() {
         debugger
         if (this.selectAll) {
-            this.treeControl.dataNodes.forEach((node) => (node.checked = true));
+            this.treeControl?.dataNodes?.forEach((node) => (node.checked = true));
         } else if (!this.selectAll) {
-            this.treeControl.dataNodes.forEach(
+            this.treeControl?.dataNodes?.forEach(
                 (node) => (node.checked = false)
             );
         }
     }
 
     updateSelectAllState(): void {
-        const allNodesChecked = this.treeControl.dataNodes.every(
+        const allNodesChecked = this.treeControl?.dataNodes?.every(
             (node) => node.checked
 
         );
-        const anyNodeChecked = this.treeControl.dataNodes.some(
+        const anyNodeChecked = this.treeControl?.dataNodes?.some(
             (node) => node.checked
         );
 
@@ -246,9 +246,7 @@ export class CreateComponent {
 
     saveMenuInfo(): void {
         const roleData = this.rolesForm.value.roleName;
-        const checkedNodes = this.treeControl.dataNodes
-        .filter( (node) => node.checked)
-        .map( (node) => node.id);
+        const checkedNodes = this.treeControl?.dataNodes?.filter( (node) => node.checked).map( (node) => node.id)
         if(this.roleId === '-1'){
             this._service.saveRolesData(roleData.toString(), checkedNodes).subscribe({
                 next: (res) => {
@@ -313,7 +311,7 @@ export class CreateComponent {
                         // Track whether all nodes are checked
                         let allChecked = true;
 
-                        this.treeControl.dataNodes.forEach((node) => {
+                        this.treeControl?.dataNodes?.forEach((node) => {
                             if (menuIds.has(node.id)) {
                                 node.checked = true;
                             } else {
@@ -343,13 +341,4 @@ export class CreateComponent {
 
     onSubmit(): void {}
 
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param menu
-     */
-    trackByFn(index: number, menu: any): any {
-        return menu.id || index;
-    }
 }
