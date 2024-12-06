@@ -202,7 +202,6 @@ export class CreateComponent {
     }
 
     toggleSelectAll() {
-        debugger
         if (this.selectAll) {
             this.treeControl?.dataNodes?.forEach((node) => (node.checked = true));
         } else if (!this.selectAll) {
