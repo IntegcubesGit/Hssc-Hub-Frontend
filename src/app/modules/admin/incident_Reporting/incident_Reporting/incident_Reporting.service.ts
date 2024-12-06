@@ -62,7 +62,6 @@ export class Incident_ReportingService {
 
 
   private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject<Pagination | null>(null);
-
   private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject<Case[] | null>(null);
 
 

@@ -2,36 +2,44 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';  // Import CommonModule
+import { CommonModule } from '@angular/common';
 import { AddFormComponent } from '../../add-form.component';
 import { Incident_ReportingService } from '../../../observations.service';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { StickyMenuToggleComponent } from 'app/core/sticky-menu-toggle/sticky-menu-toggle.component';
+import { FuseDrawerComponent } from "../../../../../../../../@fuse/components/drawer/drawer.component";
+import { MatTooltip } from '@angular/material/tooltip';
 @Component({
-  selector: 'app-attachments',
+  selector: 'app-attachments-2',
   standalone: true,
-  imports: [MatButton, MatCard, MatIcon, CommonModule],
+  imports: [MatButton, MatCard, MatIcon, CommonModule, StickyMenuToggleComponent, FuseDrawerComponent, MatTooltip],
   templateUrl: './attachments.component.html',
   styles: [],
+  providers: [DatePipe],
 })
 export class AttachmentsComponent implements OnInit
 {
-  filess:any =[];
-  files: { name: string; type: string; icon: string }[] = [
-    { name: 'File-attachment-1', type: 'PDF', icon: 'description' },
-    { name: 'File-attachment-2', type: 'Excel', icon: 'insert_drive_file' },
-    { name: 'File-attachment-3', type: 'Word', icon: 'insert_drive_file' },
-  ];
-  selectedFile: { name: string; type: string; icon: string } | null = null;
+  files:any =[];
+  selectedFile: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;} | null = null;
   isDrawerOpen: boolean = false;
-  caseId:string=null;
+  caseId:string = null;
+  minFileSizeLimit = 1; // define in Bytes (defined 1B as minimum file size)
+  maxFileSizeLimit = 10 * 1024 * 1024; // define in Bytes (defined 1MB as maximum file size)
+  isRemarksEditable: boolean = false;
+  drawerMode = 'side';
+  drawerOpened = false;
 
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
+    private _fuseConfirmationService: FuseConfirmationService,
     private caseService:Incident_ReportingService,
+    private alertService: AlertService,
     private route: ActivatedRoute,
-
-
+    private datePipe: DatePipe,
+    private router: Router,
   )
   {}
   ngOnInit(): void
@@ -41,69 +49,111 @@ export class AttachmentsComponent implements OnInit
 
   }
 
-  openDrawer(file: { name: string; type: string; icon: string }) {
+
+  /**
+ * Drawer opened changed
+ *
+ * @param opened
+ */
+drawerOpenedChanged(opened: boolean, file: { name: string; type: string; icon: string; fileSize: string; remarks: string; uploadedBy: string; uploadedAt: string; completeFileName: string;  }): void
+{
+    this.drawerOpened = opened;
     this.selectedFile = file;
-    this.isDrawerOpen = true;
+}
+
+
+  onCancel() {
+    this.router.navigate(['/case/incident_Reporting']);
   }
 
-  closeDrawer() {
-    this.isDrawerOpen = false;
-    this.selectedFile = null;
+  formatDate(date: string): string | null {
+    return this.datePipe.transform(date, 'h:mm a, MM/dd/yyyy');
   }
 
-  toggleDrawer(): void {
-    this._fuseComponentsComponent.matDrawer.toggle();
+  formatSize(size: number): string {
+    let formattedSize: string;
+    let postfix: string;
+
+    if (size < 1024) {
+      formattedSize = size.toFixed(2);
+      postfix = 'B';
+    } else if (size < 1024 * 1024) {
+      formattedSize = (size / 1024).toFixed(2);
+      postfix = 'KB';
+    } else if (size < 1024 * 1024 * 1024) {
+      formattedSize = (size / (1024 * 1024)).toFixed(2);
+      postfix = 'MB';
+    } else {
+      formattedSize = (size / (1024 * 1024 * 1024)).toFixed(2);
+      postfix = 'GB';
+    }
+
+    return `${formattedSize} ${postfix}`;
   }
 
-  // Handle file selection
   onFileSelected(event: any): void {
     const selectedFiles = event.target.files;
+
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
+      const fileName = file.name;
       const fileType = this.getFileType(file.name);
       const fileIcon = this.getFileIcon(fileType);
 
-      // Add selected file to the list
+      if(file.size < this.minFileSizeLimit ) {
+        this.fileMinLimitWarning(this.minFileSizeLimit);
+        break;
+      }
+
+      if(file.size > this.maxFileSizeLimit ) {
+      this.fileMaxLimitWarning(this.maxFileSizeLimit);
+      break;
+      }
+
       this.files.push({
-        name: file.name,
+        name: fileName,
         type: fileType,
         icon: fileIcon,
       });
 
-      // Optionally, upload the file
       this.uploadFile(file,'');
     }
+    event.target.value = null;
   }
 
-  // Helper method to get file type based on file extension
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    if (!event.dataTransfer?.files) return;
+    const selectedFiles = event.dataTransfer.files;
+    const fakeEvent = { target: { files: selectedFiles } };
+    this.onFileSelected(fakeEvent);
+  }
+
   getFileType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
       case 'pdf':
-        return 'PDF';
+        return 'pdf';
       case 'xlsx':
-        return 'Excel';
+        return 'xlsx';
       case 'docx':
-        return 'Word';
+        return 'docx';
+      case 'pptx':
+        return 'pptx';
+      case 'csv':
+        return 'csv';
       default:
-        return 'Unknown';
+        return extension;
     }
   }
 
-  // Helper method to get file icon based on file type
   getFileIcon(fileType: string): string {
-    switch (fileType) {
-      case 'PDF':
-        return 'description';
-      case 'Excel':
-        return 'insert_drive_file';
-      case 'Word':
-        return 'insert_drive_file';
-      default:
-        return 'insert_drive_file';
-    }
+    return 'insert_drive_file';
   }
-
 
   uploadFile(file: File,remarks:string): void
   {
@@ -111,42 +161,134 @@ export class AttachmentsComponent implements OnInit
       {
           next: (response) =>
             {
-              console.log('File uploaded successfully', response);
+              this.alertService.triggerAlert('success', 'Success', 'File uploaded successfully.');
+              this.getAllCaseFiles();
             },
           error: (error) =>
             {
-              console.error('Error uploading the attachment', error);
+              this.alertService.triggerAlert('error', 'Operation Failed', 'File uploaded failed.');
+              this.getAllCaseFiles();
             }
       });
+  }
+
+  downloadFile(fileName: string, mainFileName: string, fileFormat:string): void {
+    this.caseService.downloadCaseAttachment('cases', fileName).subscribe({
+      next: (response: Blob) => {
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        link.download = `${mainFileName}.${fileFormat}`.replace(/ /g, '_');
+        link.href = url;
+        link.click();
+        window.URL.revokeObjectURL(url);
+        this.alertService.triggerAlert('success', 'Success', 'File download to begin shortly.');
+      },
+      error: (error) => {
+        this.alertService.triggerAlert('error', 'Operation Failed', 'File download failed.');
+      }
+    });
+  }
+
+  deleteFile(fileName: string): void {
+    console.log('delete file', fileName);
+    const confirmation = this._fuseConfirmationService.open({
+      title: 'Delete file',
+      message:
+          'Are you sure you want to remove this file? This action cannot be undone.',
+      actions: {
+          confirm: {
+              label: 'Delete',
+          },
+      },
+  });
+  confirmation.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+          this.deleteFileHandler(fileName);
+      }
+  });
+  }
+
+  deleteFileHandler(fileName: string): void {
+    this.caseService.deleteCaseAttachment('cases',this.caseId,fileName).subscribe({
+      next: (response) => {
+        this.alertService.triggerAlert('success', 'Success', 'File successfully deleted.');
+        this.drawerOpened = false;
+        this.getAllCaseFiles();
+      },
+      error: (error) => {
+        this.alertService.triggerAlert('error', 'Operation Failed', 'File deletion failed.');
+      }
+    });
+  }
+
+  getAllCaseFiles() {
+    this.caseService.getAllCaseAttachments(this.caseId).subscribe({
+      next: (response) => {
+        this.files = response.caseFiles.map(file => ({
+          completeFileName: file.fileName,
+          fileName: file.originalFileName,
+          type: this.getFileType(file.extension),
+          icon: this.getFileIcon(this.getFileType(file.extension)),
+          remarks: file.remarks,
+          uploadedBy: file.createdBy,
+          uploadedAt: file.createdOn,
+          fileSize: file.fileSize,
+        }));
+      },
+      error: (error) => {
+        this.alertService.triggerAlert('error', 'File Access Failed', 'Failed to Fetch File Data.');
+      }
+    });
+  }
+
+  getFileClass(fileType: string): string {
+    const fileClassMap: { [key: string]: string } = {
+      pdf: 'bg-red-500 text-white',          // PDF (Red)
+      xlsm: 'bg-green-500 text-white',       // Excel Macro (Green)
+      docx: 'bg-blue-500 text-white',        // Word Document (Blue)
+      csv: 'bg-purple-500 text-white',       // CSV (Purple)
+      xlsx: 'bg-green-800 text-white',       // Excel (Green)
+      powerpoint: 'bg-yellow-500 text-black',// PowerPoint (Yellow)
+      txt: 'bg-gray-500 text-white',         // Text File (Gray)
+      jpg: 'bg-pink-500 text-white',         // JPG Image (Pink)
+      png: 'bg-pink-500 text-white',         // PNG Image (Pink)
+      mp4: 'bg-orange-500 text-white',       // Video (Orange)
+      avi: 'bg-teal-500 text-white',         // AVI Video (Teal)
+      gif: 'bg-indigo-500 text-white',       // GIF Image (Indigo)
+      zip: 'bg-blue-800 text-white',         // ZIP Archive (Blue)
+      rar: 'bg-blue-700 text-white',         // RAR Archive (Blue)
+      html: 'bg-yellow-600 text-black',      // HTML File (Yellow)
+      css: 'bg-blue-300 text-black',         // CSS File (Blue)
+      js: 'bg-yellow-300 text-black',        // JavaScript File (Yellow)
+      json: 'bg-teal-700 text-white',        // JSON File (Teal)
+      xml: 'bg-gray-700 text-white',         // XML File (Gray)
+      markdown: 'bg-green-300 text-black',   // Markdown File (Green)
+      svg: 'bg-purple-600 text-white',       // SVG Image (Purple)
+      mp3: 'bg-purple-400 text-white',       // MP3 Audio (Purple)
+      wav: 'bg-blue-600 text-white',         // WAV Audio (Blue)
+    };
+    return fileClassMap[fileType] || 'bg-yellow-500 text-black';
+  }
+
+  fileMaxLimitWarning(fileSize: Number): void {
+    fileSize = Number(fileSize) / (1024 * 1024); // converts to MB
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The upload file size limit is ${fileSize}MB. Please upload a file that is less than ${fileSize}MB.`);
     this.getAllCaseFiles();
   }
 
-  downloadFile(fileName:string)
-  {
-      this.caseService.downloadCaseAttachment('cases',fileName).subscribe(
-        {
-            next: (response) =>
-              {
+  fileMinLimitWarning(fileSize: Number): void {
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
+    this.alertService.triggerAlert('warn', 'Operation Failed', `The file is too small. Please select a file larger than ${fileSize} KB.`);
+    this.getAllCaseFiles();
+  }
 
-              },
-              error: (error) =>
-              {
-                console.error('Error downlaoding the attachment', error);
-              }
-        });
+  toggleEditRemarks(): void {
+    this.isRemarksEditable = !this.isRemarksEditable;
   }
-  getAllCaseFiles()
-  {
-    this.caseService.getAllCaseAttachments(this.caseId).subscribe(
-      {
-          next: (response) =>
-            {
-              this.filess = response;
-            },
-          error: (error) =>
-            {
-              console.error('Error fetching case attachments data:', error);
-            }
-      });
+
+  saveRemarks(): void {
+    this.isRemarksEditable = false;
+    this.alertService.triggerAlert('warn', 'Operation Failed', `Failed to update remarks.`);
   }
+
 }

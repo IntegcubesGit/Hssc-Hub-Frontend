@@ -1,3 +1,4 @@
+import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import {
     FormsModule,
@@ -16,10 +17,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import {
+    MatTreeFlatDataSource,
+    MatTreeFlattener,
+    MatTreeModule,
+} from '@angular/material/tree';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { ListSettingService } from '../roles-setting.sevice';
-import { MenuDTO } from '../roles-setting.types';
+import { FlatNode, MenuDTO } from '../roles-setting.types';
 
 @Component({
     selector: 'app-user-roles',
@@ -34,13 +40,15 @@ import { MenuDTO } from '../roles-setting.types';
         MatNativeDateModule,
         MatCheckboxModule,
         MatButtonModule,
+        MatTreeModule,
     ],
     templateUrl: './create.component.html',
 })
 export class CreateComponent {
     rolesForm: UntypedFormGroup;
-    userId: string | null = null;
+    roleId: string | null = null;
     menus: MenuDTO[] = [];
+    TREE_DATA: MenuDTO[] = [];
     selectAll: boolean = false;
     selectSingle: any[] = [];
 
@@ -53,22 +61,182 @@ export class CreateComponent {
     ) {}
 
     ngOnInit(): void {
-        this.userId = this.route.snapshot.paramMap.get('id');
+        this.roleId = this.route.snapshot.paramMap.get('id');
         this.rolesForm = this._formBuilder.group({
             roleName: ['', Validators.required],
         });
 
-        if (this.userId === '-1') {
+        if (this.roleId === '-1') {
             this.rolesForm.reset();
         }
 
         this.getUserMenus();
+        this.assignMenusAndRole();
+        this.updateSelectAllState();
+    }
+
+    expandAll() {
+        this.treeControl?.dataNodes?.forEach((node) => {
+            this.treeControl.expand(node);
+        });
+    }
+
+    private _transformer = (node: MenuDTO, level: number) => {
+        return {
+            expandable: !!node.children && node.children.length > 0,
+            name: node.title,
+            level: level,
+            parentId: node.parentId,
+            checked: false,
+            id: node.menuId,
+        };
+    };
+
+    treeControl = new FlatTreeControl<FlatNode>(
+        (node) => node.level,
+        (node) => node.expandable
+    );
+
+    treeFlattener = new MatTreeFlattener(
+        this._transformer,
+        (node) => node.level,
+        (node) => node.expandable,
+        (node) => node.children
+    );
+
+    dataSource = new MatTreeFlatDataSource(
+        this.treeControl,
+        this.treeFlattener
+    );
+
+    hasChild = (_: number, node: FlatNode) => node.expandable;
+
+    findByParentId(parentId: number): boolean {
+        const children = this.treeControl?.dataNodes?.filter(
+            (node) => node.parentId === parentId
+        );
+        return children.length > 0 && children?.every((child) => child.checked);
+    }
+
+    onNodeCheckboxChange(node: FlatNode, event: MatCheckboxChange): void {
+        node.checked = event.checked;
+        if (event.checked) {
+            this.setParentTruthy(node.parentId);
+            this.setDecendantsTruthy(node.id);
+        }
+        if (!event.checked) {
+            this.setParentFalsy(node.parentId);
+            this.setDecendantsFalsy(node.id);
+        }
+        this.updateSelectAllState();
+    }
+
+    setParentTruthy(parentId: number) {
+        const children = this.treeControl?.dataNodes?.filter(
+            (n) => n.parentId === parentId
+        );
+
+        const allChildrenChecked = children?.every(
+            (child) => child.checked === true
+        );
+
+        if (allChildrenChecked) {
+            const parentNode = this.treeControl?.dataNodes?.find(
+                (n) => n.id === parentId
+            );
+            if (parentNode) {
+                parentNode.checked = true;
+                this.setParentTruthy(parentNode.parentId);
+            }
+        }
+    }
+
+    setParentFalsy(parentId: number) {
+        const children = this.treeControl?.dataNodes?.filter(
+            (n) => n.parentId === parentId
+        );
+
+        const anyChildUnchecked = children?.some(
+            (child) => child.checked === false
+        );
+
+        if (anyChildUnchecked) {
+            const parentNode = this.treeControl?.dataNodes?.find(
+                (n) => n.id === parentId
+            );
+            if (parentNode) {
+                parentNode.checked = false;
+                this.setParentFalsy(parentNode.parentId);
+            }
+        }
+    }
+
+    setDecendantsTruthy(parentId: number) {
+        const parentNode = this.treeControl?.dataNodes?.find(
+            (n) => n.id === parentId
+        );
+        if (parentNode.checked === true) {
+            const children = this.treeControl?.dataNodes?.filter(
+                (n) => n.parentId === parentId
+            );
+            children.forEach((child) => {
+                child.checked = true;
+                this.setDecendantsTruthy(child.id);
+            });
+        }
+    }
+
+    setDecendantsFalsy(parentId: number) {
+        const parentNode = this.treeControl?.dataNodes?.find(
+            (n) => n.id === parentId
+        );
+        if (parentNode.checked === false) {
+            const children = this.treeControl?.dataNodes?.filter(
+                (n) => n.parentId === parentId
+            );
+            children.forEach((child) => {
+                child.checked = false;
+                this.setDecendantsFalsy(child.id);
+            });
+        }
+    }
+
+    toggleSelectAll() {
+        debugger
+        if (this.selectAll) {
+            this.treeControl?.dataNodes?.forEach((node) => (node.checked = true));
+        } else if (!this.selectAll) {
+            this.treeControl?.dataNodes?.forEach(
+                (node) => (node.checked = false)
+            );
+        }
+    }
+
+    updateSelectAllState(): void {
+        const allNodesChecked = this.treeControl?.dataNodes?.every(
+            (node) => node.checked
+
+        );
+        const anyNodeChecked = this.treeControl?.dataNodes?.some(
+            (node) => node.checked
+        );
+
+        if (allNodesChecked) {
+            this.selectAll = true;
+        } else if (!anyNodeChecked) {
+            this.selectAll = false;
+        } else {
+            this.selectAll = false;
+        }
     }
 
     getUserMenus() {
         this._service.getMenu().subscribe({
             next: (res) => {
                 this.menus = res;
+                this.TREE_DATA = res;
+                this.dataSource.data = this.TREE_DATA;
+                this.expandAll();
             },
             error: (err) => {
                 console.log('an error occured while fetching menus', err);
@@ -76,122 +244,101 @@ export class CreateComponent {
         });
     }
 
-    onCheckboxChange(event: MatCheckboxChange, menuId: number): void {
-        const isChecked = event.checked;
-        const selectedMenu =
-            this.menus.find((menu) => menu.menuId === menuId) ||
-            this.menus
-                .flatMap((menu) => menu.children || [])
-                .find((child) => child.menuId === menuId);
-
-        if (isChecked) {
-            if (!this.selectSingle.includes(menuId)) {
-                this.selectSingle.push(menuId);
-            }
-
-            if (selectedMenu?.children?.length) {
-                selectedMenu.children.forEach((child) => {
-                    if (!this.selectSingle.includes(child.menuId)) {
-                        this.selectSingle.push(child.menuId);
-                    }
-                });
-            }
-            this.updateParentState(menuId);
-        } else {
-            this.selectSingle = this.selectSingle.filter((id) => id !== menuId);
-
-            if (selectedMenu?.children?.length) {
-                this.selectSingle = this.selectSingle.filter(
-                    (id) =>
-                        !selectedMenu.children.some(
-                            (child) => child.menuId === id
-                        )
-                );
-            }
-
-            this.updateParentState(menuId);
-        }
-
-        this.selectAll =
-            this.selectSingle.length ===
-            this.menus.reduce(
-                (acc, menu) => acc + 1 + (menu.children?.length || 0),
-                0
-            );
-    }
-
-    toggleAllMenus(): void {
-        if (this.selectAll) {
-            this.selectSingle = this.menus.flatMap((menu) => [
-                menu.menuId,
-                ...(menu.children?.map((child) => child.menuId) || []),
-            ]);
-        } else {
-            this.selectSingle = [];
-        }
-    }
-
-    private updateParentState(childId: number): void {
-        const parentMenu = this.menus.find((menu) =>
-            menu.children?.some((child) => child.menuId === childId)
-        );
-
-        if (parentMenu) {
-            const allChildrenSelected = parentMenu.children!.every((child) =>
-                this.selectSingle.includes(child.menuId)
-            );
-
-            if (allChildrenSelected) {
-                if (!this.selectSingle.includes(parentMenu.menuId)) {
-                    this.selectSingle.push(parentMenu.menuId);
-                }
-            } else {
-                this.selectSingle = this.selectSingle.filter(
-                    (id) => id !== parentMenu.menuId
-                );
-            }
-        }
-    }
-
     saveMenuInfo(): void {
         const roleData = this.rolesForm.value.roleName;
-        this._service.saveRolesData(roleData, this.selectSingle).subscribe({
+        const checkedNodes = this.treeControl?.dataNodes?.filter( (node) => node.checked).map( (node) => node.id)
+        if(this.roleId === '-1'){
+            this._service.saveRolesData(roleData.toString(), checkedNodes).subscribe({
+                next: (res) => {
+                    if (res.isSucceeded) {
+                        this._alertService.triggerAlert(
+                            'success',
+                            'Success',
+                            res.message
+                        );
+                        this._router.navigate(['roles/list']);
+                    } else {
+                        this._alertService.triggerAlert(
+                            'warn',
+                            'Duplication',
+                            res.message
+                        );
+                    }
+                },
+                error: (err) => {
+                    console.log('error occured while saving records', err);
+                },
+            });
+        }else{
+            this._service.updateMenusInfo(this.roleId, roleData, checkedNodes).subscribe({
+                next: (res) => {
+                    if (res.isSucceeded) {
+                        this._alertService.triggerAlert(
+                            'success',
+                            'Success',
+                            res.message
+                        );
+                        this._router.navigate(['roles/list']);
+                    } else {
+                        this._alertService.triggerAlert(
+                            'warn',
+                            'Duplication',
+                            res.message
+                        );
+                    }
+                },
+                error: (err) => {
+                    console.log("error occured while updating records", err);
+                }
+            })
+
+        }
+
+    }
+
+    assignMenusAndRole() {
+        this._service.getMenuRoleById(Number(this.roleId)).subscribe({
             next: (res) => {
-                if (res.isSucceeded) {
-                    this._alertService.triggerAlert(
-                        'success',
-                        'Success',
-                        res.message
-                    );
-                    this._router.navigate(['roles/list']);
-                } else {
-                    this._alertService.triggerAlert(
-                        'warn',
-                        'Duplication',
-                        res.message
-                    );
+                if (res) {
+                    if (res.roleName) {
+                        this.rolesForm.patchValue({
+                            roleName: res.roleName[0] || '',
+                        });
+                    }
+                    if (res.menus && Array.isArray(res.menus)) {
+                        const menuIds = new Set(res.menus.map((item) => item.menuId));
+
+                        // Track whether all nodes are checked
+                        let allChecked = true;
+
+                        this.treeControl?.dataNodes?.forEach((node) => {
+                            if (menuIds.has(node.id)) {
+                                node.checked = true;
+                            } else {
+                                node.checked = false;
+                                allChecked = false; // If any node is unchecked, set allChecked to false
+                            }
+                        });
+
+                        // Set selectAll based on allChecked
+                        this.selectAll = allChecked;
+                    }
                 }
             },
             error: (err) => {
-                console.log('error occured', err);
+                console.error(
+                    'error occurred while fetching menus from API',
+                    err
+                );
             },
         });
     }
+
 
     navigateUserBack(): void {
         this._router.navigate(['roles/list']);
     }
 
-    onSubmit(): void {
-    }
+    onSubmit(): void {}
 
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param menu
-     */
-    trackByFn(index: number, menu: any): any {
-        return menu.id || index;
-    }
 }

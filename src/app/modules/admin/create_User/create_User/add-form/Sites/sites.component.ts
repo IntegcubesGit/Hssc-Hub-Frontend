@@ -69,7 +69,7 @@ export class SitesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.userId = this._route.snapshot.paramMap.get('id');
+        this.userId = this._route.snapshot.parent?.paramMap.get('id');
         this.GetUserRoles();
         this.GetSitesInfo().subscribe({
             next: () => {
@@ -249,7 +249,7 @@ export class SitesComponent implements OnInit {
     }
 
     navigateUserBack(): void {
-        this._service.pannelvalue('generalInfo');
+        this._router.navigate([`user/user-info/${this.userId}/general-info`]);
     }
 
     /**

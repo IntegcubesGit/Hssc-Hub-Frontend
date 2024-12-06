@@ -84,7 +84,7 @@ export const appRoutes: Route[] = [
             {path: 'observations', loadChildren: () => import('app/modules/admin/observations/observations.routes')},
             {path: 'user', loadChildren: () => import('app/modules/admin/create_User/create_User.routes')},
             {path: 'roles', loadChildren: () => import('app/modules/admin/roles-setting/roles-setting.routes')},
-
+            {path: 'test', loadChildren: () => import('app/modules/admin/test/test.routes')},
         ]
     }
 ];

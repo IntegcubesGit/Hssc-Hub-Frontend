@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { FuseNavigationItem, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FuseScrollResetDirective } from '@fuse/directives/scroll-reset';
+import { FuseNavigationItem, FuseVerticalNavigationComponent } from '../../../../../../@fuse/components/navigation';
+import { FuseMediaWatcherService } from '../../../../../../@fuse/services/media-watcher';
+import { FuseScrollResetDirective } from '../../../../../../@fuse/directives/scroll-reset';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-add-form',
+  selector: 'add-observation-form',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [
@@ -37,7 +37,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({ matchingAliases }) => {
-       
+
         if (matchingAliases.includes('md')) {
           this.drawerMode = 'side';
           this.drawerOpened = true;
@@ -50,8 +50,7 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // Subscribe to route parameters
     this.route.params.subscribe(params => {
       const id = params['id'];
-      console.log('AddFormComponent ID:', id); 
-      this.initializeMenuData(id); 
+      this.initializeMenuData(id);
     });
   }
 
@@ -59,79 +58,58 @@ export class AddFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.menuData = [
       {
         id: 'fuse-components.components',
-        title: 'Incident Reporting',
+        mainTitle: 'Observations',
+        mainSubtitle: 'Case Observations Overview',
+        mainIcon: 'mat_outline:note_alt',
+        isSubmenu: true,
         type: 'group',
         children: [
           {
             id: 'fuse-components.components.general_information',
             title: 'General Information',
             type: 'basic',
-            link: `/case/information/${id}/general-information`,
-          },
-          {
-            id: 'fuse-components.components.drawer',
-            title: 'Injury',
-            type: 'basic',
-            link: `/case/information/${id}/injury`,
-            disabled: id == -1 
-          },
-          {
-            id: 'fuse-components.components.fullscreen',
-            title: 'Involved Person',
-            type: 'basic',
-            link: `/case/information/${id}/involvedPerson`,
-            disabled: id == -1 
+            link: `/observations/information/${id}/general_information_observation`,
+            icon: 'mat_outline:info',
           },
           {
             id: 'fuse-components.components.highlight',
             title: 'Potential Loss',
             type: 'basic',
-            link: `/case/information/${id}/potentialLoss`,
-            disabled: id == -1 
-          }
-          
-        ],
-      },
-      {
-        id: 'Immediate-Cause.components',
-        title: 'Immediate Cause',
-        type: 'group',
-        children: [
-          {
-            id: 'Immediate-Cause.components.Root-Causes',
-            title: 'Root Causes',
-            type: 'basic',
-            link:  `/case/information/${id}/rootCauses`,
-            disabled: id == -1 
+            link: `/observations/information/${id}/potentialLoss`,
+            icon: 'mat_outline:health_and_safety',
+            disabled: id == -1
           },
           {
             id: 'Immediate-Cause.components.Case-Actions',
             title: 'Actions',
             type: 'basic',
-            link: `/case/information/${id}/caseActions`,
+            link: `/observations/information/${id}/caseActions`,
+            icon: 'mat_outline:medical_services',
             disabled: id == -1
           },
           {
             id: 'Immediate-Cause.components.attachments',
             title: 'Attachments',
             type: 'basic',
-            link: `/case/information/${id}/attachments`,
+            link: `/observations/information/${id}/attachments`,
+            icon: 'mat_outline:cloud_upload',
           },
           {
             id: 'Immediate-Cause.components.comments',
             title: 'Comments',
             type: 'basic',
-            link: `/case/information/${id}/comments`,
+            link: `/observations/information/${id}/comments`,
+            icon: 'mat_outline:comment',
           },
           {
             id: 'Immediate-Cause.components.signatures',
             title: 'Signatures',
             type: 'basic',
-            link: `/case/information/${id}/signatures`,
+            link: `/observations/information/${id}/signatures`,
+            icon: 'mat_outline:gesture',
           }
-         
         ],
-      }
+      },
     ];
   }
 

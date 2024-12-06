@@ -1,9 +1,7 @@
 import {
     AsyncPipe,
-    CurrencyPipe,
     DatePipe,
     NgClass,
-    NgTemplateOutlet,
 } from '@angular/common';
 import {
     AfterViewInit,
@@ -18,14 +16,10 @@ import {
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormBuilder,
     UntypedFormControl,
-    UntypedFormGroup,
-    Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-    MatCheckboxChange,
     MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
@@ -39,7 +33,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '../../../../../../@fuse/animations';
 import { FuseConfirmationService } from '../../../../../../@fuse/services/confirmation';
-import { MatDrawer } from '@angular/material/sidenav';
 
 import {
     Observable,
@@ -52,13 +45,14 @@ import {
 } from 'rxjs';
 import { Case, Pagination } from '../observations.types';
 import { Incident_ReportingService } from '../observations.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
-    selector: 'observations-list',
-    templateUrl: './observations.component.html',
+    selector: 'observation-list',
+    templateUrl: './observation_list.component.html',
     styles: [
         /* language=SCSS */
         `
@@ -70,11 +64,11 @@ import { MatMenuModule } from '@angular/material/menu';
                 }
 
                 @screen md {
-                    grid-template-columns: 48px 100px auto  96px 96px 100px  72px;;
+                    grid-template-columns: 48px 100px 100px auto 96px 100px  72px;;
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 100px auto 400px 100px 96px 96px  96px 72px;;
+                    grid-template-columns: 48px 200px 200px auto 150px 150px 150px  150px 72px;;
                 }
             }
         `,
@@ -92,7 +86,6 @@ import { MatMenuModule } from '@angular/material/menu';
         ReactiveFormsModule,
         MatButtonModule,
         MatSortModule,
-        NgTemplateOutlet,
         MatPaginatorModule,
         NgClass,
         MatSlideToggleModule,
@@ -101,14 +94,13 @@ import { MatMenuModule } from '@angular/material/menu';
         MatCheckboxModule,
         MatRippleModule,
         AsyncPipe,
-        CurrencyPipe,
         DatePipe,
         MatMenuModule,
+        MatTooltipModule
     ],
 })
-export class Incident_ReportingListComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+export class observationsListComponent
+    implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
@@ -127,7 +119,7 @@ export class Incident_ReportingListComponent
         private _Service: Incident_ReportingService,
 
         private _router: Router,
-    ) {}
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -139,7 +131,7 @@ export class Incident_ReportingListComponent
         this._Service.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: Pagination | null) => {
-                if(pagination){
+                if (pagination) {
                     // Update the pagination
                     this.pagination = pagination;
 
@@ -150,7 +142,7 @@ export class Incident_ReportingListComponent
 
 
 
-      this.cases$ = this._Service.cases$;
+        this.cases$ = this._Service.cases$;
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -158,12 +150,15 @@ export class Incident_ReportingListComponent
                 takeUntil(this._unsubscribeAll),
                 debounceTime(300),
                 switchMap((query) => {
-
                     this.isLoading = true;
+                    if (this._paginator) 
+                    {
+                        this._paginator.pageIndex = 0;
+                    }
                     return this._Service.getProducts(
                         0,
-                        10,
-                        'name',
+                        25,
+                        'case',
                         'asc',
                         query
                     );
@@ -175,18 +170,11 @@ export class Incident_ReportingListComponent
             .subscribe();
     }
 
-    /**
-     * After view init
-     */
+    
     ngAfterViewInit(): void {
-        if (this._sort && this._paginator) {
-            // Set the initial sort
-            this._sort.sort({
-                id: 'name',
-                start: 'asc',
-                disableClear: true,
-            });
-
+        if (this._sort && this._paginator) 
+        {
+            
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
@@ -196,20 +184,19 @@ export class Incident_ReportingListComponent
                 .subscribe(() => {
                     // Reset back to the first page
                     this._paginator.pageIndex = 0;
-
-
                 });
 
             merge(this._sort.sortChange, this._paginator.page)
                 .pipe(
                     switchMap(() => {
-
                         this.isLoading = true;
+                        // Call the service with the current page, page size, sort, and search parameters
                         return this._Service.getProducts(
                             this._paginator.pageIndex,
                             this._paginator.pageSize,
-                            this._sort.active,
-                            this._sort.direction
+                            this._sort.active || 'case', // Default sorting field if none selected
+                            this._sort.direction || 'asc',      // Default sorting order if none selected
+                            this.searchInputControl.value
                         );
                     }),
                     map(() => {
@@ -218,6 +205,7 @@ export class Incident_ReportingListComponent
                 )
                 .subscribe();
         }
+        
     }
 
     /**
@@ -230,11 +218,8 @@ export class Incident_ReportingListComponent
     }
 
 
-
-
     create(id: string): void {
-
-        this._router.navigate(['/case/information', id]);
+        this._router.navigate(['/observations/information', id]);
     }
 
 
@@ -280,5 +265,49 @@ export class Incident_ReportingListComponent
      */
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    openComposeDialog(caseId:string): void {
+        const dialogRef = this._fuseConfirmationService.open({
+            title: 'Confirm Case Review',
+            message: 'Are you sure you want to approve the case review?',
+            icon: {
+                show: true,
+                name: 'heroicons_outline:check-circle',
+                color: 'success'
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Yes, Approve',
+                    color: 'primary'
+                },
+                cancel: {
+                    show: true,
+                    label: 'No, Cancel'
+                }
+            },
+            dismissible: true
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) 
+            {
+                this.reviewCase(caseId);
+            } 
+            else 
+            {
+                console.log(' canceled');
+            }
+        });
+    };
+    reviewCase(caseId: string) {
+        this._Service.reviewCase(caseId).subscribe({
+            next: (response) => {
+            },
+            error: (error) => {
+                console.error('Error approving the review', error);
+            }
+        });
     }
 }

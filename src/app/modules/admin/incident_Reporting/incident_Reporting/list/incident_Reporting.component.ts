@@ -1,9 +1,7 @@
 import {
     AsyncPipe,
-    CurrencyPipe,
     DatePipe,
     NgClass,
-    NgTemplateOutlet,
 } from '@angular/common';
 import {
     AfterViewInit,
@@ -18,14 +16,10 @@ import {
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormBuilder,
     UntypedFormControl,
-    UntypedFormGroup,
-    Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-    MatCheckboxChange,
     MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
@@ -39,7 +33,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '../../../../../../@fuse/animations';
 import { FuseConfirmationService } from '../../../../../../@fuse/services/confirmation';
-import { MatDrawer } from '@angular/material/sidenav';
 
 import {
     Observable,
@@ -52,7 +45,7 @@ import {
 } from 'rxjs';
 import { Case, Pagination } from '../incident_Reporting.types';
 import { Incident_ReportingService } from '../incident_Reporting.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

@@ -18,9 +18,11 @@ import { FuseHighlightComponent } from "@fuse/components/highlight";
 import { AddFormComponent } from "../../add-form.component";
 import { Incident_ReportingService } from "../../../observations.service";
 import { DatePipe } from "@angular/common";
+import { FuseConfirmationService } from "@fuse/services/confirmation/confirmation.service";
+import { StickyMenuToggleComponent } from "app/core/sticky-menu-toggle/sticky-menu-toggle.component";
 
 @Component({
-    selector: 'app-signature',
+    selector: 'app-signature-2',
     templateUrl: './signature.component.html',
     styles: [''],
     standalone: true,
@@ -41,7 +43,9 @@ import { DatePipe } from "@angular/common";
         MatButtonModule,
         MatDatepickerModule,
         MatTableModule,
-        DatePipe
+        DatePipe,
+        StickyMenuToggleComponent
+         
     ],
 })
 export class SignatureComponent implements OnInit, OnDestroy {
@@ -53,8 +57,10 @@ export class SignatureComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private _fuseComponentsComponent: AddFormComponent,
-        private service: Incident_ReportingService
-    ) {
+        private service: Incident_ReportingService,
+        private _fuseConfirmationService:FuseConfirmationService 
+    ) 
+    {
 
 
     }
@@ -71,11 +77,7 @@ export class SignatureComponent implements OnInit, OnDestroy {
 
     ];
 
-    openComposeDialog(): void 
-    {
-        
-    };
-
+    
     onCancel() {
         this.router.navigate(['/case/incident_Reporting']);
     }
@@ -104,15 +106,5 @@ export class SignatureComponent implements OnInit, OnDestroy {
             }
         });
     }
-    reviewCase() {
-        this.service.reviewCase(this.caseId).subscribe({
-            next: (response) => 
-            {
-            },
-            error: (error) => {
-                console.error('Error approving the review', error);
-            }
-        });
-        this.loadSignatures();
-    }
+    
 }
