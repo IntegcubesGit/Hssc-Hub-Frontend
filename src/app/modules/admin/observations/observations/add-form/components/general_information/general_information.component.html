@@ -9,7 +9,7 @@
             <div class="p-4">
               <span
                 class="truncate text-xl text-primary mb-2 font-bold leading-7 tracking-tight sm:leading-10 md:text-xl">
-                Observation General Information
+                General Information
               </span>
               <div class="flex flex-col md:flex-row md:space-x-4">
                 <div class="flex flex-col w-full">
@@ -31,6 +31,58 @@
                 </div>
               </div>
               <div class="flex flex-col md:flex-row md:space-x-4">
+                <div class="flex flex-col w-full">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                    <mat-label class="text-gray-600 hover:font-semibold">Status</mat-label>
+                    <mat-select formControlName="statusId">
+                      @for (
+                      status of caseStatuses;
+                      track status
+                      ) {
+                      <mat-option [value]="
+                                    status.caseStatusId
+                                    ">
+                        {{ status.title }}
+                      </mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="flex flex-col w-full">
+                  <mat-form-field class="fuse-mat-dense flex-auto ">
+                    <mat-label class="text-gray-600 hover:font-semibold">Case Date</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="caseDate"/>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="flex flex-col w-full">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                    <mat-label class="text-gray-600 hover:font-semibold">Due Date</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row md:space-x-4">
+                <div class="flex flex-col w-full">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                    <mat-label class="text-gray-600 hover:font-semibold">Connected
+                      Case</mat-label>
+                    <mat-select formControlName="connectedCaseId">
+                      @for (
+                      connectedCase of connectedCases;
+                      track connectedCase
+                      ) {
+                      <mat-option [value]="connectedCase.caseId">
+                        {{ connectedCase.title }}
+                      </mat-option>
+                      }
+                    </mat-select>
+                    <mat-error></mat-error>
+                  </mat-form-field>
+                </div>
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Category</mat-label>
@@ -66,114 +118,6 @@
                       }
                     </mat-select>
                     <mat-error></mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto ">
-                    <mat-label class="text-gray-600 hover:font-semibold">Case Date</mat-label>
-                    <input matInput [matDatepicker]="picker1" formControlName="caseDate"/>
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Due Date</mat-label>
-                    <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
-                  </mat-form-field>
-                </div>
-              </div>
-              
-              <div class="flex flex-col md:flex-row md:space-x-4">
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Technology
-                      Type</mat-label>
-                    <input matInput formControlName="technologyType"/>
-                  </mat-form-field>
-                </div>
-                <!-- ----------------------------------------------- -->
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Connected
-                      Case</mat-label>
-                    <mat-select formControlName="connectedCaseId">
-                      @for (
-                      connectedCase of connectedCases;
-                      track connectedCase
-                      ) {
-                      <mat-option [value]="connectedCase.caseId">
-                        {{ connectedCase.title }}
-                      </mat-option>
-                      }
-                    </mat-select>
-                    <mat-error></mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Business Unit</mat-label>
-                    <mat-select formControlName="businessUnitId">
-                      @for (
-                      bu of businessUnits;
-                      track bu
-                      ) {
-                      <mat-option [value]="bu.businessUnitId">
-                        {{ bu.title }}
-                      </mat-option>
-                      }
-                    </mat-select>
-                    <mat-error></mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Site</mat-label>
-                    <mat-select formControlName="siteId">
-                      @for (
-                      site of sites;
-                      track site
-                      ) {
-                      <mat-option [value]="site.siteId">
-                        {{ site.title }}
-                      </mat-option>
-                      }
-                    </mat-select>
-                    <mat-error></mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="flex flex-col md:flex-row md:space-x-4">
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Status</mat-label>
-                    <mat-select formControlName="statusId">
-                      @for (
-                      status of caseStatuses;
-                      track status
-                      ) {
-                      <mat-option [value]="
-                                    status.caseStatusId
-                                    ">
-                        {{ status.title }}
-                      </mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Work Place</mat-label>
-                    <input matInput formControlName="workPlace" />
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col w-full">
-                  <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-label class="text-gray-600 hover:font-semibold">Consequences
-                      Total Loss</mat-label>
-                    <input matInput formControlName="totalLoss" />
                   </mat-form-field>
                 </div>
               </div>
@@ -225,7 +169,7 @@
                   <mat-label class="font-medium text-gray-600 hover:font-semibold">Immediate Action
                     Taken</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="immediateActionTaken" cdkTextareaAutosize cdkAutosizeMinRows="2"
+                    <textarea matInput formControlName="immediateActionTaken" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>
@@ -234,7 +178,7 @@
                   <mat-label class="font-medium text-gray-600 hover:font-semibold">Consequences
                     Comment</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="2"
+                    <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>
@@ -244,15 +188,15 @@
                 <div class="flex flex-col w-full">
                   <mat-label class="font-medium text-gray-600 hover:font-semibold">Potential Cause</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="PotentialCause" cdkTextareaAutosize cdkAutosizeMinRows="2"
+                    <textarea matInput formControlName="PotentialCause" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>
                 </div>
                 <div class="flex flex-col w-full">
-                  <mat-label class="font-medium text-gray-600 hover:font-semibold">Revealing Circumstances</mat-label>
+                  <mat-label class="font-medium text-gray-600 hover:font-semibold">Revealing Circumstances (How Revealed)</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="HowRevealed" cdkTextareaAutosize cdkAutosizeMinRows="2"
+                    <textarea matInput formControlName="HowRevealed" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>
@@ -260,10 +204,6 @@
               </div>
               <div class="flex flex-row md:space-x-4">
                 <div class="flex flex-col w-full">
-                  <div class="my-2 flex items-center justify-between ">
-                    <mat-checkbox formControlName="isAuthorityNotified" class="my-0 pt-1 justify-start"
-                      [color]="'primary'">Authority Notified?</mat-checkbox>
-                  </div>
                   <div class="mt-2 flex items-end justify-end">
                     <div class="flex items-end ml-auto">
                       <button class="rounded-full bg-transparent ring-1 ring-primary mr-2" type="button" mat-button
