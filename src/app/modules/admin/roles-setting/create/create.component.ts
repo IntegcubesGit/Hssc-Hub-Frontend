@@ -72,6 +72,7 @@ export class CreateComponent {
 
         this.getUserMenus();
         this.assignMenusAndRole();
+        this.updateSelectAllState();
     }
 
     expandAll() {
@@ -201,6 +202,7 @@ export class CreateComponent {
     }
 
     toggleSelectAll() {
+        debugger
         if (this.selectAll) {
             this.treeControl.dataNodes.forEach((node) => (node.checked = true));
         } else if (!this.selectAll) {
@@ -213,6 +215,7 @@ export class CreateComponent {
     updateSelectAllState(): void {
         const allNodesChecked = this.treeControl.dataNodes.every(
             (node) => node.checked
+
         );
         const anyNodeChecked = this.treeControl.dataNodes.some(
             (node) => node.checked
@@ -305,26 +308,34 @@ export class CreateComponent {
                         });
                     }
                     if (res.menus && Array.isArray(res.menus)) {
-                        const menuIds = new Set(res.menus.map(item => item.menuId));
+                        const menuIds = new Set(res.menus.map((item) => item.menuId));
+
+                        // Track whether all nodes are checked
+                        let allChecked = true;
 
                         this.treeControl.dataNodes.forEach((node) => {
                             if (menuIds.has(node.id)) {
                                 node.checked = true;
                             } else {
                                 node.checked = false;
+                                allChecked = false; // If any node is unchecked, set allChecked to false
                             }
                         });
+
+                        // Set selectAll based on allChecked
+                        this.selectAll = allChecked;
                     }
                 }
             },
             error: (err) => {
                 console.error(
-                    'error occured while fetching menus from API',
+                    'error occurred while fetching menus from API',
                     err
                 );
             },
         });
     }
+
 
     navigateUserBack(): void {
         this._router.navigate(['roles/list']);
