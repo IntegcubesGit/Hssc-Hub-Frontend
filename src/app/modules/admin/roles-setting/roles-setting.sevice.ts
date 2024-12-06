@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'environment/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AppRole, Pagination } from './roles-setting.types';
+import { NumericDictionary } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class ListSettingService {
@@ -11,6 +12,8 @@ export class ListSettingService {
     private readonly getUserRolesURL = `${environment.apiUrl}Roles/getRoles`;
     private readonly getMenuUrl = `${environment.apiUrl}Roles/GetMenu`
     private readonly saveRoles = `${environment.apiUrl}Roles/SaveRole`
+    private readonly getDataById = `${environment.apiUrl}Roles/getMenuById`
+    private readonly updateRoleAndMenu = `${environment.apiUrl}Roles/updateRole`
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
     private _roles: BehaviorSubject<AppRole[] | null> = new BehaviorSubject<
@@ -61,9 +64,18 @@ export class ListSettingService {
         return this._roles.asObservable();
     }
 
-    saveRolesData(roleData, selectSingle): Observable<any>{
-        const data = { roleData, menuIds: selectSingle };
+    saveRolesData(roleData, checkedNodes): Observable<any>{
+        const data = { roleData, menuIds: checkedNodes };
         return this._httpClient.post(`${this.saveRoles}`, data);
+    }
+
+    getMenuRoleById(roleId: number){
+        return this._httpClient.get<any>(`${this.getDataById}?userId=${roleId}`).pipe(tap());
+    }
+
+    updateMenusInfo(roleid, roleData, checkedNodes): Observable<any> {
+        const data = { roleid, roleData, menuIds: checkedNodes };
+        return this._httpClient.put(`${this.updateRoleAndMenu}`, data);
     }
 
 
