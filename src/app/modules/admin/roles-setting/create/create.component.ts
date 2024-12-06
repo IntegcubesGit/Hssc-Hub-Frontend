@@ -46,7 +46,7 @@ import { FlatNode, MenuDTO } from '../roles-setting.types';
 })
 export class CreateComponent {
     rolesForm: UntypedFormGroup;
-    userId: string | null = null;
+    roleId: string | null = null;
     menus: MenuDTO[] = [];
     TREE_DATA: MenuDTO[] = [];
     selectAll: boolean = false;
@@ -61,16 +61,23 @@ export class CreateComponent {
     ) {}
 
     ngOnInit(): void {
-        this.userId = this.route.snapshot.paramMap.get('id');
+        this.roleId = this.route.snapshot.paramMap.get('id');
         this.rolesForm = this._formBuilder.group({
             roleName: ['', Validators.required],
         });
 
-        if (this.userId === '-1') {
+        if (this.roleId === '-1') {
             this.rolesForm.reset();
         }
 
         this.getUserMenus();
+        this.assignMenusAndRole();
+    }
+
+    expandAll() {
+        this.treeControl.dataNodes.forEach((node) => {
+            this.treeControl.expand(node);
+        });
     }
 
     private _transformer = (node: MenuDTO, level: number) => {
@@ -112,11 +119,11 @@ export class CreateComponent {
 
     onNodeCheckboxChange(node: FlatNode, event: MatCheckboxChange): void {
         node.checked = event.checked;
-        if(event.checked){
+        if (event.checked) {
             this.setParentTruthy(node.parentId);
             this.setDecendantsTruthy(node.id);
         }
-        if(!event.checked){
+        if (!event.checked) {
             this.setParentFalsy(node.parentId);
             this.setDecendantsFalsy(node.id);
         }
@@ -161,7 +168,6 @@ export class CreateComponent {
                 this.setParentFalsy(parentNode.parentId);
             }
         }
-
     }
 
     setDecendantsTruthy(parentId: number) {
@@ -171,16 +177,12 @@ export class CreateComponent {
         if (parentNode.checked === true) {
             const children = this.treeControl.dataNodes.filter(
                 (n) => n.parentId === parentId
-
             );
-            children.forEach(
-                (child) => {
-                    child.checked = true
-                    this.setDecendantsTruthy(child.id)
-                }
-            )
+            children.forEach((child) => {
+                child.checked = true;
+                this.setDecendantsTruthy(child.id);
+            });
         }
-
     }
 
     setDecendantsFalsy(parentId: number) {
@@ -190,33 +192,31 @@ export class CreateComponent {
         if (parentNode.checked === false) {
             const children = this.treeControl.dataNodes.filter(
                 (n) => n.parentId === parentId
-
             );
-            children.forEach(
-                (child) => {
-                    child.checked = false
-                    this.setDecendantsFalsy(child.id)
-                }
-            )
+            children.forEach((child) => {
+                child.checked = false;
+                this.setDecendantsFalsy(child.id);
+            });
         }
     }
 
-    toggleSelectAll(){
-        if(this.selectAll){
+    toggleSelectAll() {
+        if (this.selectAll) {
+            this.treeControl.dataNodes.forEach((node) => (node.checked = true));
+        } else if (!this.selectAll) {
             this.treeControl.dataNodes.forEach(
-                (node) => node.checked = true
-            )
-        }
-        else if(!this.selectAll){
-            this.treeControl.dataNodes.forEach(
-                (node) => node.checked = false
-            )
+                (node) => (node.checked = false)
+            );
         }
     }
 
     updateSelectAllState(): void {
-        const allNodesChecked = this.treeControl.dataNodes.every((node) => node.checked);
-        const anyNodeChecked = this.treeControl.dataNodes.some((node) => node.checked);
+        const allNodesChecked = this.treeControl.dataNodes.every(
+            (node) => node.checked
+        );
+        const anyNodeChecked = this.treeControl.dataNodes.some(
+            (node) => node.checked
+        );
 
         if (allNodesChecked) {
             this.selectAll = true;
@@ -233,6 +233,7 @@ export class CreateComponent {
                 this.menus = res;
                 this.TREE_DATA = res;
                 this.dataSource.data = this.TREE_DATA;
+                this.expandAll();
             },
             error: (err) => {
                 console.log('an error occured while fetching menus', err);
@@ -242,27 +243,85 @@ export class CreateComponent {
 
     saveMenuInfo(): void {
         const roleData = this.rolesForm.value.roleName;
-        const checkedNodes = this.treeControl.dataNodes.filter(node => node.checked); // Filter checked nodes
-        console.log('Checked Nodes:', checkedNodes);
-        this._service.saveRolesData(roleData, checkedNodes).subscribe({
+        const checkedNodes = this.treeControl.dataNodes
+        .filter( (node) => node.checked)
+        .map( (node) => node.id);
+        if(this.roleId === '-1'){
+            this._service.saveRolesData(roleData.toString(), checkedNodes).subscribe({
+                next: (res) => {
+                    if (res.isSucceeded) {
+                        this._alertService.triggerAlert(
+                            'success',
+                            'Success',
+                            res.message
+                        );
+                        this._router.navigate(['roles/list']);
+                    } else {
+                        this._alertService.triggerAlert(
+                            'warn',
+                            'Duplication',
+                            res.message
+                        );
+                    }
+                },
+                error: (err) => {
+                    console.log('error occured while saving records', err);
+                },
+            });
+        }else{
+            this._service.updateMenusInfo(this.roleId, roleData, checkedNodes).subscribe({
+                next: (res) => {
+                    if (res.isSucceeded) {
+                        this._alertService.triggerAlert(
+                            'success',
+                            'Success',
+                            res.message
+                        );
+                        this._router.navigate(['roles/list']);
+                    } else {
+                        this._alertService.triggerAlert(
+                            'warn',
+                            'Duplication',
+                            res.message
+                        );
+                    }
+                },
+                error: (err) => {
+                    console.log("error occured while updating records", err);
+                }
+            })
+
+        }
+
+    }
+
+    assignMenusAndRole() {
+        this._service.getMenuRoleById(Number(this.roleId)).subscribe({
             next: (res) => {
-                if (res.isSucceeded) {
-                    this._alertService.triggerAlert(
-                        'success',
-                        'Success',
-                        res.message
-                    );
-                    this._router.navigate(['roles/list']);
-                } else {
-                    this._alertService.triggerAlert(
-                        'warn',
-                        'Duplication',
-                        res.message
-                    );
+                if (res) {
+                    if (res.roleName) {
+                        this.rolesForm.patchValue({
+                            roleName: res.roleName[0] || '',
+                        });
+                    }
+                    if (res.menus && Array.isArray(res.menus)) {
+                        const menuIds = new Set(res.menus.map(item => item.menuId));
+
+                        this.treeControl.dataNodes.forEach((node) => {
+                            if (menuIds.has(node.id)) {
+                                node.checked = true;
+                            } else {
+                                node.checked = false;
+                            }
+                        });
+                    }
                 }
             },
             error: (err) => {
-                console.log('error occured', err);
+                console.error(
+                    'error occured while fetching menus from API',
+                    err
+                );
             },
         });
     }
