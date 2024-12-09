@@ -14,15 +14,13 @@ export class ListSettingService {
     private readonly saveRoles = `${environment.apiUrl}Roles/SaveRole`
     private readonly getDataById = `${environment.apiUrl}Roles/getMenuById`
     private readonly updateRoleAndMenu = `${environment.apiUrl}Roles/updateRole`
+    private readonly deleteRole = `${environment.apiUrl}Roles/deleteRole`;
     private _pagination: BehaviorSubject<Pagination | null> =
         new BehaviorSubject<Pagination | null>(null);
     private _roles: BehaviorSubject<AppRole[] | null> = new BehaviorSubject<
         AppRole[] | null
     >(null);
 
-    // getRoles() {
-    //     return this._httpClient.get<any>(this.getUserRolesURL).pipe(tap());
-    // }
 
     getRoles(
         page: number = 0,
@@ -76,6 +74,30 @@ export class ListSettingService {
     updateMenusInfo(roleid, roleData, checkedNodes): Observable<any> {
         const data = { roleid, roleData, menuIds: checkedNodes };
         return this._httpClient.put(`${this.updateRoleAndMenu}`, data);
+    }
+
+    deleteRoleById(roleId: string): Observable<any> {
+        return this._httpClient
+            .delete<any>(`${this.deleteRole}?roleId=${roleId}`)
+            .pipe(
+                tap(() => {
+                    const updatedRoles = this._roles.value.filter(
+                        (role) => role.id !== Number(roleId)
+                    );
+                    this._roles.next(updatedRoles);
+
+                    // Update the pagination count
+                const currentPagination = this._pagination.value;
+                if (currentPagination) {
+                    const updatedPagination = {
+                        ...currentPagination,
+                        length: currentPagination.length - 1, // Decrement total count
+                    };
+                    this._pagination.next(updatedPagination);
+                }
+                })
+            );
+
     }
 
 
