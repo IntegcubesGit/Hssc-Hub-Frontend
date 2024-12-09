@@ -1,10 +1,7 @@
-<div
-    class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden"
->
+<div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden">
     <!-- Header -->
     <div
-        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8"
-    >
+        class="relative flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <!-- Loader -->
 
         <!-- Title -->
@@ -18,20 +15,9 @@
                     [placeholder]="'Search roles'" />
             </mat-form-field> -->
             <!-- Add roles button -->
-            <button
-                class="ml-2 rounded-full"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="create('-1')"
-            >
-                <mat-icon
-                    class="stroke-white icon-size-4"
-                    [svgIcon]="'heroicons_solid:plus'"
-                ></mat-icon>
-                <span
-                    class="mx-0 my-auto hidden text-md font-semibold tracking-tight sm:mx-1 sm:block"
-                    >Add Role</span
-                >
+            <button class="ml-2 rounded-full" mat-flat-button [color]="'primary'" (click)="create('-1')">
+                <mat-icon class="stroke-white icon-size-4" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                <span class="mx-0 my-auto hidden text-md font-semibold tracking-tight sm:mx-1 sm:block">Add Role</span>
             </button>
         </div>
     </div>
@@ -39,100 +25,85 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
         <!-- roles list -->
-        <div
-            class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto"
-        >
+        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18 sm:overflow-y-auto">
             @if (roles$ | async; as roles) {
-                @if (roles.length > 0) {
-                    <div class="grid">
-                        <!-- Header -->
-                        <div
-                            class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
-                            matSort
-                            matSortDisableClear
-                        >
-                            <div>No</div>
-                            <div
-                                class="md:block"
-                                [mat-sort-header]="'roleName'"
-                            >
-                                Role Name
-                            </div>
-                            <div
-                                [mat-sort-header]="'createdBy'"
-                                class="lg:block"
-                            >
-                                Created By
-                            </div>
-                            <div [mat-sort-header]="'createdOn'">
-                                Created On
-                            </div>
-                            <div
-                                [mat-sort-header]="'timezone'"
-                                class="lg:block"
-                            >
-                                TimeZone
-                            </div>
+            @if (roles.length > 0) {
+            <div class="grid">
+                <!-- Header -->
+                <div class="inventory-grid text-secondary sticky top-0 z-10 grid gap-2 bg-gray-50 px-4 py-2 text-md font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
+                    matSort matSortDisableClear>
+                    <div>No</div>
+                    <div class="md:block" [mat-sort-header]="'roleName'">
+                        Role Name
+                    </div>
+                    <div [mat-sort-header]="'createdBy'" class="lg:block">
+                        Created By
+                    </div>
+                    <div [mat-sort-header]="'createdOn'">
+                        Created On
+                    </div>
+                    <div [mat-sort-header]="'timezone'" class="lg:block">
+                        TimeZone
+                    </div>
+                    <div [mat-sort-header]="'action'" class="lg:block text-right pr-4">
+                        Action
+                    </div>
+                </div>
+                <!-- Rows -->
+                @if (roles$ | async; as cases) {
+                @for (role of userRoles; track role) {
+                <div class="inventory-grid grid h-[35px] items-center gap-2 border-b px-4 text-md md:px-8">
+                    <div class="flex items-center">
+                        <div class="overflow-hidden">
+                            {{ $index + 1 }}
                         </div>
-                        <!-- Rows -->
-                        @if (roles$ | async; as cases) {
-                            @for (role of userRoles; track role) {
-                                <div
-                                    class="inventory-grid grid h-[35px] items-center gap-2 border-b px-4 text-md md:px-8"
-                                >
-                                    <div class="flex items-center">
-                                        <div class="overflow-hidden">
-                                            {{ $index + 1 }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="truncate"
-                                        matTooltip="Click to view or Edit {{
+                    </div>
+                    <div class="truncate" matTooltip="Click to view or Edit {{
                                             role.name
-                                        }}"
-                                    >
-                                        <a (click)="edit(role.id)" class="link">
-                                            {{ role.name }}
-                                        </a>
-                                    </div>
-                                    <div class="truncate lg:block">
-                                        {{ role.createdBy }}
-                                    </div>
-
-                                    <div>
-                                        {{
-                                            role.createdOn
-                                                | date
-                                                    : 'dd-MM-yyyy HH:mm:ss'
-                                                    : 'UTC'
-                                        }}
-                                    </div>
-
-                                    <div class="lg:block">
-                                        {{ role.timezone }}
-                                    </div>
-                                </div>
-                            }
-                        }
+                                        }}">
+                        <a (click)="edit(role.id)" class="link">
+                            {{ role.name }}
+                        </a>
+                    </div>
+                    <div class="truncate lg:block">
+                        {{ role.createdBy }}
                     </div>
 
-                    <mat-paginator
-                        class="xs:h-15 overflow-none z-10 h-11 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
-                        [ngClass]="{ 'pointer-events-none': isLoading }"
-                        [length]="pagination?.length"
-                        [pageIndex]="pagination.page"
-                        [pageSize]="pagination.size"
-                        [pageSizeOptions]="[25, 50, 100]"
-                        [showFirstLastButtons]="true"
-                    >
-                    </mat-paginator>
-                } @else {
-                    <div
-                        class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16"
-                    >
-                        There are no roles!
+                    <div>
+                        {{
+                        role.createdOn
+                        | date
+                        : 'dd-MM-yyyy HH:mm:ss'
+                        : 'UTC'
+                        }}
                     </div>
+
+                    <div class="lg:block">
+                        {{ role.timezone }}
+                    </div>
+                    <div class="lg:block flex justify-end pr-4">
+                        <button mat-menu-item (click)="openComposeDialog(role.id)">
+                            <span class="flex items-center">
+                                <mat-icon class="mr-3 icon-size-5" style="color: red;" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
                 }
+                }
+            </div>
+
+            <mat-paginator
+                class="xs:h-15 overflow-none z-10 h-11 bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+                [ngClass]="{ 'pointer-events-none': isLoading }" [length]="pagination?.length"
+                [pageIndex]="pagination.page" [pageSize]="pagination.size" [pageSizeOptions]="[25, 50, 100]"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+            } @else {
+            <div class="border-t p-8 text-center text-4xl font-semibold tracking-tight sm:p-16">
+                There are no roles!
+            </div>
+            }
             }
         </div>
     </div>

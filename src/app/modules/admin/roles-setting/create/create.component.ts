@@ -50,7 +50,6 @@ export class CreateComponent {
     menus: MenuDTO[] = [];
     TREE_DATA: MenuDTO[] = [];
     selectAll: boolean = false;
-    selectSingle: any[] = [];
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
@@ -202,7 +201,6 @@ export class CreateComponent {
     }
 
     toggleSelectAll() {
-        debugger
         if (this.selectAll) {
             this.treeControl?.dataNodes?.forEach((node) => (node.checked = true));
         } else if (!this.selectAll) {
@@ -334,6 +332,11 @@ export class CreateComponent {
         });
     }
 
+    getSelectedNodeIds(): string[] {
+        return this.treeControl?.dataNodes
+            ?.filter((node) => node.checked)
+            .map((node) => node.id) || [];
+    }
 
     navigateUserBack(): void {
         this._router.navigate(['roles/list']);

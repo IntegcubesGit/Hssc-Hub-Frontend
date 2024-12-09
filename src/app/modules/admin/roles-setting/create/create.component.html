@@ -29,7 +29,21 @@
                                             formControlName="roleName"
                                             required
                                         />
-                                        <mat-error> </mat-error>
+                                        @if (
+                                            rolesForm
+                                                .get('roleName')
+                                                ?.hasError('required') &&
+                                            rolesForm.get('roleName')?.touched
+                                        ) {
+                                            <mat-error
+                                                style="
+                                                    color: red;
+                                                    font-size: 12px;
+                                                "
+                                            >
+                                                Role name is required.
+                                            </mat-error>
+                                        }
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -61,7 +75,9 @@
                                     value=""
                                     color="primary"
                                     [checked]="node.checked"
-                                    (change)="onNodeCheckboxChange(node, $event)"
+                                    (change)="
+                                        onNodeCheckboxChange(node, $event)
+                                    "
                                 >
                                     {{ node.name }}
                                 </mat-checkbox>
@@ -86,9 +102,13 @@
                                         }}
                                     </mat-icon>
                                 </button>
-                                <mat-checkbox value="" color="primary"
-                                [checked]="node.checked"
-                                (change)="onNodeCheckboxChange(node, $event)"
+                                <mat-checkbox
+                                    value=""
+                                    color="primary"
+                                    [checked]="node.checked"
+                                    (change)="
+                                        onNodeCheckboxChange(node, $event)
+                                    "
                                 >
                                     {{ node.name }}
                                 </mat-checkbox>
@@ -110,6 +130,10 @@
                             type="button"
                             [color]="'primary'"
                             (click)="saveMenuInfo()"
+                            [disabled]="
+                                !rolesForm.controls['roleName'].valid ||
+                                getSelectedNodeIds().length === 0
+                            "
                         >
                             {{ roleId === '-1' ? 'Save' : 'Update' }}
                         </button>
