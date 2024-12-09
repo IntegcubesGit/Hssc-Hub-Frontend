@@ -27,6 +27,8 @@ import {
 } from 'rxjs';
 import { ListSettingService } from '../roles-setting.sevice';
 import { AppRole, Pagination } from '../roles-setting.types';
+import { AlertService } from 'app/layout/common/alert/alert.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
     selector: 'app-user-roles',
@@ -87,7 +89,9 @@ export class ListComponent implements OnInit {
         private _router: Router,
         private _service: ListSettingService,
         private _cdr: ChangeDetectorRef,
-        private _activatedRoute: ActivatedRoute
+        private _activatedRoute: ActivatedRoute,
+        private _alertService: AlertService,
+        private _fuseConfirmationService: FuseConfirmationService,
     ) {}
 
     ngOnInit(): void {
@@ -137,6 +141,59 @@ export class ListComponent implements OnInit {
             return;
         }
         this._router.navigate(['roles/create', id]);
+    }
+
+    openComposeDialog(roleId: string): void {
+        const dialogRef = this._fuseConfirmationService.open({
+            title: 'Confirm Role Deletion',
+            message: 'Are you sure you want to delete this role?',
+            icon: {
+                show: true,
+                name: 'heroicons_outline:trash',
+                color: 'error',
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Yes, Delete',
+                    color: 'warn',
+                },
+                cancel: {
+                    show: true,
+                    label: 'No, Cancel',
+                },
+            },
+            dismissible: true,
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result === 'confirmed') {
+                this.reviewRole(roleId);
+            }
+            else {
+                console.log('Deletion Canceled');
+            }
+        });
+    }
+    reviewRole(id: string) {
+        this._service.deleteRoleById(id).subscribe({
+            next: (res) => {
+                if (res.isSucceeded) {
+                    this._alertService.triggerAlert(
+                        'success',
+                        'Success',
+                        'Role Deleted Successfully.'
+                    );
+                }
+            },
+            error: (err) => {
+                this._alertService.triggerAlert(
+                    'error',
+                    'Error',
+                    'An Error Occured, Please try later.'
+                );
+            },
+        });
     }
 
     /**
