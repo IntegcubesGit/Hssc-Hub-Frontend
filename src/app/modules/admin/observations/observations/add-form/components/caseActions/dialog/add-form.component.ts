@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonService } from 'app/modules/common.service';
-import { Incident_ReportingService } from '../../../../observations.service';
+import { ObservationService } from '../../../../observations.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
@@ -47,7 +47,7 @@ export class AddformComponent
         private _formBuilder: UntypedFormBuilder,
         private _commonService: CommonService,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private _service: Incident_ReportingService) {
+        private _service: ObservationService) {
 
     }
 

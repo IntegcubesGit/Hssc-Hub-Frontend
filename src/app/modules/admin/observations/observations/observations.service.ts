@@ -6,18 +6,18 @@ import {
   Observable,
   tap,
 } from 'rxjs';
-import { Pagination, Case } from './observations.types';
+import { Pagination, Observation } from './observations.types';
 import { environment } from '../../../../../environment/environment';
 
 
 
 @Injectable({ providedIn: 'root' })
-export class Incident_ReportingService {
+export class ObservationService {
 
-  private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
-  private readonly saveCasesURL = `${environment.apiUrl}Cases/IncidentReporting_CreateAnIncidentReportCase`;
-  private readonly getByIdCaseURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentCaseById/`;
-  private readonly updateCasesURL = `${environment.apiUrl}Cases/IncidentReporting_UpdateIncidentReportCase`;
+  private readonly getObservationsURL = `${environment.apiUrl}Observations/GetAllObservations`
+  private readonly saveCasesURL = `${environment.apiUrl}Observations/CreateOrUpdateObservation`;
+  private readonly getByIdCaseURL = `${environment.apiUrl}Observations/GetObservationById/`;
+  private readonly updateCasesURL = `${environment.apiUrl}Observations/CreateOrUpdateObservation`;
 
   //injurry
   private readonly saveCaseInjuryURL = `${environment.apiUrl}Cases/IncidentReporting_CreateIncidentReportCaseInjury`;
@@ -62,8 +62,8 @@ export class Incident_ReportingService {
 
 
   private _pagination: BehaviorSubject<Pagination | null> = new BehaviorSubject<Pagination | null>(null);
-  private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject<Case[] | null>(null);
-
+  // private _cases: BehaviorSubject<Case[] | null> = new BehaviorSubject<Case[] | null>(null);
+  private _cases: BehaviorSubject<Observation[] | null> = new BehaviorSubject<Observation[] | null>(null);
 
   constructor(private _httpClient: HttpClient) { }
 
@@ -71,7 +71,7 @@ export class Incident_ReportingService {
     return this._pagination.asObservable();
   }
 
-  get cases$(): Observable<Case[] | null> {
+  get cases$(): Observable<Observation[] | null> {
     return this._cases.asObservable();
   }
 
@@ -92,30 +92,30 @@ export class Incident_ReportingService {
     search: string = ''
   ): Observable<{
     pagination: Pagination;
-    cases: Case[];
+    observations: Observation[];
   }> {
     return this._httpClient.get<{
-      pagination: Pagination; cases: Case[];
-    }>(this.getCasesURL, {
+      pagination: Pagination; observations: Observation[];
+    }>(this.getObservationsURL, {
       params: { page: '' + page, size: '' + size, sort, order, search, },
     })
       .pipe(
         tap((response) => {
           this._pagination.next(response.pagination);
-          this._cases.next(response.cases);
+          this._cases.next(response.observations);
         })
       );
   }
 
 
 
-  saveCase(caseData: Case): Observable<any> {
+  saveCase(caseData: Observation): Observable<any> {
     return this._httpClient.post(`${this.saveCasesURL}`, caseData);
   }
 
   updateCase(caseData: any): Observable<any> {
 
-    return this._httpClient.put(`${this.updateCasesURL}`, caseData);
+    return this._httpClient.post(`${this.updateCasesURL}`, caseData);
   }
 
 
@@ -173,7 +173,7 @@ export class Incident_ReportingService {
   }
 
 
-  saveinvolvedpersns(caseData: Case): Observable<any> {
+  saveinvolvedpersns(caseData: Observation): Observable<any> {
     return this._httpClient.post(`${this.saveCaseInvolvedPersonsURL}`, caseData);
   }
 
@@ -183,7 +183,7 @@ export class Incident_ReportingService {
 
 
 
-  //involved persns calls
+  // Potential Loss calls
 
   getAllPotentialLoss(id): Observable<any> {
     return this._httpClient.get<any>(`${this.GetPotentialLoss}${id}`);
@@ -195,20 +195,20 @@ export class Incident_ReportingService {
   }
 
 
-  savePotentialLoss(caseData: Case): Observable<any> {
+  savePotentialLoss(caseData: Observation): Observable<any> {
     return this._httpClient.post(`${this.getSavePotentialLoss}`, caseData);
   }
 
 
 
-  //involved persns calls
+  //Root Causes calls
 
   getAllRootCausesURL(id): Observable<any> {
     return this._httpClient.get<any>(`${this.GetAllRootCausesURL}${id}`);
   }
 
 
-  saveRootCauses(caseData: Case): Observable<any> {
+  saveRootCauses(caseData: Observation): Observable<any> {
     return this._httpClient.post(`${this.SaveRootCausesURL}`, caseData);
   }
 

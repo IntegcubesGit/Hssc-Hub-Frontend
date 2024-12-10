@@ -20,7 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash';
-import { Incident_ReportingService } from '../../../observations.service';
+import { ObservationService } from '../../../observations.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { AddformComponent } from './dialog/add-form.component';
 import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
@@ -77,7 +77,7 @@ export class ActionComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute, private snackBar: MatSnackBar,
         private router: Router,
         private dialog: MatDialog,
-        private _service: Incident_ReportingService,
+        private _service: ObservationService,
         private _alertService: AlertService
 
     ) {

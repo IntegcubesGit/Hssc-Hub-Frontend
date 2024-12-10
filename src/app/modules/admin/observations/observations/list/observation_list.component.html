@@ -48,10 +48,6 @@
                         Department
 
                     </div>
-                    <div class="hidden lg:block" [mat-sort-header]="'WorkPlace'">
-                        Work Place
-                    </div>
-
 
                     <div class="hidden md:block" [mat-sort-header]="'caseDate'">Case Date
                     </div>
@@ -82,7 +78,7 @@
 
                     <!-- Name -->
                     <div class="truncate">
-                        {{ case.case }}
+                        {{ case.title }}
                     </div>
 
                     <div class="truncate hidden lg:block">
@@ -96,7 +92,6 @@
                     </div>
 
                     <div class="hidden md:block"> {{case.department}} </div>
-                    <div class="hidden lg:block"> {{case.workPlace}} </div>
 
                     <div class="hidden  md:block">
 

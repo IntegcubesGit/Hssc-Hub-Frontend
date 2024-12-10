@@ -43,8 +43,8 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { Case, Pagination } from '../observations.types';
-import { Incident_ReportingService } from '../observations.service';
+import { Observation, Pagination } from '../observations.types';
+import { ObservationService } from '../observations.service';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -68,7 +68,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                 }
 
                 @screen lg {
-                    grid-template-columns: 48px 200px 200px auto 150px 150px 150px  150px 72px;;
+                    grid-template-columns: 48px 200px 200px auto 160px 160px 160px  160px;
                 }
             }
         `,
@@ -107,7 +107,7 @@ export class observationsListComponent
     isLoading: boolean = false;
     pagination: Pagination;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    cases$: Observable<Case[] | null>;
+    cases$: Observable<Observation[] | null>;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -116,7 +116,7 @@ export class observationsListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
 
-        private _Service: Incident_ReportingService,
+        private _Service: ObservationService,
 
         private _router: Router,
     ) { }
@@ -126,7 +126,7 @@ export class observationsListComponent
     // -----------------------------------------------------------------------------------------------------
 
     ngOnInit(): void {
-
+        
         // Get the pagination
         this._Service.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -144,6 +144,10 @@ export class observationsListComponent
 
         this.cases$ = this._Service.cases$;
 
+
+        this.cases$.subscribe(cases => {
+            console.log(cases);
+          });
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
             .pipe(
