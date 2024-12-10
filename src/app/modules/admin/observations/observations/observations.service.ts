@@ -14,7 +14,7 @@ import { environment } from '../../../../../environment/environment';
 @Injectable({ providedIn: 'root' })
 export class Incident_ReportingService {
 
-  private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReportGetAllCases`
+  private readonly getCasesURL = `${environment.apiUrl}Cases/IncidentReporting_GetAllCases`
   private readonly saveCasesURL = `${environment.apiUrl}Cases/IncidentReporting_CreateAnIncidentReportCase`;
   private readonly getByIdCaseURL = `${environment.apiUrl}Cases/IncidentReporting_GetIncidentCaseById/`;
   private readonly updateCasesURL = `${environment.apiUrl}Cases/IncidentReporting_UpdateIncidentReportCase`;
