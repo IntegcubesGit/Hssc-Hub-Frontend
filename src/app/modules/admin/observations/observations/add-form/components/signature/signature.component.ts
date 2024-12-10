@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FuseAlertComponent } from "@fuse/components/alert";
 import { FuseHighlightComponent } from "@fuse/components/highlight";
 import { AddFormComponent } from "../../add-form.component";
-import { Incident_ReportingService } from "../../../observations.service";
+import { ObservationService } from "../../../observations.service";
 import { DatePipe } from "@angular/common";
 import { FuseConfirmationService } from "@fuse/services/confirmation/confirmation.service";
 import { StickyMenuToggleComponent } from "app/core/sticky-menu-toggle/sticky-menu-toggle.component";
@@ -57,7 +57,7 @@ export class SignatureComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private _fuseComponentsComponent: AddFormComponent,
-        private service: Incident_ReportingService,
+        private service: ObservationService,
         private _fuseConfirmationService:FuseConfirmationService 
     ) 
     {

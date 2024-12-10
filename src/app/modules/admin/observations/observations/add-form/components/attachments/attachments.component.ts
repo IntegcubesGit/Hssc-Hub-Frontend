@@ -4,7 +4,7 @@ import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AddFormComponent } from '../../add-form.component';
-import { Incident_ReportingService } from '../../../observations.service';
+import { ObservationService } from '../../../observations.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AlertService } from 'app/layout/common/alert/alert.service';
@@ -35,7 +35,7 @@ export class AttachmentsComponent implements OnInit
   constructor(
     private _fuseComponentsComponent: AddFormComponent,
     private _fuseConfirmationService: FuseConfirmationService,
-    private caseService:Incident_ReportingService,
+    private caseService:ObservationService,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
@@ -190,7 +190,6 @@ drawerOpenedChanged(opened: boolean, file: { name: string; type: string; icon: s
   }
 
   deleteFile(fileName: string): void {
-    console.log('delete file', fileName);
     const confirmation = this._fuseConfirmationService.open({
       title: 'Delete file',
       message:

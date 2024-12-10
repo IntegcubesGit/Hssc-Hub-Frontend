@@ -15,7 +15,7 @@
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="font-medium  text-gray-600 hover:font-semibold">Case Title</mat-label>
-                    <input matInput formControlName="caseTitle" required />
+                    <input matInput formControlName="title" />
                     <mat-error> </mat-error>
                   </mat-form-field>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Status</mat-label>
-                    <mat-select formControlName="statusId">
+                    <mat-select formControlName="caseStatusId">
                       @for (
                       status of caseStatuses;
                       track status
@@ -86,7 +86,7 @@
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Category</mat-label>
-                    <mat-select formControlName="categoryId">
+                    <mat-select formControlName="catId">
                       @for (
                       category of caseCategories;
                       track category
@@ -105,7 +105,7 @@
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Risk
                       Category</mat-label>
-                    <mat-select formControlName="riskCategoryId">
+                    <mat-select formControlName="riskCatId">
                       @for (
                       category of riskCategories;
                       track category
@@ -125,17 +125,17 @@
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Responsible Department</mat-label>
-                    <mat-select formControlName="ResponsibleDepartmentId">
-                      <!-- @for (
-                      status of caseStatuses;
-                      track status
+                    <mat-select formControlName="responsibleDepartmentId">
+                      @for (
+                      category of departments;
+                      track category
                       ) {
                       <mat-option [value]="
-                                    status.caseStatusId
-                                    ">
-                        {{ status.title }}
+                                    category.departmentId
+                                ">
+                        {{ category.title }}
                       </mat-option>
-                      } -->
+                      }
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -143,7 +143,7 @@
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Reporting
                       Department</mat-label>
-                    <mat-select formControlName="departmentId">
+                    <mat-select formControlName="reportingDeptId">
                       @for (
                       category of departments;
                       track category
@@ -160,7 +160,7 @@
                 <div class="flex flex-col w-full">
                   <mat-form-field class="fuse-mat-dense flex-auto">
                     <mat-label class="text-gray-600 hover:font-semibold">Reported By Company</mat-label>
-                    <input matInput formControlName="ReportedByCompany"/>
+                    <input matInput formControlName="reportedByCompany"/>
                   </mat-form-field>
                 </div>
               </div>
@@ -188,7 +188,7 @@
                 <div class="flex flex-col w-full">
                   <mat-label class="font-medium text-gray-600 hover:font-semibold">Potential Cause</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="PotentialCause" cdkTextareaAutosize cdkAutosizeMinRows="3"
+                    <textarea matInput formControlName="potentialCause" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>
@@ -196,7 +196,7 @@
                 <div class="flex flex-col w-full">
                   <mat-label class="font-medium text-gray-600 hover:font-semibold">Revealing Circumstances (How Revealed)</mat-label>
                   <mat-form-field class="flex-none">
-                    <textarea matInput formControlName="HowRevealed" cdkTextareaAutosize cdkAutosizeMinRows="3"
+                    <textarea matInput formControlName="howRevealed" cdkTextareaAutosize cdkAutosizeMinRows="3"
                       cdkAutosizeMaxRows="3"></textarea>
                     <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:bars-3-bottom-left'"></mat-icon>
                   </mat-form-field>

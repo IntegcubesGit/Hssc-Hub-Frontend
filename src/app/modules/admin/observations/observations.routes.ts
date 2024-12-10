@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { observationsListComponent } from './observations/list/observation_list.component';
-import { Incident_ReportingService } from './observations/observations.service';
+import { ObservationService } from './observations/observations.service';
 import { AddFormComponent } from './observations/add-form/add-form.component';
 import { GeneralInformationComponent } from './observations/add-form/components/general_information/general_information.component';
 import { CommonService } from '../../../../app/modules/common.service';
@@ -23,7 +23,7 @@ export default [
     path: 'observations',
     component: observationsListComponent,
     resolve: {
-      products: () => inject(Incident_ReportingService).getProducts(),
+      products: () => inject(ObservationService).getProducts(),
     },
   },
   {

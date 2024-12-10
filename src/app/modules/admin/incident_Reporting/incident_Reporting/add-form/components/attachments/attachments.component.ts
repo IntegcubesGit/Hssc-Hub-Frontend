@@ -190,7 +190,6 @@ drawerOpenedChanged(opened: boolean, file: { name: string; type: string; icon: s
   }
 
   deleteFile(fileName: string): void {
-    console.log('delete file', fileName);
     const confirmation = this._fuseConfirmationService.open({
       title: 'Delete file',
       message:
