@@ -61,7 +61,7 @@ export class ActionComponent implements OnInit, OnDestroy {
 
     recentTransactionsTableColumns: string[] = [
         'No',
-        'ActionPriority',
+        'priority',
         'ActionTaken',
         'ActionType',
         'ActionStatus',
@@ -94,6 +94,7 @@ export class ActionComponent implements OnInit, OnDestroy {
 
 
     getAllCaseActions(): void {
+        
         this.caseId = this.route.parent?.snapshot.paramMap.get('id');
         this._service.getAllCaseActions(this.caseId).subscribe({
             next: (response) => {

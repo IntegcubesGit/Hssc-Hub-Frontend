@@ -63,8 +63,9 @@ export class AddformComponent
             completedOn: ['', Validators.required],
             description: [''],
             actionTaken: ['', Validators.required],
-            actionPriority: ['', Validators.required],
+            priority: ['', Validators.required],
             responsibleUser: ['', Validators.required],
+
         });
 
         if (this._data.id !== -1) {
@@ -96,7 +97,6 @@ export class AddformComponent
     loadCaseData(id: number) {
         this._service.getCaseActionById(id).subscribe({
             next: (caseData) => {
-
                 setTimeout(() => {
                     this.composeForm.patchValue(caseData);
                 });

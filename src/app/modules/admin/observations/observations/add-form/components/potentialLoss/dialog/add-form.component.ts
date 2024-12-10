@@ -51,7 +51,6 @@ export class AddformComponent implements OnInit {
             caseId:[String(this._data.caseId), Validators.required],
             comments: ['', Validators.required],
             severity: ['', Validators.required],
-            lossAmount: ['', Validators.required],
         });
       
         if (this._data.id !== -1) {
@@ -67,7 +66,6 @@ export class AddformComponent implements OnInit {
         this._service.getPotentialLossById(id).subscribe({
             next: (caseData) => {
                 setTimeout(() => {
-
                     this.composeForm.patchValue(caseData);
                 });
             }

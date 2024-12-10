@@ -63,7 +63,6 @@ export class PotentialLossComponent implements OnInit, OnDestroy {
         'potentialLossId',
         'comments',
         'severity',
-        'lossAmount',
     ];
 
     caseId: string | null = null;

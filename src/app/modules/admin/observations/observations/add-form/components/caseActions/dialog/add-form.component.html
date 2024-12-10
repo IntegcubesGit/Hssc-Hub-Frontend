@@ -33,19 +33,21 @@
             <div class="flex flex-col w-full">
                 <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Priority</span>
                 <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-select formControlName="actionPriority">
+                    <input matInput formControlName="priority" />
+                    <!-- <mat-select formControlName="priority">
                         @for (
-                            dept of departments;
-                            track dept
-                            ) {
-                            <mat-option [value]="
-                                dept.departmentId
-                            ">
-                                {{ dept.title }}
-                            </mat-option>
-                            }
-                    </mat-select>
+                        type of actionTypes;
+                        track type
+                        ) {
+                        <mat-option [value]="
+                        type.actionTypeId
+                        ">
+                            {{ type.title }}
+                        </mat-option>
+                        }
+                    </mat-select> -->
                 </mat-form-field>
+                
             </div>
             <!-- Injury Type -->
             <div class="flex flex-col w-full">
@@ -94,7 +96,7 @@
                 <span class="text-left min-w-32 mr-4 mb-1 font-medium text-gray-600 hover:font-semibold">Responsible
                     Dept.</span>
                 <mat-form-field class="fuse-mat-dense flex-auto">
-                    <mat-select formControlName="responsibleUser">
+                    <mat-select formControlName="responsibleDeptId">
                         @for (
                         dept of departments;
                         track dept
