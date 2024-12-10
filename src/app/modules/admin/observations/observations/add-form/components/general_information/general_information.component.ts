@@ -15,8 +15,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BusinessUnit, CaseCategory, CaseStatus, Department, RiskCategory } from 'app/modules/common.model';
 import { CommonService } from 'app/modules/common.service';
-import { Incident_ReportingService } from '../../../observations.service';
-import { Case } from '../../../observations.types';
+import { ObservationService } from '../../../observations.service';
+import { Observation } from '../../../observations.types';
 import { AlertService } from 'app/layout/common/alert/alert.service';
 import { FuseAlertService } from '@fuse/components/alert';
 // import { StickyMenuToggleComponent } from "../../../../../../../core/sticky-menu-toggle/sticky-menu-toggle.component";
@@ -56,7 +56,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   caseForm: FormGroup;
   caseCategories: CaseCategory[] = [];
   riskCategories: RiskCategory[] = [];
-  connectedCases: Case[] = [];
+  connectedCases: Observation[] = [];
   departments: Department[] = [];
   businessUnits: BusinessUnit[] = [];
   sites: any[] = [];
@@ -71,7 +71,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private _commonService: CommonService,
-    private _service: Incident_ReportingService,
+    private _service: ObservationService,
     private alertService: AlertService
   ) {
 
@@ -83,21 +83,22 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   createForm() {
     this.caseForm = this.fb.group({
       caseId: [-1, Validators.required],
-      caseTitle: ['', Validators.required],
-      description: ['', ],
+      title: ['', Validators.required],
+      description: [''],
       caseDate: ['', Validators.required],
-      departmentId: ['', Validators.required],
+      reportingDeptId: ['', Validators.required],
       dueDate: [''],
-      riskCategoryId: ['', Validators.required],
-      categoryId: ['', Validators.required],
-      statusId: ['', Validators.required],
+      riskCatId: ['', Validators.required],
+      catId: ['', Validators.required],
+      caseStatusId: ['', Validators.required],
       immediateActionTaken: [''],
       comments: [''],
       connectedCaseId: [''],
-      PotentialCause:[''],
-      HowRevealed:[''],
-      ReportedByCompany:[''],
-      ResponsibleDepartmentId:['', Validators.required],
+      potentialCause: [''],
+      howRevealed: [''],
+      reportedByCompany: [''],
+      responsibleDepartmentId: ['', Validators.required],
+
     });
   }
 
@@ -148,6 +149,7 @@ export class GeneralInformationComponent implements OnInit, OnDestroy {
   updateData(): void {
     if (this.caseForm.valid) {
       this._service.updateCase(this.caseForm.value).subscribe(response => {
+        console.log(response);
         this.alertService.triggerAlert('success', 'Success', 'Case General Information Updated Successfully');
       });
     }

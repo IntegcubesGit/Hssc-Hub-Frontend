@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonService } from 'app/modules/common.service';
-import { Incident_ReportingService } from '../../../../observations.service';
+import { ObservationService } from '../../../../observations.service';
 
 @Component({
     selector: 'involved-compose-2',
@@ -39,7 +39,7 @@ export class AddformComponent implements OnInit {
         private _formBuilder: UntypedFormBuilder,
         private _commonService: CommonService,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private _service: Incident_ReportingService,
+        private _service: ObservationService,
       
     ) {
 
@@ -51,7 +51,6 @@ export class AddformComponent implements OnInit {
             caseId:[String(this._data.caseId), Validators.required],
             comments: ['', Validators.required],
             severity: ['', Validators.required],
-            lossAmount: ['', Validators.required],
         });
       
         if (this._data.id !== -1) {
@@ -67,7 +66,6 @@ export class AddformComponent implements OnInit {
         this._service.getPotentialLossById(id).subscribe({
             next: (caseData) => {
                 setTimeout(() => {
-
                     this.composeForm.patchValue(caseData);
                 });
             }

@@ -16,7 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe, JsonPipe } from '@angular/common';
-import { Incident_ReportingService } from '../../../observations.service';
+import { ObservationService } from '../../../observations.service';
 import { FuseCardComponent } from '@fuse/components/card';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
@@ -80,7 +80,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         private _formBuilder: UntypedFormBuilder,
         private route: ActivatedRoute, 
         private router: Router,
-        private _service: Incident_ReportingService,
+        private _service: ObservationService,
         private alertService: AlertService) 
     {
 
